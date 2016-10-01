@@ -1,6 +1,7 @@
 # I'm a panda rabbit  (\/)
 #                   ( @^@ )
 # Logs
+.idea/
 logs
 *.log
 npm-debug.log*
