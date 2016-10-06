@@ -52,24 +52,26 @@ function second() {
 	first();
     });
     $('#estimate-start').click(() => {
-	third(200);
+	third(1);
     });
 }
 
 function third(interval) {
-    alert(interval);
+    // alert(interval);
     if (interval == 5600) {
 	return;
     }
     $('#estimate-page').hide();
     $('#input-page').show();
     $('#input-submit-container').hide();
+    $('#exp-subtitle').text("Trial " + interval);
     genProm(1000).then(() => {
 	audioPlay();
 	return genProm(500);
     }).then(() => {
 	showCircle();
-	return genProm(interval);
+	// TODO: this array should be randomized
+	return genProm(timeIntervalArray[interval]); 
     }).then(() => {
 	hideCircle();
 	$('#input-submit-container').show();
@@ -79,7 +81,8 @@ function third(interval) {
 	});
 	$('#submit-next').off('click');
 	$('#submit-next').click(() => {
-	    third(interval + 700);
+	    // TODO: send answer to backend
+	    third(interval + 1);
 	});
     }).catch(() => {});
 }
