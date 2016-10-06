@@ -73,11 +73,12 @@ function third(interval) {
     }).then(() => {
 	hideCircle();
 	$('#input-submit-container').show();
+	$('#submit-replay').off('click');
 	$('#submit-replay').click(() => {
 	    third(interval);
 	});
+	$('#submit-next').off('click');
 	$('#submit-next').click(() => {
-	    $(this).disable();
 	    third(interval + 700);
 	});
     }).catch(() => {});
