@@ -43,14 +43,16 @@ function first() {
     });
 }
 
-var timeIntervalArray = [200, 900, 1600, 2300, 3000, 3700, 4200, 4900];
+var timeIntervalArray = [0, 200, 900, 1600, 2300, 3000, 3700, 4200, 4900];
 
 function second() {
     $('#first-page').hide();
     $('#estimate-page').show();
+    $('#estimate-replay').off('click');
     $('#estimate-replay').click(() => {
 	first();
     });
+    $('#estimate-start').off('click');
     $('#estimate-start').click(() => {
 	third(1);
     });
@@ -58,7 +60,7 @@ function second() {
 
 function third(interval) {
     // alert(interval);
-    if (interval == 5600) {
+    if (interval == 8) {
 	return;
     }
     $('#estimate-page').hide();
