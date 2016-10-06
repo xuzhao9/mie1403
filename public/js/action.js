@@ -43,6 +43,8 @@ function first() {
     });
 }
 
+var timeIntervalArray = [200, 900, 1600, 2300, 3000, 3700, 4200, 4900];
+
 function second() {
     $('#first-page').hide();
     $('#estimate-page').show();
@@ -50,12 +52,33 @@ function second() {
 	first();
     });
     $('#estimate-start').click(() => {
-	third();
+	third(200);
     });
 }
 
-function third() {
+function third(interval) {
+    alert(interval);
+    if (interval == 5600) {
+	return;
+    }
     $('#estimate-page').hide();
     $('#input-page').show();
     $('#input-submit-container').hide();
+    genProm(1000).then(() => {
+	audioPlay();
+	return genProm(500);
+    }).then(() => {
+	showCircle();
+	return genProm(interval);
+    }).then(() => {
+	hideCircle();
+	$('#input-submit-container').show();
+	$('#submit-replay').click(() => {
+	    third(interval);
+	});
+	$('#submit-next').click(() => {
+	    $(this).disable();
+	    third(interval + 700);
+	});
+    }).catch(() => {});
 }
