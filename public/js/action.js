@@ -27,6 +27,7 @@ function first() {
     $('#input-page').hide();
     $('#svg-circle').hide();
     $('#first-page').show();
+    $('#exp-subtitle').text("Standard Duration");
     // after 1 second, play the sound, 500ms => show circle, 1000ms => hideCircle
     genProm(1000).then(() => {
 	audioPlay();
@@ -44,6 +45,12 @@ function first() {
 }
 
 var timeIntervalArray = [0, 200, 900, 1600, 2300, 3000, 3700, 4200, 4900];
+var timeIntervalArrayBlue = [0, 200, 900, 1600, 2300, 3000, 3700, 4200, 4900];
+var trialSize = 2;
+
+function get_color() {
+    return $('#svg-circle svg circle').attr('fill');
+}
 
 function second() {
     $('#first-page').hide();
@@ -54,13 +61,22 @@ function second() {
     });
     $('#estimate-start').off('click');
     $('#estimate-start').click(() => {
-	third(1);
+	if(get_color() === "red") {
+	    third(timeIntervalArray, 1);
+	} else if(get_color() === "blue") {
+	    third(timeIntervalArrayBlue, 1);
+	}
+
     });
 }
 
-function third(interval) {
-    // alert(interval);
-    if (interval == 8) {
+function third(arr, interval) {
+    if (interval > trialSize && arr === timeIntervalArray) {
+	set_blue_circle();
+	first();
+	return;
+    } else if (interval > trialSize && arr === timeIntervalArrayBlue) {
+	show_result();
 	return;
     }
     $('#estimate-page').hide();
@@ -73,18 +89,31 @@ function third(interval) {
     }).then(() => {
 	showCircle();
 	// TODO: this array should be randomized
-	return genProm(timeIntervalArray[interval]); 
+	return genProm(arr[interval]); 
     }).then(() => {
 	hideCircle();
 	$('#input-submit-container').show();
 	$('#submit-replay').off('click');
 	$('#submit-replay').click(() => {
-	    third(interval);
+	    third(arr, interval);
 	});
 	$('#submit-next').off('click');
 	$('#submit-next').click(() => {
 	    // TODO: send answer to backend
-	    third(interval + 1);
+	    third(arr, interval + 1);
 	});
     }).catch(() => {});
+}
+
+// forth
+function set_blue_circle() {
+    var v = $('#estimate-page h2').html();
+    v = v.replace('red', 'blue');
+    $('#estimate-page h2').html(v);
+    $('#svg-circle svg circle').attr('fill', 'blue');
+    $('#svg-circle svg circle').attr('stroke', 'blue');
+}
+
+function show_result() {
+    alert("Lab 1 finishes!");
 }
