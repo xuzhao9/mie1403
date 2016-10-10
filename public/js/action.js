@@ -173,19 +173,19 @@ function show_result() {
     $('#input-page').hide();
     $('#svg-circle').hide();
     for(var i = 0; i < userRedArray.length; i ++) {
-	var t = [userRedArray[i], (timeIntervalArray[i] / 100.0)];
+	var t = [userRedArray[i], (timeIntervalArray[i] / 1000.0)];
 	redResult.push(t);
     }
     for(var i = 0; i < userBlueArray.length; i ++) {
-	var t = [userBlueArray[i], (timeIntervalArrayBlue[i] / 100.0)];
+	var t = [userBlueArray[i], (timeIntervalArrayBlue[i] / 1000.0)];
 	blueResult.push(t);
     }
     for(var i = 0; i < userRedArray.length; i ++) {
-	var t = [getBaseLog(2, userRedArray[i]), getBaseLog(2, (timeIntervalArray[i] / 100.0))];
+	var t = [getBaseLog(2, userRedArray[i]), getBaseLog(2, (timeIntervalArray[i] / 1000.0))];
 	redLogResult.push(t);
     }
     for(var i = 0; i < userBlueArray.length; i ++) {
-	var t = [getBaseLog(2, userBlueArray[i]), getBaseLog(2, (timeIntervalArrayBlue[i] / 100.0))];
+	var t = [getBaseLog(2, userBlueArray[i]), getBaseLog(2, (timeIntervalArrayBlue[i] / 1000.0))];
 	blueLogResult.push(t);
     }
     show_chart();
