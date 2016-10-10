@@ -122,12 +122,15 @@ function valid_check(arr) {
     var v = $('#input-box').val();
     var vv = parseFloat(v);
     var r = !isNaN(vv);
-    if(r) {
+    if(r && vv < 10 && vv > 0) {
 	if(arr === timeIntervalArray) {
 	    userRedArray.push(vv);
 	} else if (arr == timeIntervalArrayBlue) {
 	    userBlueArray.push(vv);
 	}
+    } else {
+	alert("Please input a float number n, n is smaller than 10 but larger than 0.");
+	r = false;
     }
     $('#input-box').val("");
     return r;
