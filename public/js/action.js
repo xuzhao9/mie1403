@@ -204,11 +204,8 @@ function show_result() {
 function show_chart() {
     var myChart = Highcharts.chart('result-chart',  {
 	type: 'scatter',
-	borderWidth: 1,
-    plotBorderWidth: 1,
-	marginLeft 100,
-	marginRight 10
-	
+	chart: {
+	},
         title: {
             text: 'Power law'
         },
@@ -244,12 +241,9 @@ function show_chart() {
         }]
     });
     var myLogChart = Highcharts.chart('logresult-chart',  {
-        
 	type: 'scatter',
-	borderWidth: 1,
-    plotBorderWidth: 1,
-	marginRightt 100,
-	marginLeft 10
+	chart: {
+	},
         title: {
             text: 'Power law in log scale'
         },
