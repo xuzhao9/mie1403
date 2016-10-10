@@ -133,7 +133,7 @@ function third(arr, interval) {
 
 // forth
 function set_blue_circle() {
-	$('#headcenter h1').css('color', 'blue');
+    $('#headcenter h1').css('color', 'blue');
     var v = $('#estimate-page h2').html();
     v = v.replace('red', 'blue');
     $('#estimate-page h2').html(v);
@@ -159,15 +159,24 @@ function valid_check(arr) {
     return r;
 }
 
+var redResult = [];
+var blueResult = [];
+
 function show_result() {
-    alert("Lab 1 finishes!");
-    alert(userRedArray);
-    alert(userBlueArray);
+    $('#input-page').hide();
+    $('#svg-circle').hide();
+    for(var i = 0; i < userRedArray.length; i ++) {
+	var t = [userRedArray[i], (timeIntervalArray[i] / 100.0)];
+	redResult.push(t);
+    }
+    for(var i = 0; i < userBlueArray.length; i ++) {
+	var t = [userBlueArray[i], (timeIntervalArrayBlue[i] / 100.0)];
+	blueResult.push(t);
+    }
+    show_chart();
 }
 
 function show_chart() {
-    var minimum = 0.9;
-    var maximum = 7.2;
     var myChart = Highcharts.chart('result-chart',  {
 	type: 'scatter',
         title: {
@@ -184,7 +193,7 @@ function show_chart() {
                 text: 'Estimate Time (s)'
             }
         },
-        series: [{
+	series: [{
 	    regression: true,
 	    regressionSettings: {
 		type: 'linear',
@@ -192,9 +201,16 @@ function show_chart() {
 	    },
 	    name: 'User 1',
 	    color: 'rgba(223, 83, 83, .5)',
-            data: [[0.9, 1.0], [1.8, 2.0], [2.7, 2.5]]
+            data: redResult
+        }, {
+	    regression: true,
+	    regressionSettings: {
+		type: 'linear',
+		color: 'rgba(83, 83, 223, .9)'
+	    },
+	    name: 'User 1',
+	    color: 'rgba(83, 83, 223, .5)',
+            data: blueResult
         }]
     });
 }
-
-show_chart();
