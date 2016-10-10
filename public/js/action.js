@@ -164,3 +164,37 @@ function show_result() {
     alert(userRedArray);
     alert(userBlueArray);
 }
+
+function show_chart() {
+    var minimum = 0.9;
+    var maximum = 7.2;
+    var myChart = Highcharts.chart('result-chart',  {
+	type: 'scatter',
+        title: {
+            text: 'Scatter plot with regression line'
+        },
+        xAxis: {
+	    title: {
+		enabled: true,
+		text: "Actual Time (s)"
+	    }
+        },
+        yAxis: {
+            title: {
+                text: 'Estimate Time (s)'
+            }
+        },
+        series: [{
+	    regression: true,
+	    regressionSettings: {
+		type: 'linear',
+		color: 'rgba(223, 83, 83, .9)'
+	    },
+	    name: 'User 1',
+	    color: 'rgba(223, 83, 83, .5)',
+            data: [[0.9, 1.0], [1.8, 2.0], [2.7, 2.5]]
+        }]
+    });
+}
+
+show_chart();
