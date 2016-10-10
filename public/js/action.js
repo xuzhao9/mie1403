@@ -1,6 +1,7 @@
 $(document).ready(function() {
     shuffle(timeIntervalArray);
     shuffle(timeIntervalArrayBlue);
+	$('#exp-colortitle').text("1-");
     first();
 });
 
@@ -48,7 +49,10 @@ function first() {
     $('#estimate-page').hide();
     $('#input-page').hide();
     $('#svg-circle').hide();
+	$('#result-display-page').hide();
     $('#first-page').show();
+	$('#exp-title').text("Direct Scaling ");
+
     $('#exp-subtitle').text("0");
     // after 1 second, play the sound, 500ms => show circle, 1000ms => hideCircle
     genProm(1000).then(() => {
@@ -134,6 +138,7 @@ function third(arr, interval) {
 // forth
 function set_blue_circle() {
     $('#headcenter h1').css('color', 'blue');
+	$('#exp-colortitle').text("2-");
     var v = $('#estimate-page h2').html();
     v = v.replace('red', 'blue');
     $('#estimate-page h2').html(v);
@@ -172,6 +177,10 @@ function getBaseLog(x, y) {
 function show_result() {
     $('#input-page').hide();
     $('#svg-circle').hide();
+	$('#headcenter h1').css('color', 'black');
+	$('#exp-title').text("Results");
+	$('#exp-colortitle').text("");
+    $('#exp-subtitle').text("");
     for(var i = 0; i < userRedArray.length; i ++) {
 	var t = [userRedArray[i], (timeIntervalArray[i] / 1000.0)];
 	redResult.push(t);
@@ -188,30 +197,36 @@ function show_result() {
 	var t = [getBaseLog(2, userBlueArray[i]), getBaseLog(2, (timeIntervalArrayBlue[i] / 1000.0))];
 	blueLogResult.push(t);
     }
+	$('#result-display-page').show();
     show_chart();
 }
 
 function show_chart() {
     var myChart = Highcharts.chart('result-chart',  {
 	type: 'scatter',
+	borderWidth: 1,
+    plotBorderWidth: 1,
+	marginLeft 100,
+	marginRight 10
+	
         title: {
-            text: 'Scatter plot with regression line'
+            text: 'Power law'
         },
         xAxis: {
 	    title: {
 		enabled: true,
-		text: "Actual Time (s)"
+		text: 'Stimulus intensity (s)'
 	    }
         },
         yAxis: {
             title: {
-                text: 'Estimate Time (s)'
+                text: 'Sensation magnitude (s)'
             }
         },
 	series: [{
 	    regression: true,
 	    regressionSettings: {
-		type: 'linear',
+		type: 'exponential',
 		color: 'rgba(223, 83, 83, .9)'
 	    },
 	    name: 'Red',
@@ -220,7 +235,7 @@ function show_chart() {
         }, {
 	    regression: true,
 	    regressionSettings: {
-		type: 'linear',
+		type: 'exponential',
 		color: 'rgba(83, 83, 223, .9)'
 	    },
 	    name: 'Blue',
@@ -229,19 +244,24 @@ function show_chart() {
         }]
     });
     var myLogChart = Highcharts.chart('logresult-chart',  {
+        
 	type: 'scatter',
+	borderWidth: 1,
+    plotBorderWidth: 1,
+	marginRightt 100,
+	marginLeft 10
         title: {
-            text: 'Scatter plot with regression line'
+            text: 'Power law in log scale'
         },
         xAxis: {
 	    title: {
 		enabled: true,
-		text: "Actual Time (s)"
+		text: 'Log stimulus intensity (s)'
 	    }
         },
         yAxis: {
             title: {
-                text: 'Estimate Time (s)'
+                text: 'Log sensation magnitude (s))'
             }
         },
 	series: [{
