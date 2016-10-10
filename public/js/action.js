@@ -45,7 +45,9 @@ function first() {
 }
 
 var timeIntervalArray = [0, 200, 900, 1600, 2300, 3000, 3700, 4200, 4900];
+var userRedArray = [0];
 var timeIntervalArrayBlue = [0, 200, 900, 1600, 2300, 3000, 3700, 4200, 4900];
+var userBlueArray = [0];
 var trialSize = 2;
 
 function get_color() {
@@ -99,8 +101,10 @@ function third(arr, interval) {
 	});
 	$('#submit-next').off('click');
 	$('#submit-next').click(() => {
-	    // TODO: send answer to backend
-	    third(arr, interval + 1);
+	    // TODO: check answer valid and store answer in local array
+	    if(valid_check(arr)) {
+		third(arr, interval + 1);
+	    }
 	});
     }).catch(() => {});
 }
@@ -114,6 +118,23 @@ function set_blue_circle() {
     $('#svg-circle svg circle').attr('stroke', 'blue');
 }
 
+function valid_check(arr) {
+    var v = $('#input-box').val();
+    var vv = parseFloat(v);
+    var r = !isNaN(vv);
+    if(r) {
+	if(arr === timeIntervalArray) {
+	    userRedArray.push(vv);
+	} else if (arr == timeIntervalArrayBlue) {
+	    userBlueArray.push(vv);
+	}
+    }
+    $('#input-box').val("");
+    return r;
+}
+
 function show_result() {
     alert("Lab 1 finishes!");
+    alert(userRedArray);
+    alert(userBlueArray);
 }
