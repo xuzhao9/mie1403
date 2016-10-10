@@ -49,7 +49,7 @@ function first() {
     $('#input-page').hide();
     $('#svg-circle').hide();
     $('#first-page').show();
-    $('#exp-subtitle').text("Standard Duration");
+    $('#exp-subtitle').text("0");
     // after 1 second, play the sound, 500ms => show circle, 1000ms => hideCircle
     genProm(1000).then(() => {
 	audioPlay();
@@ -106,7 +106,7 @@ function third(arr, interval) {
     $('#estimate-page').hide();
     $('#input-page').show();
     $('#input-submit-container').hide();
-    $('#exp-subtitle').text("Trial " + interval);
+    $('#exp-subtitle').text(interval+1);
     genProm(1000).then(() => {
 	audioPlay();
 	return genProm(500);
@@ -133,6 +133,7 @@ function third(arr, interval) {
 
 // forth
 function set_blue_circle() {
+	$('#headcenter h1').css('color', 'blue');
     var v = $('#estimate-page h2').html();
     v = v.replace('red', 'blue');
     $('#estimate-page h2').html(v);
