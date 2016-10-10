@@ -1,6 +1,28 @@
 $(document).ready(function() {
+    shuffle(timeIntervalArray);
+    shuffle(timeIntervalArrayBlue);
     first();
 });
+
+function shuffle(array) {
+    let counter = array.length;
+
+    // While there are elements in the array
+    while (counter > 0) {
+        // Pick a random index
+        let index = Math.floor(Math.random() * counter);
+
+        // Decrease counter by 1
+        counter--;
+
+        // And swap the last element with it
+        let temp = array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
+    }
+
+    return array;
+}
 
 function audioPlay() {
     var audio = new Audio('media/di.wav');
@@ -44,10 +66,10 @@ function first() {
     });
 }
 
-var timeIntervalArray = [0, 200, 900, 1600, 2300, 3000, 3700, 4200, 4900];
-var userRedArray = [0];
-var timeIntervalArrayBlue = [0, 200, 900, 1600, 2300, 3000, 3700, 4200, 4900];
-var userBlueArray = [0];
+var timeIntervalArray = [200, 900, 1600, 2300, 3000, 3700, 4200, 4900];
+var userRedArray = [];
+var timeIntervalArrayBlue = [200, 900, 1600, 2300, 3000, 3700, 4200, 4900];
+var userBlueArray = [];
 var trialSize = 2;
 
 function get_color() {
@@ -64,20 +86,20 @@ function second() {
     $('#estimate-start').off('click');
     $('#estimate-start').click(() => {
 	if(get_color() === "red") {
-	    third(timeIntervalArray, 1);
+	    third(timeIntervalArray, 0);
 	} else if(get_color() === "blue") {
-	    third(timeIntervalArrayBlue, 1);
+	    third(timeIntervalArrayBlue, 0);
 	}
 
     });
 }
 
 function third(arr, interval) {
-    if (interval > trialSize && arr === timeIntervalArray) {
+    if (interval >= trialSize && arr === timeIntervalArray) {
 	set_blue_circle();
 	first();
 	return;
-    } else if (interval > trialSize && arr === timeIntervalArrayBlue) {
+    } else if (interval >= trialSize && arr === timeIntervalArrayBlue) {
 	show_result();
 	return;
     }
