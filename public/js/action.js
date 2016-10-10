@@ -162,6 +162,13 @@ function valid_check(arr) {
 var redResult = [];
 var blueResult = [];
 
+var redLogResult = [];
+var blueLogResult = [];
+
+function getBaseLog(x, y) {
+    return Math.log(y) / Math.log(x);
+}
+
 function show_result() {
     $('#input-page').hide();
     $('#svg-circle').hide();
@@ -172,6 +179,14 @@ function show_result() {
     for(var i = 0; i < userBlueArray.length; i ++) {
 	var t = [userBlueArray[i], (timeIntervalArrayBlue[i] / 100.0)];
 	blueResult.push(t);
+    }
+    for(var i = 0; i < userRedArray.length; i ++) {
+	var t = [getBaseLog(2, userRedArray[i]), getBaseLog(2, (timeIntervalArray[i] / 100.0))];
+	redLogResult.push(t);
+    }
+    for(var i = 0; i < userBlueArray.length; i ++) {
+	var t = [getBaseLog(2, userBlueArray[i]), getBaseLog(2, (timeIntervalArrayBlue[i] / 100.0))];
+	blueLogResult.push(t);
     }
     show_chart();
 }
@@ -199,7 +214,7 @@ function show_chart() {
 		type: 'linear',
 		color: 'rgba(223, 83, 83, .9)'
 	    },
-	    name: 'User 1',
+	    name: 'Red',
 	    color: 'rgba(223, 83, 83, .5)',
             data: redResult
         }, {
@@ -208,9 +223,45 @@ function show_chart() {
 		type: 'linear',
 		color: 'rgba(83, 83, 223, .9)'
 	    },
-	    name: 'User 1',
+	    name: 'Blue',
 	    color: 'rgba(83, 83, 223, .5)',
             data: blueResult
+        }]
+    });
+    var myLogChart = Highcharts.chart('logresult-chart',  {
+	type: 'scatter',
+        title: {
+            text: 'Scatter plot with regression line'
+        },
+        xAxis: {
+	    title: {
+		enabled: true,
+		text: "Actual Time (s)"
+	    }
+        },
+        yAxis: {
+            title: {
+                text: 'Estimate Time (s)'
+            }
+        },
+	series: [{
+	    regression: true,
+	    regressionSettings: {
+		type: 'linear',
+		color: 'rgba(223, 83, 83, .9)'
+	    },
+	    name: 'Red',
+	    color: 'rgba(223, 83, 83, .5)',
+            data: redLogResult
+        }, {
+	    regression: true,
+	    regressionSettings: {
+		type: 'linear',
+		color: 'rgba(83, 83, 223, .9)'
+	    },
+	    name: 'Blue',
+	    color: 'rgba(83, 83, 223, .5)',
+            data: blueLogResult
         }]
     });
 }
