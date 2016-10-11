@@ -1,8 +1,18 @@
 $(document).ready(function() {
     shuffle(timeIntervalArray);
     shuffle(timeIntervalArrayBlue);
-	$('#exp-colortitle').text("1-");
-    first();
+    $('#first-page').hide();
+    $('#exp-colortitle').text("1-");
+    $('#estimate-page').hide();
+    $('#input-page').hide();
+    $('#svg-circle').hide();
+    $('#illuHeader').hide();
+    $('#result-display-page').hide();
+    $('#interval-page').hide();
+    $('#image2').click(() => {
+	$('#introduction-page').hide();
+	first();
+    });
 });
 
 function shuffle(array) {
@@ -49,9 +59,10 @@ function first() {
     $('#estimate-page').hide();
     $('#input-page').hide();
     $('#svg-circle').hide();
-	$('#result-display-page').hide();
+    $('#result-display-page').hide();
+    $('#illuHeader').show();
     $('#first-page').show();
-	$('#exp-title').text("Direct Scaling ");
+    $('#exp-title').text("Direct Scaling ");
 
     $('#exp-subtitle').text("0");
     // after 1 second, play the sound, 500ms => show circle, 1000ms => hideCircle
@@ -101,7 +112,17 @@ function second() {
 function third(arr, interval) {
     if (interval >= trialSize && arr === timeIntervalArray) {
 	set_blue_circle();
-	first();
+	$('#first-page').hide();
+	$('#estimate-page').hide();
+	$('#input-page').hide();
+	$('#svg-circle').hide();
+	$('#illuHeader').hide();
+	$('#result-display-page').hide();
+	$('#interval-page').show();
+	$('#image3').click(() => {
+	    $('#interval-page').hide();
+	    first();
+	});
 	return;
     } else if (interval >= trialSize && arr === timeIntervalArrayBlue) {
 	show_result();
@@ -127,7 +148,6 @@ function third(arr, interval) {
 	});
 	$('#submit-next').off('click');
 	$('#submit-next').click(() => {
-	    // TODO: check answer valid and store answer in local array
 	    if(valid_check(arr)) {
 		third(arr, interval + 1);
 	    }
