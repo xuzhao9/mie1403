@@ -74,7 +74,7 @@ var timeIntervalArray = [618, 1236, 1854, 2472, 3090, 3708, 4326, 4944];
 var userRedArray = [];
 var timeIntervalArrayBlue = [618, 1236, 1854, 2472, 3090, 3708, 4326, 4944];
 var userBlueArray = [];
-var trialSize = 2;
+var trialSize = 8;
 
 function get_color() {
     return $('#svg-circle svg circle').attr('fill');
@@ -401,7 +401,7 @@ function show_chart() {
 					enabled: false
 			},			  
 		  name: 'x=y',
-		  data:[[0,0], [2.3,2.3]]
+		  data:[[-0.5,-0.5], [2.3,2.3]]
 		}
 	  ]
     });
