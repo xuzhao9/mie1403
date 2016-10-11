@@ -23,6 +23,8 @@
                 s.regressionSettings.useAllSeries = s.regressionSettings.useAllSeries || false;
 
                 var regressionType = s.regressionSettings.type || "linear" ;
+		// by default, show legend. Remove legend if it specifies.
+		var regressionLegend = s.regressionSettings.showInLegend && true;
                 var regression; 
                 var extraSerie = {
                         data:[],
@@ -82,6 +84,7 @@
                 extraSerie.name = extraSerie.name.replace("%r",regression.rValue);
                 extraSerie.name = extraSerie.name.replace("%eq",regression.string);
                 extraSerie.name = extraSerie.name.replace("%se", regression.standardError);
+		extraSerie.showInLegend = regressionLegend;
 
                 if(extraSerie.visible == false){
                     extraSerie.visible = false;   
