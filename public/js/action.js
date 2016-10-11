@@ -343,7 +343,7 @@ function show_chart() {
             headerFormat: '<b>log I : log S</b><br>',
             pointFormat: '({point.x},{point.y})'
         },
-		navigation: {
+	navigation: {
             menuItemStyle: {
                 fontWeight: 'normal',
                 background: 'none'
@@ -354,7 +354,6 @@ function show_chart() {
                 color: 'black'
             }
         },
-	
 	series: [
 	  {
 	    regression: true,
