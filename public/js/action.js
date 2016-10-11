@@ -177,74 +177,53 @@ function getBaseLog(x, y) {
 function show_result() {
     $('#input-page').hide();
     $('#svg-circle').hide();
-	$('#headcenter h1').css('color', 'black');
-	$('#exp-title').text("Results");
-	$('#exp-colortitle').text("");
+    $('#headcenter h1').css('color', 'black');
+    $('#exp-title').text("Results");
+    $('#exp-colortitle').text("");
     $('#exp-subtitle').text("");
+    redResult.push([0, 0]);
     for(var i = 0; i < userRedArray.length; i ++) {
-	var t = [(timeIntervalArray[i] / 1000), userRedArray[i]];
+	var t = [parseFloat((timeIntervalArray[i] / 1000).toFixed(2)), parseFloat(userRedArray[i].toFixed(2))];
 	redResult.push(t);
     }
+    blueResult.push([0, 0]);
     for(var i = 0; i < userBlueArray.length; i ++) {
-	var t = [(timeIntervalArrayBlue[i] / 1000), userBlueArray[i]];
+	var t = [parseFloat((timeIntervalArrayBlue[i] / 1000).toFixed(2)), parseFloat(userBlueArray[i].toFixed(2))];
 	blueResult.push(t);
     }
+    // Log graph
+    redLogResult.push([0, 0]);
     for(var i = 0; i < userRedArray.length; i ++) {
-	var t = [getBaseLog(2, (timeIntervalArray[i] / 1000.0)), getBaseLog(2, userRedArray[i])];
+	var t = [parseFloat(getBaseLog(2, (timeIntervalArray[i] / 1000.0)).toFixed(2)), parseFloat(getBaseLog(2, userRedArray[i]).toFixed(2))];
 	redLogResult.push(t);
     }
+    blueLogResult.push([0, 0]);
     for(var i = 0; i < userBlueArray.length; i ++) {
-	var t = [getBaseLog(2, (timeIntervalArrayBlue[i] / 1000.0)), getBaseLog(2, userBlueArray[i])];
+	var t = [parseFloat(getBaseLog(2, (timeIntervalArrayBlue[i] / 1000.0)).toFixed(2)), parseFloat(getBaseLog(2, userBlueArray[i]).toFixed(2))];
 	blueLogResult.push(t);
     }
-	$('#result-display-page').show();
+    $('#result-display-page').show();
     show_chart();
-}
-
-function power_regression(data) {
-    var sum = [0, 0, 0, 0], n = 0, results = [];
-    
-    for (len = data.length; n < len; n++) {
-        if (data[n][1] != null) {
-            sum[0] += Math.log(data[n][0]);
-            sum[1] += Math.log(data[n][1]) * Math.log(data[n][0]);
-            sum[2] += Math.log(data[n][1]);
-            sum[3] += Math.pow(Math.log(data[n][0]), 2);
-        }
-    }
-    
-    var B = (n * sum[1] - sum[2] * sum[0]) / (n * sum[3] - sum[0] * sum[0]);
-    var A = Math.pow(Math.E, (sum[2] - B * sum[0]) / n);
-
-    for (var i = 0, len = data.length; i < len; i++) {
-        var coordinate = [data[i][0], A * Math.pow(data[i][0] , B)];
-        results.push(coordinate);
-    }
-    
-    var string = 'y = ' + Math.round(A*100) / 100 + 'x^' + Math.round(B*100) / 100;
-    
-    return {equation: [A, B], points: results, string: string};
-
 }
 
 function show_chart() {
     var myChart = Highcharts.chart('result-chart',  {
-	type: 'scatter',
 	marker: {
-                radius: 5
-            },
+            radius: 5
+        },
 	chart: {
-		    marginRight: 100,
-		    paddingRight: 20
-	       },
+	    type: 'scatter',
+	    marginRight: 100,
+	    paddingRight: 20
+	},
 	 legend: {
-            layout: 'vertical',
-            backgroundColor: '#FFFFFF',
-            align: 'left',
-            verticalAlign: 'top',
-            floating: true,
-			x: 70,
-            y: 50,
+             layout: 'vertical',
+             backgroundColor: '#FFFFFF',
+             align: 'left',
+             verticalAlign: 'top',
+             floating: true,
+	     x: 70,
+             y: 50,
         },
         title: {
             text: 'Power law'
@@ -262,9 +241,8 @@ function show_chart() {
         },
 	tooltip: {
             headerFormat: '<b>I : S</b><br>',
-            pointFormat: '({point.x} , {point.y})'
+            pointFormat: '({point.x},{point.y})'
         },               
-		
 	series: [{
 	    regression: true,
 	    enableMouseTracking: false,
@@ -277,7 +255,7 @@ function show_chart() {
             },		
 	    },
 	    name: 'Red',
-		showInLegend: false,
+	    showInLegend: false,
 	    color: 'rgba(223, 83, 83, .5)',
         data: redResult
         }, {
@@ -300,14 +278,14 @@ function show_chart() {
 	
 	
     var myLogChart = Highcharts.chart('logresult-chart',  {
-	type: 'scatter',
 	marker: {
-                radius: 5
-            },
+            radius: 5
+        },
 	chart: {
-		    marginLeft:100,
-		    paddingLeft: 20
-	       },
+	    type: 'scatter',
+	    marginLeft:100,
+	    paddingLeft: 20
+	},
 	 legend: {
             layout: 'vertical',
             backgroundColor: '#FFFFFF',
@@ -364,7 +342,7 @@ function show_chart() {
 		
 	    },
 	    name: 'Blue',
-		showInLegend: false,
+	    showInLegend: false,
 	    color: 'rgba(83, 83, 223, .5)',
             data: blueLogResult
         }]
