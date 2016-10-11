@@ -181,23 +181,23 @@ function show_result() {
     $('#exp-title').text("Results");
     $('#exp-colortitle').text("");
     $('#exp-subtitle').text("");
-    redResult.push([0, 0]);
+    //redResult.push([0, 0]);
     for(var i = 0; i < userRedArray.length; i ++) {
 	var t = [parseFloat((timeIntervalArray[i] / 1000).toFixed(2)), parseFloat(userRedArray[i].toFixed(2))];
 	redResult.push(t);
     }
-    blueResult.push([0, 0]);
+    //blueResult.push([0, 0]);
     for(var i = 0; i < userBlueArray.length; i ++) {
 	var t = [parseFloat((timeIntervalArrayBlue[i] / 1000).toFixed(2)), parseFloat(userBlueArray[i].toFixed(2))];
 	blueResult.push(t);
     }
     // Log graph
-    redLogResult.push([0, 0]);
+    //redLogResult.push([0, 0]);
     for(var i = 0; i < userRedArray.length; i ++) {
 	var t = [parseFloat(getBaseLog(2, (timeIntervalArray[i] / 1000.0)).toFixed(2)), parseFloat(getBaseLog(2, userRedArray[i]).toFixed(2))];
 	redLogResult.push(t);
     }
-    blueLogResult.push([0, 0]);
+    //blueLogResult.push([0, 0]);
     for(var i = 0; i < userBlueArray.length; i ++) {
 	var t = [parseFloat(getBaseLog(2, (timeIntervalArrayBlue[i] / 1000.0)).toFixed(2)), parseFloat(getBaseLog(2, userBlueArray[i]).toFixed(2))];
 	blueLogResult.push(t);
@@ -222,7 +222,7 @@ function show_chart() {
              align: 'left',
              verticalAlign: 'top',
              floating: true,
-	     x: 70,
+	         x: 70,
              y: 50,
         },
         title: {
@@ -242,13 +242,24 @@ function show_chart() {
 	tooltip: {
             headerFormat: '<b>I : S</b><br>',
             pointFormat: '({point.x},{point.y})'
-        },               
-	series: [{
+        },  
+	navigation: {
+            menuItemStyle: {
+                fontWeight: 'normal',
+                background: 'none'
+            },
+            menuItemHoverStyle: {
+                fontWeight: 'bold',
+                background: 'none',
+                color: 'black'
+            }
+        }, 
+		
+	series: [
+	   {
 	    regression: true,
-	    enableMouseTracking: false,
 	    regressionSettings: {
-		type: 'power',
-		order: 1, 
+		type: 'power', 
 		color: 'rgba(223, 83, 83, .9)',
 		marker: {
                 enabled: false
@@ -258,11 +269,12 @@ function show_chart() {
 	    showInLegend: false,
 	    color: 'rgba(223, 83, 83, .5)',
         data: redResult
-        }, {
+        }, 
+		
+		{
 	    regression: true,
 	    regressionSettings: {
 		type: 'power',
-		order: 1,
 		color: 'rgba(83, 83, 223, .9)',
 		marker: {
                 enabled: false
@@ -273,7 +285,24 @@ function show_chart() {
 		showInLegend: false, 
 	    color: 'rgba(83, 83, 223, .5)',
         data: blueResult
-        }]
+        },
+		
+		{
+		   regression: true,
+		   showInLegend: false,
+			regressionSettings: {
+			type: 'linear', 
+			color: '#888888',
+			dashStyle: 'ShortDash',
+			showInLegend: false	
+		  },			  
+		    name: 'x=y',	  
+			marker: {
+					enabled: false
+			},	
+		  data:[[0,0], [5,5]]
+		}
+		]
     });
 	
 	
@@ -310,15 +339,25 @@ function show_chart() {
             }
         },
 	
-	 plotOptions: {
-            series: {
-                enableMouseTracking: false
+	tooltip: {
+            headerFormat: '<b>log I : log S</b><br>',
+            pointFormat: '({point.x},{point.y})'
+        },
+		navigation: {
+            menuItemStyle: {
+                fontWeight: 'normal',
+                background: 'none'
+            },
+            menuItemHoverStyle: {
+                fontWeight: 'bold',
+                background: 'none',
+                color: 'black'
             }
         },
 	
-	series: [{
+	series: [
+	  {
 	    regression: true,
-		enableMouseTracking: false,
 	    regressionSettings: {
 		type: 'linear',
 		color: 'rgba(223, 83, 83, .9)',
@@ -331,7 +370,9 @@ function show_chart() {
 		showInLegend: false,
 	    color: 'rgba(223, 83, 83, .5)',
             data: redLogResult
-        }, {
+       }, 
+		
+	  {
 	    regression: true,
 	    regressionSettings: {
 		type: 'linear',
@@ -345,6 +386,24 @@ function show_chart() {
 	    showInLegend: false,
 	    color: 'rgba(83, 83, 223, .5)',
             data: blueLogResult
-        }]
+      },
+	  
+		  
+		  {
+		   regression: true,
+		   showInLegend: false,
+			regressionSettings: {
+			type: 'linear', 
+			color: '#888888',
+			dashStyle: 'ShortDash',
+			showInLegend: false
+		  },
+			marker: {
+					enabled: false
+			},			  
+		  name: 'x=y',
+		  data:[[0,0], [2.3,2.3]]
+		}
+	  ]
     });
 }
