@@ -70,9 +70,9 @@ function first() {
     });
 }
 
-var timeIntervalArray = [200, 900, 1600, 2300, 3000, 3700, 4200, 4900];
+var timeIntervalArray = [618, 1236, 1854, 2472, 3090, 3708, 4326, 4944];
 var userRedArray = [];
-var timeIntervalArrayBlue = [200, 900, 1600, 2300, 3000, 3700, 4200, 4900];
+var timeIntervalArrayBlue = [618, 1236, 1854, 2472, 3090, 3708, 4326, 4944];
 var userBlueArray = [];
 var trialSize = 2;
 
@@ -150,14 +150,14 @@ function valid_check(arr) {
     var v = $('#input-box').val();
     var vv = parseFloat(v);
     var r = !isNaN(vv);
-    if(r && vv < 10 && vv > 0) {
+    if(r && vv < 6 && vv > 0) {
 	if(arr === timeIntervalArray) {
 	    userRedArray.push(vv);
 	} else if (arr == timeIntervalArrayBlue) {
 	    userBlueArray.push(vv);
 	}
     } else {
-	alert("Please input a float number n, n is smaller than 10 but larger than 0.");
+	alert("Please input a float number n, n is smaller than 6 but larger than 0.");
 	r = false;
     }
     $('#input-box').val("");
@@ -182,19 +182,19 @@ function show_result() {
 	$('#exp-colortitle').text("");
     $('#exp-subtitle').text("");
     for(var i = 0; i < userRedArray.length; i ++) {
-	var t = [userRedArray[i], (timeIntervalArray[i] / 1000.0)];
+	var t = [(timeIntervalArray[i] / 1000), userRedArray[i]];
 	redResult.push(t);
     }
     for(var i = 0; i < userBlueArray.length; i ++) {
-	var t = [userBlueArray[i], (timeIntervalArrayBlue[i] / 1000.0)];
+	var t = [(timeIntervalArrayBlue[i] / 1000), userBlueArray[i]];
 	blueResult.push(t);
     }
     for(var i = 0; i < userRedArray.length; i ++) {
-	var t = [getBaseLog(2, userRedArray[i]), getBaseLog(2, (timeIntervalArray[i] / 1000.0))];
+	var t = [getBaseLog(2, (timeIntervalArray[i] / 1000.0)), getBaseLog(2, userRedArray[i])];
 	redLogResult.push(t);
     }
     for(var i = 0; i < userBlueArray.length; i ++) {
-	var t = [getBaseLog(2, userBlueArray[i]), getBaseLog(2, (timeIntervalArrayBlue[i] / 1000.0))];
+	var t = [getBaseLog(2, (timeIntervalArrayBlue[i] / 1000.0)), getBaseLog(2, userBlueArray[i])];
 	blueLogResult.push(t);
     }
 	$('#result-display-page').show();
@@ -204,8 +204,22 @@ function show_result() {
 function show_chart() {
     var myChart = Highcharts.chart('result-chart',  {
 	type: 'scatter',
+	marker: {
+                radius: 5
+            },
 	chart: {
-	},
+		    marginRight: 100,
+		    paddingRight: 20
+	       },
+	 legend: {
+            layout: 'vertical',
+            backgroundColor: '#FFFFFF',
+            align: 'left',
+            verticalAlign: 'top',
+            floating: true,
+			x: 70,
+            y: 50,
+        },
         title: {
             text: 'Power law'
         },
@@ -220,30 +234,63 @@ function show_chart() {
                 text: 'Sensation magnitude (s)'
             }
         },
+		 tooltip: {
+                        headerFormat: '<b>I : S</b><br>',
+                        pointFormat: '({point.x} , {point.y})'
+                    },               
+		
 	series: [{
 	    regression: true,
+		enableMouseTracking: false,
 	    regressionSettings: {
-		type: 'exponential',
-		color: 'rgba(223, 83, 83, .9)'
+		type: 'polynomial',
+		order: 1, 
+		color: 'rgba(223, 83, 83, .9)',
+		marker: {
+                enabled: false
+            },		
 	    },
 	    name: 'Red',
+		showInLegend: false,
 	    color: 'rgba(223, 83, 83, .5)',
-            data: redResult
+        data: redResult
         }, {
 	    regression: true,
 	    regressionSettings: {
-		type: 'exponential',
-		color: 'rgba(83, 83, 223, .9)'
+		type: 'polynomial',
+		order: 1,
+		color: 'rgba(83, 83, 223, .9)',
+		marker: {
+                enabled: false
+            },
+
 	    },
 	    name: 'Blue',
+		showInLegend: false, 
 	    color: 'rgba(83, 83, 223, .5)',
-            data: blueResult
+        data: blueResult
         }]
     });
+	
+	
     var myLogChart = Highcharts.chart('logresult-chart',  {
 	type: 'scatter',
+	marker: {
+                radius: 5
+            },
 	chart: {
-	},
+		    marginLeft:100,
+		    paddingLeft: 20
+	       },
+	 legend: {
+            layout: 'vertical',
+            backgroundColor: '#FFFFFF',
+            align: 'left',
+            verticalAlign: 'top',
+            floating: true,  
+            x: 100,
+            y: 50,			
+        },
         title: {
             text: 'Power law in log scale'
         },
@@ -255,25 +302,43 @@ function show_chart() {
         },
         yAxis: {
             title: {
-                text: 'Log sensation magnitude (s))'
+                text: 'Log sensation magnitude (s)'
             }
         },
+	
+	 plotOptions: {
+            series: {
+                enableMouseTracking: false
+            }
+        },
+	
 	series: [{
 	    regression: true,
+		enableMouseTracking: false,
 	    regressionSettings: {
 		type: 'linear',
-		color: 'rgba(223, 83, 83, .9)'
+		color: 'rgba(223, 83, 83, .9)',
+		marker: {
+                enabled: false
+            },
+		
 	    },
 	    name: 'Red',
+		showInLegend: false,
 	    color: 'rgba(223, 83, 83, .5)',
             data: redLogResult
         }, {
 	    regression: true,
 	    regressionSettings: {
 		type: 'linear',
-		color: 'rgba(83, 83, 223, .9)'
+		color: 'rgba(83, 83, 223, .9)',
+		marker: {
+                enabled: false
+            },
+		
 	    },
 	    name: 'Blue',
+		showInLegend: false,
 	    color: 'rgba(83, 83, 223, .5)',
             data: blueLogResult
         }]
