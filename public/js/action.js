@@ -177,7 +177,7 @@ function getBaseLog(x, y) {
 function show_result() {
     $('#input-page').hide();
     $('#svg-circle').hide();
-    $('#headcenter h1').css('color', 'black');
+    $('#headcenter h1').css('color', 'white');
     $('#exp-title').text("Results");
     $('#exp-colortitle').text("");
     $('#exp-subtitle').text("");
@@ -213,8 +213,7 @@ function show_chart() {
         },
 	chart: {
 	    type: 'scatter',
-	    marginRight: 100,
-	    paddingRight: 20
+	    marginRight: 80,
 	},
 	 legend: {
              layout: 'vertical',
@@ -312,8 +311,7 @@ function show_chart() {
         },
 	chart: {
 	    type: 'scatter',
-	    marginLeft:100,
-	    paddingLeft: 20
+	    marginLeft:80,
 	},
 	 legend: {
             layout: 'vertical',
@@ -405,4 +403,25 @@ function show_chart() {
 		}
 	  ]
     });
+}
+
+//Update 10.11
+function show_introduction() 
+{
+    $('#input-page').hide();
+    $('#svg-circle').hide();
+    $('#headcenter h1').css('color', 'white');
+    $('#exp-title').text("");
+    $('#exp-colortitle').text("");
+    $('#exp-subtitle').text("");
+}
+
+function show_interval() 
+{
+    $('#input-page').hide();
+    $('#svg-circle').hide();
+    $('#headcenter h1').css('color', 'white');
+    $('#exp-title').text("");
+    $('#exp-colortitle').text("");
+    $('#exp-subtitle').text("");
 }
