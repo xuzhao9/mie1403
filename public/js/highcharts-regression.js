@@ -55,9 +55,10 @@
                     regression = _linear(mergedData,s.regressionSettings.decimalPlaces) ;
                     extraSerie.type = "line";
                 }else if (regressionType == "exponential") {
-                    regression = _exponential(mergedData) 
-                }                                
-                else if (regressionType == "polynomial"){  
+                    regression = _exponential(mergedData) ;
+                }else if (regressionType == "power") {
+		    regression = _power(mergedData);
+		}else if (regressionType == "polynomial"){  
                     var order = s.regressionSettings.order || 2;
                     var extrapolate = s.regressionSettings.extrapolate || 0;
                     regression = _polynomial(mergedData, order, extrapolate) ;                    

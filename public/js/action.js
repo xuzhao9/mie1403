@@ -201,6 +201,32 @@ function show_result() {
     show_chart();
 }
 
+function power_regression(data) {
+    var sum = [0, 0, 0, 0], n = 0, results = [];
+    
+    for (len = data.length; n < len; n++) {
+        if (data[n][1] != null) {
+            sum[0] += Math.log(data[n][0]);
+            sum[1] += Math.log(data[n][1]) * Math.log(data[n][0]);
+            sum[2] += Math.log(data[n][1]);
+            sum[3] += Math.pow(Math.log(data[n][0]), 2);
+        }
+    }
+    
+    var B = (n * sum[1] - sum[2] * sum[0]) / (n * sum[3] - sum[0] * sum[0]);
+    var A = Math.pow(Math.E, (sum[2] - B * sum[0]) / n);
+
+    for (var i = 0, len = data.length; i < len; i++) {
+        var coordinate = [data[i][0], A * Math.pow(data[i][0] , B)];
+        results.push(coordinate);
+    }
+    
+    var string = 'y = ' + Math.round(A*100) / 100 + 'x^' + Math.round(B*100) / 100;
+    
+    return {equation: [A, B], points: results, string: string};
+
+}
+
 function show_chart() {
     var myChart = Highcharts.chart('result-chart',  {
 	type: 'scatter',
@@ -234,16 +260,16 @@ function show_chart() {
                 text: 'Sensation magnitude (s)'
             }
         },
-		 tooltip: {
-                        headerFormat: '<b>I : S</b><br>',
-                        pointFormat: '({point.x} , {point.y})'
-                    },               
+	tooltip: {
+            headerFormat: '<b>I : S</b><br>',
+            pointFormat: '({point.x} , {point.y})'
+        },               
 		
 	series: [{
 	    regression: true,
-		enableMouseTracking: false,
+	    enableMouseTracking: false,
 	    regressionSettings: {
-		type: 'polynomial',
+		type: 'power',
 		order: 1, 
 		color: 'rgba(223, 83, 83, .9)',
 		marker: {
@@ -257,7 +283,7 @@ function show_chart() {
         }, {
 	    regression: true,
 	    regressionSettings: {
-		type: 'polynomial',
+		type: 'power',
 		order: 1,
 		color: 'rgba(83, 83, 223, .9)',
 		marker: {
