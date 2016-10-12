@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+   <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"> </script>
+   <script type="text/javascript" src="js/highcharts.js"></script>
+   <script type="text/javascript" src="js/highcharts-regression.js"></script>
+   <script type="text/javascript" src="https://code.highcharts.com/modules/exporting.js"></script>
+   <script type="text/javascript" src="js/absjudge.js"> </script>
+   
+    <title>Human Factors Research</title>
+	<style type="text/css">
+		ul.square {
+			list-style-type:square; 
+			list-style-position: inside;
+			line-height: 60px;
+			font-size: large;
+			text-align: justify;
+		};		
+	</style>
+		
+</head>
+
+<body class="hyphenate" text="black" bgcolor="white" align="center">
+  <div id="illuHeader" style="margin-bottom: 0px;">
+    <div id="headcenter" align="center">
+       <h1 style="padding-top:20px; margin-top:0px; padding:30px;line-height:100%;font-size:240%; background:#e3e3e3;width:100%;color:Red">
+	  <!--<div align="left" style="padding-left:20%; font-size:70%; color:black;">
+	   Direct Scaling 1
+	 </div>-->
+	 <span id="exp-subtitle2"><span id="exp-title"></span><span id="exp-colortitle"></span><span id="exp-subtitle"></span> </span>
+        </h1>
+    </div>
+  </div>
+  <!-- First Slide -->
+  <div id="first-page" style="margin-top: 30px;" align="center">
+    <h2 style="font-size:180%;">
+      The circle is displayed right after the warning sound for
+      <br />
+      <b>1 second as "standard duration"</b>
+    </h2>
+  </div>
+  <!-- Second slide -->
+  <div id="estimate-page" style="margin-top: 30px;" align="center">
+    <h2 style="font-size:180%;">
+      You will be shown a series of red circles displayed for different comparison duration.
+      <br />
+      Please estimate the duration they displayed relative to the standard.
+    </h2>
+    <div id="submit-container" style="font-size:180%; margin-top: 50px;">
+      <button id="estimate-replay" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%" type="button"> REPLAY </button>
+      <button id="estimate-start" style="padding-left: 20px;  padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-left:3%" type="button"> START </button>
+    </div>
+  </div>
+  <!-- Third slide -->
+  <div id="input-page" style="margin-top: 30px;" align="center">
+    <h2 style="font-size:180%;">
+      <b> Estimate how long the circle displayed</b>
+    </h2>
+    <div id="input-submit-container">
+      <div id="input-container" style="font-size:300%; margin-top: 50px;">
+	<input id="input-box" placeholder="0.00" style="padding-left:5px; width: 100px; border-style: ridge; border-width:3px">  </input> Sec
+      </div>
+      <div id="submit-container" style="font-size:180%; margin-top: 50px;">
+	<button id="submit-replay"  style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%" type="button"> REPLAY </button>
+	<button id="submit-next"  style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-left:3%" type="button"> NEXT </button>
+      </div>
+    </div>
+  </div>
+  <!-- SVG circles slide -->
+  <div id="svg-circle" align="center" style="margin-top: 0px;">
+      <svg width="200" height="200">
+	<circle cx="100" cy="100" r="80" stroke="red" stroke-width="4" fill="red" />
+    </svg>
+  </div>
+  
+  <!-- Result display page here -->
+  <div id="result-display-page" style="margin-top: 30px; text-align: center;">
+    <h2 style="font-size:180%;">
+      <b>Power Law :     S=kI<sup>a<sup></b><br/>  
+    </h2>
+    <h3 style="font-size:140%;">
+      The perceived <b>sensation magnitude</b> increases in proportion to its physical <b>stimulus intensity</b> to some power
+    </h3>
+    <div id="result-table" align="center">
+    <table>
+      <tr>
+	<td id="result-chart" style="margin-Right:3%; font-size:125%;"></td>
+	<td id="logresult-chart" style="margin-Left:3%; font-size:125%;"></td>
+      </tr>
+    </table>
+    </div>
+  </div>
+  
+  <!--Update 10.11-->
+  <!-- Introduction page here -->
+  <div id="introduction-page" style="background:#e3e3e3; text-align: center;">
+    <h1 style="font-size:360%; color:White; margin-top: 90px;">
+      Direct Scaling<br/>  
+    </h1>
+	<h2 style="font-size:180%; color:Black; margin-top:50px; line-height: 200%">
+      This experiment is to investigate your <b>time perception</b> and the effect of <b>color</b> on it.<br/> 
+      There are <b>2</b> sections, each has an example and <b>8</b> trials and takes about <b>1 min</b>.	  
+    </h2>
+	<div id="image2" style="margin-top:50px;"  align="center">
+        <img src="image/Go.png" height="100px" />
+    </div>
+  </div>
+  
+  <!-- Interval page here -->
+  <div id="interval-page" style="background:#e3e3e3; text-align: center;">
+    <h1 style="font-size:360%; color:White; margin-top: 90px;">
+      Take a rest : )<br/>  
+    </h1>
+	<h2 style="font-size:200%; color:Black; margin-top:50px; line-height: 200%">
+     <b>Ready for next section? </b>	  
+    </h2>
+	<div id="image3" style="margin-top:50px;"  align="center">
+        <img src="image/Go.png" height="100px" />
+    </div>
+  </div>
+  
+
+</body>
+</html>
