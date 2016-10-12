@@ -1,6 +1,4 @@
 $(document).ready(function() {
-    shuffle(timeIntervalArray);
-    shuffle(timeIntervalArrayBlue);
     $('#first-page').hide();
     $('#exp-colortitle').text("1-");
     $('#estimate-page').hide();
@@ -62,28 +60,49 @@ function first() {
     $('#result-display-page').hide();
     $('#illuHeader').show();
     $('#first-page').show();
-    $('#exp-title').text("Direct Scaling ");
-
+    $('#exp-title').text("Absolute Judgement ");
     $('#exp-subtitle').text("0");
-    // after 1 second, play the sound, 500ms => show circle, 1000ms => hideCircle
-    genProm(1000).then(() => {
-	audioPlay();
-	return genProm(500);
-    }).then(() => {
-	showCircle();
-	return genProm(1000);
-    }).then(() => {
-    	hideCircle();
-	return genProm(1000);
-    }).then(() => { // wait 1 second, then show next page
+    // generate buttons
+    gen_buttons($('#button-container'), 2);
+    $('#start-btn').off('click');
+    $('#start-btn').click(() => {
 	second();
-    }).catch(function() {
     });
 }
 
-var timeIntervalArray = [618, 1236, 1854, 2472, 3090, 3708, 4326, 4944];
+function gen_buttons(element, cnt) {
+    var fir = '<button id="button-';
+    var sec = '" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%" type="button">';
+    var third = '</button>';
+    var button_arr = [];
+    for(var i = 0; i < cnt; i ++) {
+	var t = timeIntervalArray[i] / 100;
+	var html = fir + timeIntervalArray[i] + sec + t + third;
+	element.append(html);
+	button_arr.push(i);
+    }
+    for(var i = 0; i < button_arr.length; i ++) {
+	var t = timeIntervalArray[i];
+	$('#button-' + t).off('click');
+	$('#button-' + t).click(() => {
+	    show_circle_audio(t * 10);
+	});
+    }
+}
+
+function show_circle_audio(time) {
+    genProm(1000).then(() => {
+	audioPlay();
+	showCircle();
+	return genProm(time);
+    }).then(() => {
+	hideCircle();
+    });
+}
+
+
+var timeIntervalArray = [240, 480, 720, 960, 1200, 1320, 1440, 1760];
 var userRedArray = [];
-var timeIntervalArrayBlue = [618, 1236, 1854, 2472, 3090, 3708, 4326, 4944];
 var userBlueArray = [];
 var trialSize = 8;
 
@@ -93,19 +112,16 @@ function get_color() {
 
 function second() {
     $('#first-page').hide();
-    $('#estimate-page').show();
-    $('#estimate-replay').off('click');
-    $('#estimate-replay').click(() => {
-	first();
-    });
-    $('#estimate-start').off('click');
-    $('#estimate-start').click(() => {
-	if(get_color() === "red") {
-	    third(timeIntervalArray, 0);
-	} else if(get_color() === "blue") {
-	    third(timeIntervalArrayBlue, 0);
-	}
-
+    $('#input-page').show();
+    // empty input submit container
+    $('#input-submit-container').html("");
+    gen_buttons($('#input-submit-container'), 2);
+    genProm(1000).then(() => {
+	audioPlay();
+	showCircle();
+	return genProm(2400);
+    }).then(() => {
+	hideCircle();
     });
 }
 
@@ -164,24 +180,6 @@ function set_blue_circle() {
     $('#estimate-page h2').html(v);
     $('#svg-circle svg circle').attr('fill', 'blue');
     $('#svg-circle svg circle').attr('stroke', 'blue');
-}
-
-function valid_check(arr) {
-    var v = $('#input-box').val();
-    var vv = parseFloat(v);
-    var r = !isNaN(vv);
-    if(r && vv < 6 && vv > 0) {
-	if(arr === timeIntervalArray) {
-	    userRedArray.push(vv);
-	} else if (arr == timeIntervalArrayBlue) {
-	    userBlueArray.push(vv);
-	}
-    } else {
-	alert("Please input a float number n, n is smaller than 6 but larger than 0.");
-	r = false;
-    }
-    $('#input-box').val("");
-    return r;
 }
 
 var redResult = [];

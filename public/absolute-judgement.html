@@ -27,9 +27,6 @@
   <div id="illuHeader" style="margin-bottom: 0px;">
     <div id="headcenter" align="center">
        <h1 style="padding-top:20px; margin-top:0px; padding:30px;line-height:100%;font-size:240%; background:#e3e3e3;width:100%;color:Red">
-	  <!--<div align="left" style="padding-left:20%; font-size:70%; color:black;">
-	   Direct Scaling 1
-	 </div>-->
 	 <span id="exp-subtitle2"><span id="exp-title"></span><span id="exp-colortitle"></span><span id="exp-subtitle"></span> </span>
         </h1>
     </div>
@@ -41,17 +38,8 @@
       <br />
       <b>1 second as "standard duration"</b>
     </h2>
-  </div>
-  <!-- Second slide -->
-  <div id="estimate-page" style="margin-top: 30px;" align="center">
-    <h2 style="font-size:180%;">
-      You will be shown a series of red circles displayed for different comparison duration.
-      <br />
-      Please estimate the duration they displayed relative to the standard.
-    </h2>
-    <div id="submit-container" style="font-size:180%; margin-top: 50px;">
-      <button id="estimate-replay" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%" type="button"> REPLAY </button>
-      <button id="estimate-start" style="padding-left: 20px;  padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-left:3%" type="button"> START </button>
+    <div id="button-container" style="font-size:180%; margin-top: 50px;">
+      <button id="start-btn" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%"> Start </button>
     </div>
   </div>
   <!-- Third slide -->
@@ -59,14 +47,9 @@
     <h2 style="font-size:180%;">
       <b> Estimate how long the circle displayed</b>
     </h2>
-    <div id="input-submit-container">
-      <div id="input-container" style="font-size:300%; margin-top: 50px;">
-	<input id="input-box" placeholder="0.00" style="padding-left:5px; width: 100px; border-style: ridge; border-width:3px">  </input> Sec
-      </div>
-      <div id="submit-container" style="font-size:180%; margin-top: 50px;">
-	<button id="submit-replay"  style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%" type="button"> REPLAY </button>
-	<button id="submit-next"  style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-left:3%" type="button"> NEXT </button>
-      </div>
+    <div id="input-submit-container" style="font-size: 180%; margin-top: 50px;">
+      <button id="restart-btn" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%"> Replay </button>
+      <button id="next-btn" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%"> Next </button>
     </div>
   </div>
   <!-- SVG circles slide -->
@@ -98,7 +81,7 @@
   <!-- Introduction page here -->
   <div id="introduction-page" style="background:#e3e3e3; text-align: center;">
     <h1 style="font-size:360%; color:White; margin-top: 90px;">
-      Direct Scaling<br/>  
+      Absolute Judgement<br/>  
     </h1>
 	<h2 style="font-size:180%; color:Black; margin-top:50px; line-height: 200%">
       This experiment is to investigate your <b>time perception</b> and the effect of <b>color</b> on it.<br/> 
