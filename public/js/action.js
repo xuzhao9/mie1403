@@ -1,8 +1,18 @@
 $(document).ready(function() {
     shuffle(timeIntervalArray);
     shuffle(timeIntervalArrayBlue);
-	$('#exp-colortitle').text("1-");
-    first();
+    $('#first-page').hide();
+    $('#exp-colortitle').text("1-");
+    $('#estimate-page').hide();
+    $('#input-page').hide();
+    $('#svg-circle').hide();
+    $('#illuHeader').hide();
+    $('#result-display-page').hide();
+    $('#interval-page').hide();
+    $('#image2').click(() => {
+	$('#introduction-page').hide();
+	first();
+    });
 });
 
 function shuffle(array) {
@@ -49,9 +59,10 @@ function first() {
     $('#estimate-page').hide();
     $('#input-page').hide();
     $('#svg-circle').hide();
-	$('#result-display-page').hide();
+    $('#result-display-page').hide();
+    $('#illuHeader').show();
     $('#first-page').show();
-	$('#exp-title').text("Direct Scaling ");
+    $('#exp-title').text("Direct Scaling ");
 
     $('#exp-subtitle').text("0");
     // after 1 second, play the sound, 500ms => show circle, 1000ms => hideCircle
@@ -101,7 +112,17 @@ function second() {
 function third(arr, interval) {
     if (interval >= trialSize && arr === timeIntervalArray) {
 	set_blue_circle();
-	first();
+	$('#first-page').hide();
+	$('#estimate-page').hide();
+	$('#input-page').hide();
+	$('#svg-circle').hide();
+	$('#illuHeader').hide();
+	$('#result-display-page').hide();
+	$('#interval-page').show();
+	$('#image3').click(() => {
+	    $('#interval-page').hide();
+	    first();
+	});
 	return;
     } else if (interval >= trialSize && arr === timeIntervalArrayBlue) {
 	show_result();
@@ -127,7 +148,6 @@ function third(arr, interval) {
 	});
 	$('#submit-next').off('click');
 	$('#submit-next').click(() => {
-	    // TODO: check answer valid and store answer in local array
 	    if(valid_check(arr)) {
 		third(arr, interval + 1);
 	    }
@@ -177,7 +197,7 @@ function getBaseLog(x, y) {
 function show_result() {
     $('#input-page').hide();
     $('#svg-circle').hide();
-    $('#headcenter h1').css('color', 'black');
+    $('#headcenter h1').css('color', 'white');
     $('#exp-title').text("Results");
     $('#exp-colortitle').text("");
     $('#exp-subtitle').text("");
@@ -213,8 +233,7 @@ function show_chart() {
         },
 	chart: {
 	    type: 'scatter',
-	    marginRight: 100,
-	    paddingRight: 20
+	    marginRight: 80,
 	},
 	 legend: {
              layout: 'vertical',
@@ -312,8 +331,7 @@ function show_chart() {
         },
 	chart: {
 	    type: 'scatter',
-	    marginLeft:100,
-	    paddingLeft: 20
+	    marginLeft:80,
 	},
 	 legend: {
             layout: 'vertical',
@@ -405,4 +423,25 @@ function show_chart() {
 		}
 	  ]
     });
+}
+
+//Update 10.11
+function show_introduction() 
+{
+    $('#input-page').hide();
+    $('#svg-circle').hide();
+    $('#headcenter h1').css('color', 'white');
+    $('#exp-title').text("");
+    $('#exp-colortitle').text("");
+    $('#exp-subtitle').text("");
+}
+
+function show_interval() 
+{
+    $('#input-page').hide();
+    $('#svg-circle').hide();
+    $('#headcenter h1').css('color', 'white');
+    $('#exp-title').text("");
+    $('#exp-colortitle').text("");
+    $('#exp-subtitle').text("");
 }
