@@ -9,7 +9,8 @@ $(document).ready(function() {
     $('#interval-page').hide();
     $('#image2').click(() => {
 	$('#introduction-page').hide();
-	first();
+	// arrange number of options
+	first(2, "red");
     });
 });
 
@@ -53,7 +54,25 @@ function genProm(interval) {
     })
 }
 
-function first() {
+var timeIntervalArray = [240, 300, 180, 360, 420, 120, 60, 480];
+var time_array = [];
+
+function gen_time_array(num_option) {
+    for(var i = 0; i < num_option; i ++) {
+	for(var j = 0; j < 1; j ++) {
+	    time_array.push(timeIntervalArray[i]);
+	}
+    }
+    time_array = shuffle(time_array);
+}
+
+// num_option: number of options
+function first(num_option, color) {
+    // generate time array for this num_option;
+    if(color == "blue") {
+	set_blue_circle();
+    }
+    gen_time_array(num_option);
     $('#estimate-page').hide();
     $('#input-page').hide();
     $('#svg-circle').hide();
@@ -63,15 +82,54 @@ function first() {
     $('#exp-title').text("Absolute Judgement ");
     $('#exp-subtitle').text("0");
     // generate buttons
-    gen_buttons($('#button-container'), 2);
+    gen_buttons($('#button-container'), 'key', num_option);
     $('#start-btn').off('click');
     $('#start-btn').click(() => {
-	second();
+	second(num_option, 0, color); // start first test in time_array
     });
 }
 
-function gen_buttons(element, cnt) {
-    var fir = '<button id="button-';
+function gen_replay_next(element, num_option, time_index, color) {
+    var fir = '<button id="button-replay" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%" type="button">Replay </button>';
+    var sec = '<button id="button-next" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%" type="button">Next </button>';
+    element.append(fir);
+    element.append(sec);
+    $('#button-replay').off('click');
+    $('#button-replay').click(() => {
+	show_circle_audio(time_array[time_index] * 10);
+    });
+    $('#button-next').off('click');
+    $('#button-next').click(() => {
+	// read current selection and
+	var val = $("#input-submit-container form input[type='radio']:checked").val();
+	if(color == "red") {
+	    userRedArray.push([time_array[time_index], val]);
+	} else if (color == "blue") {
+	    userBlueArray.push([time_array[time_index], val]);
+	}
+	if(time_index == time_array.length - 1) {
+	    alert("congrats! you have finished the test!");
+	} else {
+	    second(num_option, time_index + 1);    
+	}
+    });
+
+}
+
+function gen_radios(element, num_option) {
+    var fir= '<input id=radio-';
+    var sec='" style="margin-right: 5px;" type="radio" name="choose" align="right" value="';
+    var thi = '">';
+    for(var i = 0; i < num_option; i ++) {
+	var t = timeIntervalArray[i] / 100;
+	var html = fir + timeIntervalArray[i] + sec + t + thi + t;
+	element.append(html);
+    }
+    element.append('<br/>');
+}
+
+function gen_buttons(element, key, cnt) {
+    var fir = '<button id="button-' + key + '-';
     var sec = '" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%" type="button">';
     var third = '</button>';
     var button_arr = [];
@@ -83,8 +141,8 @@ function gen_buttons(element, cnt) {
     }
     for(var i = 0; i < button_arr.length; i ++) {
 	var t = timeIntervalArray[i];
-	$('#button-' + t).off('click');
-	$('#button-' + t).click(() => {
+	$('#button-' + key + '-' + t).off('click');
+	$('#button-' + key + '-' + t).click(() => {
 	    show_circle_audio(t * 10);
 	});
     }
@@ -100,8 +158,6 @@ function show_circle_audio(time) {
     });
 }
 
-
-var timeIntervalArray = [240, 480, 720, 960, 1200, 1320, 1440, 1760];
 var userRedArray = [];
 var userBlueArray = [];
 var trialSize = 8;
@@ -110,68 +166,18 @@ function get_color() {
     return $('#svg-circle svg circle').attr('fill');
 }
 
-function second() {
+function second(num_option, time, color) {
     $('#first-page').hide();
     $('#input-page').show();
+    // set title
+    $('#exp-subtitle').text(time+1);
     // empty input submit container
-    $('#input-submit-container').html("");
-    gen_buttons($('#input-submit-container'), 2);
-    genProm(1000).then(() => {
-	audioPlay();
-	showCircle();
-	return genProm(2400);
-    }).then(() => {
-	hideCircle();
-    });
+    $('#input-submit-container').html('<form id="#submit-form" action=""> </form>');
+    show_circle_audio(time_array[time] * 10);
+    gen_replay_next($('#input-submit-container'), num_option, time, color);
+    gen_radios($('#input-submit-container form'), num_option);
 }
 
-function third(arr, interval) {
-    if (interval >= trialSize && arr === timeIntervalArray) {
-	set_blue_circle();
-	$('#first-page').hide();
-	$('#estimate-page').hide();
-	$('#input-page').hide();
-	$('#svg-circle').hide();
-	$('#illuHeader').hide();
-	$('#result-display-page').hide();
-	$('#interval-page').show();
-	$('#image3').click(() => {
-	    $('#interval-page').hide();
-	    first();
-	});
-	return;
-    } else if (interval >= trialSize && arr === timeIntervalArrayBlue) {
-	show_result();
-	return;
-    }
-    $('#estimate-page').hide();
-    $('#input-page').show();
-    $('#input-submit-container').hide();
-    $('#exp-subtitle').text(interval+1);
-    genProm(1000).then(() => {
-	audioPlay();
-	return genProm(500);
-    }).then(() => {
-	showCircle();
-	// TODO: this array should be randomized
-	return genProm(arr[interval]); 
-    }).then(() => {
-	hideCircle();
-	$('#input-submit-container').show();
-	$('#submit-replay').off('click');
-	$('#submit-replay').click(() => {
-	    third(arr, interval);
-	});
-	$('#submit-next').off('click');
-	$('#submit-next').click(() => {
-	    if(valid_check(arr)) {
-		third(arr, interval + 1);
-	    }
-	});
-    }).catch(() => {});
-}
-
-// forth
 function set_blue_circle() {
     $('#headcenter h1').css('color', 'blue');
 	$('#exp-colortitle').text("2-");
@@ -188,6 +194,7 @@ var blueResult = [];
 var redLogResult = [];
 var blueLogResult = [];
 
+// ======================================  Result Page ============================================
 function getBaseLog(x, y) {
     return Math.log(y) / Math.log(x);
 }
