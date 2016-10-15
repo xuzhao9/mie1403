@@ -87,7 +87,7 @@ function first(num_option, color) {
     $('#exp-subtitle').text("0");
     // generate buttons
     $('#button-container').html('<button id="start-btn" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%"> Start </button>');
-    gen_buttons($('#button-container'), 'key', num_option);
+    gen_buttons($('#button-container'), num_option);
     $('#start-btn').off('click');
     $('#start-btn').click(() => {
 	second(num_option, 0, color); // start first test in time_array
@@ -128,7 +128,7 @@ function gen_replay_next(element, num_option, time_index, color) {
 		if(color == "red") {
 		    first(num_option, "blue");
 		} else {
-		    first(num_option * 2, "red");
+		    first(num_option + 2, "red");
 		}
 	    }
 	} else {
@@ -149,8 +149,8 @@ function gen_radios(element, num_option) {
     element.append('<br/>');
 }
 
-function gen_buttons(element, key, cnt) {
-    var fir = '<button id="button-' + key + '-';
+function gen_buttons(element, cnt) {
+    var fir = '<button id="button' + '-';
     var sec = '" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%" type="button">';
     var third = '</button>';
     var button_arr = [];
@@ -162,9 +162,11 @@ function gen_buttons(element, key, cnt) {
     }
     for(var i = 0; i < button_arr.length; i ++) {
 	var t = timeIntervalArray[i];
-	$('#button-' + key + '-' + t).off('click');
-	$('#button-' + key + '-' + t).click(() => {
-	    show_circle_audio(t * 10);
+	$('#button-' + t).off('click');
+	$('#button-' + t).attr('vv', t);
+	$(document).on('click', ("#button-" + t), function() {
+	    var vv = parseInt($(this).attr('vv'));
+	    show_circle_audio(vv * 10);
 	});
     }
 }
