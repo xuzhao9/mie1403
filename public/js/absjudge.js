@@ -54,6 +54,7 @@ function genProm(interval) {
     })
 }
 
+var sessionResult = [];
 var timeIntervalArray = [240, 300, 180, 360, 420, 120, 60, 480];
 var time_array = [];
 
@@ -108,13 +109,19 @@ function gen_replay_next(element, num_option, time_index, color) {
 	var sessionId = num_option / 2 - 1;
 	if(color == "red") {
 	    sessionId = sessionId * 2;
+	    if(sessionResult[sessionId] === undefined) {
+		sessionResult[sessionId] = [];
+	    }
 	    sessionResult[sessionId].push([time_array[time_index], val]);
 	} else if (color == "blue") {
 	    sessionId = sessionId * 2 + 1;
+	    if(sessionResult[sessionId] === undefined) {
+		sessionResult[sessionId] = [];
+	    }
 	    sessionResult[sessionId].push([time_array[time_index], val]);
 	}
 	if(time_index == time_array.length - 1) {
-	    alert(userRedArray);
+	    alert(sessionResult[sessionId]);
 	    if(num_option == 8 && color == "blue") {
 		alert("congrats! you have finished the experiment");
 	    } else {
@@ -207,7 +214,6 @@ function set_red_circle() {
     $('#svg-circle svg circle').attr('stroke', 'red');
 }
 
-var sessionResult = [];
 
 var redResult = [];
 var blueResult = [];
