@@ -58,6 +58,7 @@ var timeIntervalArray = [240, 300, 180, 360, 420, 120, 60, 480];
 var time_array = [];
 
 function gen_time_array(num_option) {
+    time_array = [];
     for(var i = 0; i < num_option; i ++) {
 	for(var j = 0; j < 1; j ++) {
 	    time_array.push(timeIntervalArray[i]);
@@ -71,6 +72,8 @@ function first(num_option, color) {
     // generate time array for this num_option;
     if(color == "blue") {
 	set_blue_circle();
+    } else if (color == "red") {
+	set_red_circle();
     }
     gen_time_array(num_option);
     $('#estimate-page').hide();
@@ -82,6 +85,7 @@ function first(num_option, color) {
     $('#exp-title').text("Absolute Judgement ");
     $('#exp-subtitle').text("0");
     // generate buttons
+    $('#button-container').html('<button id="start-btn" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%"> Start </button>');
     gen_buttons($('#button-container'), 'key', num_option);
     $('#start-btn').off('click');
     $('#start-btn').click(() => {
@@ -100,20 +104,30 @@ function gen_replay_next(element, num_option, time_index, color) {
     });
     $('#button-next').off('click');
     $('#button-next').click(() => {
-	// read current selection and
 	var val = $("#input-submit-container form input[type='radio']:checked").val();
+	var sessionId = num_option / 2 - 1;
 	if(color == "red") {
-	    userRedArray.push([time_array[time_index], val]);
+	    sessionId = sessionId * 2;
+	    sessionResult[sessionId].push([time_array[time_index], val]);
 	} else if (color == "blue") {
-	    userBlueArray.push([time_array[time_index], val]);
+	    sessionId = sessionId * 2 + 1;
+	    sessionResult[sessionId].push([time_array[time_index], val]);
 	}
 	if(time_index == time_array.length - 1) {
-	    alert("congrats! you have finished the test!");
+	    alert(userRedArray);
+	    if(num_option == 8 && color == "blue") {
+		alert("congrats! you have finished the experiment");
+	    } else {
+		if(color == "red") {
+		    first(num_option, "blue");
+		} else {
+		    first(num_option * 2, "red");
+		}
+	    }
 	} else {
-	    second(num_option, time_index + 1);    
+	    second(num_option, time_index + 1, color);    
 	}
     });
-
 }
 
 function gen_radios(element, num_option) {
@@ -180,13 +194,20 @@ function second(num_option, time, color) {
 
 function set_blue_circle() {
     $('#headcenter h1').css('color', 'blue');
-	$('#exp-colortitle').text("2-");
-    var v = $('#estimate-page h2').html();
-    v = v.replace('red', 'blue');
-    $('#estimate-page h2').html(v);
+    $('#exp-colortitle').text("2-");
     $('#svg-circle svg circle').attr('fill', 'blue');
     $('#svg-circle svg circle').attr('stroke', 'blue');
 }
+
+function set_red_circle() {
+    $('#headcenter h1').css('color', 'red');
+    var t = parseInt($('#exp-colortitle').text()[0]) + 1;
+    $('#exp-colortitle').text(t + "-");
+    $('#svg-circle svg circle').attr('fill', 'red');
+    $('#svg-circle svg circle').attr('stroke', 'red');
+}
+
+var sessionResult = [];
 
 var redResult = [];
 var blueResult = [];
