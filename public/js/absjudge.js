@@ -96,13 +96,13 @@ function first(num_option, color) {
 }
 
 function gen_replay_next(element, num_option, time_index, color) {
-    var fir = '<button id="button-replay" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%" type="button">Replay </button>';
-    var sec = '<button id="button-next" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%" type="button">Next </button>';
+    var fir = '<button id="button-replay" style="display: none; padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%" type="button">Replay </button>';
+    var sec = '<button id="button-next" style="display: none; padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%" type="button">Next </button>';
     element.append(fir);
     element.append(sec);
     $('#button-replay').off('click');
     $('#button-replay').click(() => {
-	show_circle_audio(time_array[time_index] * 10);
+	show_circle_audio(time_array[time_index] * 10, [$('#button-replay'), $('#button-next')]);
     });
     $('#button-next').off('click');
     $('#button-next').click(() => {
@@ -139,12 +139,13 @@ function gen_replay_next(element, num_option, time_index, color) {
 }
 
 function gen_radios(element, num_option) {
-    var fir= '<input id=radio-';
-    var sec='" style="margin-right:15px;" type="radio" name="choose" align="right" value="';
-    var thi = '">';
+    var fir= '<div class="radio-box"> <label>';
+    var ss= '</label><input id="radio-';
+    var sec='" type="radio" name="choose" align="right" value="';
+    var thi = '"></div>';
     for(var i = 0; i < num_option; i ++) {
 	var t = timeIntervalArray[i] / 100;
-	var html = fir + timeIntervalArray[i] + sec + t + thi + t;
+	var html = fir+ t + ss + timeIntervalArray[i] + sec + t + thi;
 	element.append(html);
     }
     element.append('<br/>');
@@ -167,17 +168,29 @@ function gen_buttons(element, cnt) {
 	$('#button-' + t).attr('vv', t);
 	$(document).on('click', ("#button-" + t), function() {
 	    var vv = parseInt($(this).attr('vv'));
-	    show_circle_audio(vv * 10);
+	    show_circle_audio(vv * 10, [$('#start-btn')]);
 	});
     }
 }
 
-function show_circle_audio(time) {
+
+// option: if element is not undefined, hide it when show and show it when hide
+function show_circle_audio(time, elements) {
     genProm(1000).then(() => {
 	audioPlay();
+	if(elements !== undefined) {
+	    for(var i = 0; i < elements.length; i ++) {
+		elements[i].hide();
+	    }
+	}
 	showCircle();
 	return genProm(time);
     }).then(() => {
+	if(elements !== undefined) {
+	    for(var i = 0; i < elements.length; i ++) {
+		elements[i].show();
+	    }
+	}
 	hideCircle();
     });
 }
@@ -197,9 +210,9 @@ function second(num_option, time, color) {
     $('#exp-subtitle').text(time+1);
     // empty input submit container
     $('#input-submit-container').html('<form id="#submit-form" action=""> </form>');
-    show_circle_audio(time_array[time] * 10);
     gen_replay_next($('#input-submit-container'), num_option, time, color);
     gen_radios($('#input-submit-container form'), num_option);
+    show_circle_audio(time_array[time] * 10, [$('#button-replay'), $('#button-next')]);
 }
 
 function set_blue_circle() {

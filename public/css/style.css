@@ -1,0 +1,16 @@
+div.radio-box {
+    width: 100px;
+    display: inline-block;
+    margin: 5px;
+    background-color: yellow;
+}
+.radio-box label {
+    display:block;
+    width: 100px;
+    text-align: center;
+}
+.radio-box input {
+    width: 20px;
+    display: block;
+    margin: 0px auto;
+}
