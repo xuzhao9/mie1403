@@ -10,7 +10,7 @@ $(document).ready(function() {
     $('#image2').click(() => {
 	$('#introduction-page').hide();
 	// arrange number of options
-	first(2, "red");
+	first(8, "red");
     });
 });
 
@@ -122,7 +122,7 @@ function gen_replay_next(element, num_option, time_index, color) {
 	}
 	if(time_index == time_array.length - 1) {
 	    alert(sessionResult[sessionId]);
-	    if(num_option == 8 && color == "blue") {
+	    if(num_option === 8 && color === "blue") {
 		alert("congrats! you have finished the experiment");
 	    } else {
 		if(color == "red") {
