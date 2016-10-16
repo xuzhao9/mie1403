@@ -10,7 +10,7 @@ $(document).ready(function() {
     $('#image2').click(() => {
 	$('#introduction-page').hide();
 	// arrange number of options
-	first(8, "red");
+	first(2, "red");
     });
 });
 
@@ -70,6 +70,7 @@ function gen_time_array(num_option) {
 
 // num_option: number of options
 function first(num_option, color) {
+
     // generate time array for this num_option;
     if(color == "blue") {
 	set_blue_circle();
@@ -86,7 +87,7 @@ function first(num_option, color) {
     $('#exp-title').text("Absolute Judgement ");
     $('#exp-subtitle').text("0");
     // generate buttons
-    $('#button-container').html('<button id="start-btn" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%"> Start </button>');
+   // $('#button-container').html('<button id="start-btn" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%"> Start </button>');
     gen_buttons($('#button-container'), num_option);
     $('#start-btn').off('click');
     $('#start-btn').click(() => {
@@ -139,7 +140,7 @@ function gen_replay_next(element, num_option, time_index, color) {
 
 function gen_radios(element, num_option) {
     var fir= '<input id=radio-';
-    var sec='" style="margin-right: 5px;" type="radio" name="choose" align="right" value="';
+    var sec='" style="margin-right:15px;" type="radio" name="choose" align="right" value="';
     var thi = '">';
     for(var i = 0; i < num_option; i ++) {
 	var t = timeIntervalArray[i] / 100;
