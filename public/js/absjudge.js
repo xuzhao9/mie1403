@@ -55,7 +55,7 @@ function genProm(interval) {
 }
 
 var sessionResult = [];
-var timeIntervalArray = [240, 300, 180, 360, 420, 120, 60, 480];
+var timeIntervalArray = [60, 120, 180, 240, 300, 360, 420, 480];
 var time_array = [];
 
 function gen_time_array(num_option) {
