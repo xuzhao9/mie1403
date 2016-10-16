@@ -2,7 +2,7 @@ div.radio-box {
     width: 100px;
     display: inline-block;
     margin: 5px;
-    background-color: yellow;
+    background-color: white;
 }
 .radio-box label {
     display:block;
@@ -10,7 +10,7 @@ div.radio-box {
     text-align: center;
 }
 .radio-box input {
-    width: 20px;
+    width: 50px;
     display: block;
-    margin: 0px auto;
+    margin: 5px;
 }

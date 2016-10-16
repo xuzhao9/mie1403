@@ -96,16 +96,16 @@ function first(num_option, color) {
 }
 
 function gen_replay_next(element, num_option, time_index, color) {
-    var fir = '<button id="button-replay" style="display: none; padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%" type="button">Replay </button>';
-    var sec = '<button id="button-next" style="display: none; padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%" type="button">Next </button>';
+    var fir = '<button id="button-REPLAY" style="display: none; padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-top:70px; margin-right:10px" type="button">REPLAY </button>';
+    var sec = '<button id="button-NEXT" style="display: none; padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-top:70px; margin-left:10px" type="button">NEXT </button>';
     element.append(fir);
     element.append(sec);
-    $('#button-replay').off('click');
-    $('#button-replay').click(() => {
-	show_circle_audio(time_array[time_index] * 10, [$('#button-replay'), $('#button-next')]);
+    $('#button-REPLAY').off('click');
+    $('#button-REPLAY').click(() => {
+	show_circle_audio(time_array[time_index] * 10, [$('#button-REPLAY'), $('#button-NEXT')]);
     });
-    $('#button-next').off('click');
-    $('#button-next').click(() => {
+    $('#button-NEXT').off('click');
+    $('#button-NEXT').click(() => {
 	var val = $("#input-submit-container form input[type='radio']:checked").val();
 	var sessionId = num_option / 2 - 1;
 	if(color == "red") {
@@ -212,7 +212,7 @@ function second(num_option, time, color) {
     $('#input-submit-container').html('<form id="#submit-form" action=""> </form>');
     gen_replay_next($('#input-submit-container'), num_option, time, color);
     gen_radios($('#input-submit-container form'), num_option);
-    show_circle_audio(time_array[time] * 10, [$('#button-replay'), $('#button-next')]);
+    show_circle_audio(time_array[time] * 10, [$('#button-REPLAY'), $('#button-NEXT')]);
 }
 
 function set_blue_circle() {
