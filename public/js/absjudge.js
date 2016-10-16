@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $('#first-page').hide();
-    $('#exp-colortitle').text("1-");
+    $('#exp-colortitle').text("0-");
     $('#estimate-page').hide();
     $('#input-page').hide();
     $('#svg-circle').hide();
@@ -87,7 +87,8 @@ function first(num_option, color) {
     $('#exp-title').text("Absolute Judgement ");
     $('#exp-subtitle').text("0");
     // generate buttons
-   // $('#button-container').html('<button id="start-btn" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%"> Start </button>');
+    // $('#button-container').html('<button id="start-btn" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-right:3%"> Start </button>');
+    $('#button-container').html('');
     gen_buttons($('#button-container'), num_option);
     $('#start-btn').off('click');
     $('#start-btn').click(() => {
