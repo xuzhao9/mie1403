@@ -152,7 +152,7 @@ function gen_replay_next(element, num_option, time_index, color, session_index) 
 		first(session_index + 1);
 	    }
 	} else {
-	    second(num_option, time_index + 1, color);    
+	    second(num_option, time_index + 1, color, session_index);    
 	}
     });
 }
