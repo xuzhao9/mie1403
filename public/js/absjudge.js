@@ -15,29 +15,25 @@ $(document).ready(function() {
     });
 });
 
-var count_section_array = [];
-var color_section_array = [];
+var section_array = [];
 
 function gen_random_section() {
-    // four red sections, four blue sections
-    for(var i = 0; i < 4; i ++) {
-	color_section_array.push("red");
-	color_section_array.push("blue");
-    }
     // 2,4,6,8 sections, each has two instances
     for(var i = 0; i < 2; i ++) {
 	for(var j = 2; j < 10; j += 2) {
-	    count_section_array.push(j);
+	    if(i === 0) {
+		section_array.push([j, "red"]);
+	    } else if (i === 1) {
+		section_array.push([j, "blue"]);
+	    }
 	}
     }
-    shuffle(count_section_array);
-    shuffle(color_section_array);
+    shuffle(section_array);
 }
 
 
 function shuffle(array) {
     let counter = array.length;
-
     // While there are elements in the array
     while (counter > 0) {
         // Pick a random index
@@ -91,8 +87,8 @@ function gen_time_array(num_option) {
 
 // num_option: number of options
 function first(index) {
-    num_option = count_section_array[index];
-    color = color_section_array[index];
+    num_option = section_array[index][0];
+    color = section_array[index][1];
     // generate time array for this num_option;
     if(color == "blue") {
 	set_blue_circle();
