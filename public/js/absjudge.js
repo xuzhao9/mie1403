@@ -75,10 +75,11 @@ var sessionResult = [];
 var timeIntervalArray = [60, 120, 180, 240, 300, 360, 420, 480];
 var time_array = [];
 
+// Stimulus presenta 5 times
 function gen_time_array(num_option) {
     time_array = [];
     for(var i = 0; i < num_option; i ++) {
-	for(var j = 0; j < 1; j ++) {
+	for(var j = 0; j < 5; j ++) {
 	    time_array.push(timeIntervalArray[i]);
 	}
     }
