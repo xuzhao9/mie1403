@@ -126,15 +126,13 @@ function gen_replay_next(element, num_option, time_index, color, session_index) 
     $('#button-NEXT').off('click');
     $('#button-NEXT').click(() => {
 	var val = $("#input-submit-container form input[type='radio']:checked").val();
-	var sessionId = num_option / 2 - 1;
+	var sessionId = session_index;
 	if(color == "red") {
-	    sessionId = sessionId * 2;
 	    if(sessionResult[sessionId] === undefined) {
 		sessionResult[sessionId] = [];
 	    }
 	    sessionResult[sessionId].push([time_array[time_index], val]);
 	} else if (color == "blue") {
-	    sessionId = sessionId * 2 + 1;
 	    if(sessionResult[sessionId] === undefined) {
 		sessionResult[sessionId] = [];
 	    }
