@@ -7,12 +7,33 @@ $(document).ready(function() {
     $('#illuHeader').hide();
     $('#result-display-page').hide();
     $('#interval-page').hide();
+    gen_random_section();
     $('#image2').click(() => {
 	$('#introduction-page').hide();
 	// arrange number of options
-	first(2, "red");
+	first(0);
     });
 });
+
+var count_section_array = [];
+var color_section_array = [];
+
+function gen_random_section() {
+    // four red sections, four blue sections
+    for(var i = 0; i < 4; i ++) {
+	color_section_array.push("red");
+	color_section_array.push("blue");
+    }
+    // 2,4,6,8 sections, each has two instances
+    for(var i = 0; i < 2; i ++) {
+	for(var j = 2; j < 10; j += 2) {
+	    count_section_array.push(j);
+	}
+    }
+    shuffle(count_section_array);
+    shuffle(color_section_array);
+}
+
 
 function shuffle(array) {
     let counter = array.length;
@@ -69,8 +90,9 @@ function gen_time_array(num_option) {
 }
 
 // num_option: number of options
-function first(num_option, color) {
-
+function first(index) {
+    num_option = count_section_array[index];
+    color = color_section_array[index];
     // generate time array for this num_option;
     if(color == "blue") {
 	set_blue_circle();
@@ -92,11 +114,11 @@ function first(num_option, color) {
     gen_buttons($('#button-container'), num_option);
     $('#start-btn').off('click');
     $('#start-btn').click(() => {
-	second(num_option, 0, color); // start first test in time_array
+	second(num_option, 0, color, index); // start first test in time_array
     });
 }
 
-function gen_replay_next(element, num_option, time_index, color) {
+function gen_replay_next(element, num_option, time_index, color, session_index) {
     var fir = '<button id="button-REPLAY" style="display: none; padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-top:70px; margin-right:10px" type="button">REPLAY </button>';
     var sec = '<button id="button-NEXT" style="display: none; padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-top:70px; margin-left:10px" type="button">NEXT </button>';
     element.append(fir);
@@ -124,14 +146,10 @@ function gen_replay_next(element, num_option, time_index, color) {
 	}
 	if(time_index == time_array.length - 1) {
 	    alert(sessionResult[sessionId]);
-	    if(num_option === 8 && color === "blue") {
+	    if(session_index === (color_section_array.length - 1)) {
 		alert("congrats! you have finished the experiment");
 	    } else {
-		if(color == "red") {
-		    first(num_option, "blue");
-		} else {
-		    first(num_option + 2, "red");
-		}
+		first(session_index + 1);
 	    }
 	} else {
 	    second(num_option, time_index + 1, color);    
@@ -146,6 +164,9 @@ function gen_radios(element, num_option) {
     var thi = '"></div>';
     for(var i = 0; i < num_option; i ++) {
 	var t = timeIntervalArray[i] / 100;
+	if(t === 3) {
+	    t = "3.0";
+	}
 	var html = fir+ t + ss + timeIntervalArray[i] + sec + t + thi;
 	element.append(html);
     }
@@ -159,6 +180,9 @@ function gen_buttons(element, cnt) {
     var button_arr = [];
     for(var i = 0; i < cnt; i ++) {
 	var t = timeIntervalArray[i] / 100;
+	if(t === 3) {
+	    t = "3.0";
+	}
 	var html = fir + timeIntervalArray[i] + sec + t + third;
 	element.append(html);
 	button_arr.push(i);
@@ -204,21 +228,22 @@ function get_color() {
     return $('#svg-circle svg circle').attr('fill');
 }
 
-function second(num_option, time, color) {
+function second(num_option, time, color, session_index) {
     $('#first-page').hide();
     $('#input-page').show();
     // set title
     $('#exp-subtitle').text(time+1);
     // empty input submit container
     $('#input-submit-container').html('<form id="#submit-form" action=""> </form>');
-    gen_replay_next($('#input-submit-container'), num_option, time, color);
+    gen_replay_next($('#input-submit-container'), num_option, time, color, session_index);
     gen_radios($('#input-submit-container form'), num_option);
     show_circle_audio(time_array[time] * 10, [$('#button-REPLAY'), $('#button-NEXT')]);
 }
 
 function set_blue_circle() {
     $('#headcenter h1').css('color', 'blue');
-    $('#exp-colortitle').text("2-");
+    var t = parseInt($('#exp-colortitle').text()[0]) + 1;
+    $('#exp-colortitle').text(t + "-");
     $('#svg-circle svg circle').attr('fill', 'blue');
     $('#svg-circle svg circle').attr('stroke', 'blue');
 }

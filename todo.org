@@ -1,0 +1,4 @@
+* Bug fix
+** DONE colortitle fix
+** DONE 3 -> 3.0
+** TODO section order randomize
