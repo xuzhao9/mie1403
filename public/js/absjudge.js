@@ -87,8 +87,8 @@ function gen_time_array(num_option) {
 
 // num_option: number of options
 function first(index) {
-    num_option = section_array[index][0];
-    color = section_array[index][1];
+    var num_option = section_array[index][0];
+    var color = section_array[index][1];
     // generate time array for this num_option;
     if(color == "blue") {
 	set_blue_circle();
@@ -142,12 +142,13 @@ function gen_replay_next(element, num_option, time_index, color, session_index) 
 	}
 	if(time_index == time_array.length - 1) {
 	    alert(sessionResult[sessionId]);
-	    if(session_index === (color_section_array.length - 1)) {
+	    if(session_index === (section_array.length - 1)) {
 		alert("congrats! you have finished the experiment");
 	    } else {
 		first(session_index + 1);
 	    }
 	} else {
+	    // session index is the same
 	    second(num_option, time_index + 1, color, session_index);    
 	}
     });
