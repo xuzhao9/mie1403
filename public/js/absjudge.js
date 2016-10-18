@@ -145,22 +145,21 @@ function gen_replay_next(element, num_option, time_index, color, session_index) 
 	}
 	if(time_index == time_array.length - 1) {
 	    alert(sessionResult[sessionId]);
-		// Show interval		 
-         $('#input-page').hide();
-		 $('#illuHeader').hide();
-		 $('#first-page').hide();       
-		 $('#estimate-page').hide();
-		 $('#interval-page').show();
-		 $('#image3').click(() => {
-	     $('#interval-page').hide();
-		 });
-		 
 	    if(session_index === (section_array.length - 1)) {
 		alert("congrats! you have finished the experiment");
 		show_result();
 	    } else {
-		first(session_index + 1);
-	    }
+		// Show interval		 
+		$('#input-page').hide();
+		$('#illuHeader').hide();
+		$('#first-page').hide();       
+		$('#estimate-page').hide();
+		$('#interval-page').show();
+		$('#image3').click(() => {
+		    $('#interval-page').hide();
+		    first(session_index + 1);
+		});
+	    }	 
 	} else {
 	    // session index is the same
 	    second(num_option, time_index + 1, color, session_index);    
