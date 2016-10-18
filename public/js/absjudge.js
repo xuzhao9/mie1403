@@ -136,6 +136,10 @@ function gen_replay_next(element, num_option, time_index, color, session_index) 
     $('#button-NEXT').off('click');
     $('#button-NEXT').click(() => {
 	var val = $("#input-submit-container form input[type='radio']:checked").val();
+	if(val === undefined || val === NaN) {
+	    alert("Please select at least one answer!");
+	    return;
+	}
 	var sessionId = session_index;
 	if(sessionResult[num_option] === undefined) {
 	    sessionResult[num_option] = {};
@@ -157,14 +161,6 @@ function gen_replay_next(element, num_option, time_index, color, session_index) 
 		alert("congrats! you have finished the experiment");
 		show_result(sessionResult);
 	    } else {
-		// Show interval		 
-		//$('#input-page').hide();
-		//$('#illuHeader').hide();
-		//$('#first-page').hide();       
-		//$('#estimate-page').hide();
-		//$('#interval-page').show();
-		//$('#image3').click(() => {
-		  //  $('#interval-page').hide();});
 		first(session_index + 1);
 	    }	 
 	} else {
