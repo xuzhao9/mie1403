@@ -1,4 +1,8 @@
 $(document).ready(function() {
+    if(window.location.hash === "#result") {
+	mock_result();
+	return;
+    }
     $('#first-page').hide();
     $('#exp-colortitle').text("0-");
     $('#estimate-page').hide();
@@ -143,6 +147,7 @@ function gen_replay_next(element, num_option, time_index, color, session_index) 
 	    alert(sessionResult[sessionId]);
 	    if(session_index === (section_array.length - 1)) {
 		alert("congrats! you have finished the experiment");
+		show_result();
 	    } else {
 		first(session_index + 1);
 	    }
@@ -259,242 +264,6 @@ var blueResult = [];
 var redLogResult = [];
 var blueLogResult = [];
 
-// ======================================  Result Page ============================================
-function getBaseLog(x, y) {
-    return Math.log(y) / Math.log(x);
-}
-
-function show_result() {
-    $('#input-page').hide();
-    $('#svg-circle').hide();
-    $('#headcenter h1').css('color', 'white');
-    $('#exp-title').text("Results");
-    $('#exp-colortitle').text("");
-    $('#exp-subtitle').text("");
-    //redResult.push([0, 0]);
-    for(var i = 0; i < userRedArray.length; i ++) {
-	var t = [parseFloat((timeIntervalArray[i] / 1000).toFixed(2)), parseFloat(userRedArray[i].toFixed(2))];
-	redResult.push(t);
-    }
-    //blueResult.push([0, 0]);
-    for(var i = 0; i < userBlueArray.length; i ++) {
-	var t = [parseFloat((timeIntervalArrayBlue[i] / 1000).toFixed(2)), parseFloat(userBlueArray[i].toFixed(2))];
-	blueResult.push(t);
-    }
-    // Log graph
-    //redLogResult.push([0, 0]);
-    for(var i = 0; i < userRedArray.length; i ++) {
-	var t = [parseFloat(getBaseLog(2, (timeIntervalArray[i] / 1000.0)).toFixed(2)), parseFloat(getBaseLog(2, userRedArray[i]).toFixed(2))];
-	redLogResult.push(t);
-    }
-    //blueLogResult.push([0, 0]);
-    for(var i = 0; i < userBlueArray.length; i ++) {
-	var t = [parseFloat(getBaseLog(2, (timeIntervalArrayBlue[i] / 1000.0)).toFixed(2)), parseFloat(getBaseLog(2, userBlueArray[i]).toFixed(2))];
-	blueLogResult.push(t);
-    }
-    $('#result-display-page').show();
-    show_chart();
-}
-
-function show_chart() {
-    var myChart = Highcharts.chart('result-chart',  {
-	marker: {
-            radius: 5
-        },
-	chart: {
-	    type: 'scatter',
-	    marginRight: 80,
-	},
-	 legend: {
-             layout: 'vertical',
-             backgroundColor: '#FFFFFF',
-             align: 'left',
-             verticalAlign: 'top',
-             floating: true,
-	         x: 70,
-             y: 50,
-        },
-        title: {
-            text: 'Power law'
-        },
-        xAxis: {
-	    title: {
-		enabled: true,
-		text: 'Stimulus intensity (s)'
-	    }
-        },
-        yAxis: {
-            title: {
-                text: 'Sensation magnitude (s)'
-            }
-        },
-	tooltip: {
-            headerFormat: '<b>I : S</b><br>',
-            pointFormat: '({point.x},{point.y})'
-        },  
-	navigation: {
-            menuItemStyle: {
-                fontWeight: 'normal',
-                background: 'none'
-            },
-            menuItemHoverStyle: {
-                fontWeight: 'bold',
-                background: 'none',
-                color: 'black'
-            }
-        }, 
-		
-	series: [
-	   {
-	    regression: true,
-	    regressionSettings: {
-		type: 'power', 
-		color: 'rgba(223, 83, 83, .9)',
-		marker: {
-                enabled: false
-            },		
-	    },
-	    name: 'Red',
-	    showInLegend: false,
-	    color: 'rgba(223, 83, 83, .5)',
-        data: redResult
-        }, 
-		
-		{
-	    regression: true,
-	    regressionSettings: {
-		type: 'power',
-		color: 'rgba(83, 83, 223, .9)',
-		marker: {
-                enabled: false
-            },
-
-	    },
-	    name: 'Blue',
-		showInLegend: false, 
-	    color: 'rgba(83, 83, 223, .5)',
-        data: blueResult
-        },
-		
-		{
-		   regression: true,
-		   showInLegend: false,
-			regressionSettings: {
-			type: 'linear', 
-			color: '#888888',
-			dashStyle: 'ShortDash',
-			showInLegend: false	
-		  },			  
-		    name: 'x=y',	  
-			marker: {
-					enabled: false
-			},	
-		  data:[[0,0], [5,5]]
-		}
-		]
-    });
-	
-	
-    var myLogChart = Highcharts.chart('logresult-chart',  {
-	marker: {
-            radius: 5
-        },
-	chart: {
-	    type: 'scatter',
-	    marginLeft:80,
-	},
-	 legend: {
-            layout: 'vertical',
-            backgroundColor: '#FFFFFF',
-            align: 'left',
-            verticalAlign: 'top',
-            floating: true,  
-            x: 100,
-            y: 50,			
-        },
-        title: {
-            text: 'Power law in log scale'
-        },
-        xAxis: {
-	    title: {
-		enabled: true,
-		text: 'Log stimulus intensity (s)'
-	    }
-        },
-        yAxis: {
-            title: {
-                text: 'Log sensation magnitude (s)'
-            }
-        },
-	
-	tooltip: {
-            headerFormat: '<b>log I : log S</b><br>',
-            pointFormat: '({point.x},{point.y})'
-        },
-	navigation: {
-            menuItemStyle: {
-                fontWeight: 'normal',
-                background: 'none'
-            },
-            menuItemHoverStyle: {
-                fontWeight: 'bold',
-                background: 'none',
-                color: 'black'
-            }
-        },
-	series: [
-	  {
-	    regression: true,
-	    regressionSettings: {
-		type: 'linear',
-		color: 'rgba(223, 83, 83, .9)',
-		marker: {
-                enabled: false
-            },
-		
-	    },
-	    name: 'Red',
-		showInLegend: false,
-	    color: 'rgba(223, 83, 83, .5)',
-            data: redLogResult
-       }, 
-		
-	  {
-	    regression: true,
-	    regressionSettings: {
-		type: 'linear',
-		color: 'rgba(83, 83, 223, .9)',
-		marker: {
-                enabled: false
-            },
-		
-	    },
-	    name: 'Blue',
-	    showInLegend: false,
-	    color: 'rgba(83, 83, 223, .5)',
-            data: blueLogResult
-      },
-	  
-		  
-		  {
-		   regression: true,
-		   showInLegend: false,
-			regressionSettings: {
-			type: 'linear', 
-			color: '#888888',
-			dashStyle: 'ShortDash',
-			showInLegend: false
-		  },
-			marker: {
-					enabled: false
-			},			  
-		  name: 'x=y',
-		  data:[[-0.5,-0.5], [2.3,2.3]]
-		}
-	  ]
-    });
-}
-
 //Update 10.11
 function show_introduction() 
 {
@@ -514,4 +283,121 @@ function show_interval()
     $('#exp-title').text("");
     $('#exp-colortitle').text("");
     $('#exp-subtitle').text("");
+}
+
+// ======================================  Result Page ============================================
+
+var mock_user_data = {};
+
+function gen_mock_session_data(count, color) {
+    if(mock_user_data[count] === undefined) {
+	mock_user_data[count] = {};
+    }
+    if(mock_user_data[count][color] === undefined) {
+	mock_user_data[count][color] = {};
+    }
+    // for value, check
+    var candidate = [];
+    var user_answer = [];
+    for (var i = 0; i < count; i ++) {
+	for(var j = 0; j < 5; j ++) {
+	    candidate.push(timeIntervalArray[i] / 100);
+	    user_answer.push(timeIntervalArray[i] / 100);
+	}
+    }
+    shuffle(user_answer);
+    for(var i = 0; i < candidate.length; i ++) {
+	if(mock_user_data[count][color][candidate[i]] === undefined) {
+	    mock_user_data[count][color][candidate[i]] = {};
+	}
+	if(mock_user_data[count][color][candidate[i]][user_answer[i]] === undefined) {
+	    mock_user_data[count][color][candidate[i]][user_answer[i]] = 0;
+	}
+	mock_user_data[count][color][candidate[i]][user_answer[i]] += 1;
+    }
+}
+
+function mock_result() {
+    // gen mock result
+    for(var i = 2; i < 10; i += 2) {
+	gen_mock_session_data(i, "red");
+	gen_mock_session_data(i, "blue");
+    }
+    show_result(mock_user_data);
+}
+
+var user_matrix = {};
+
+function get_matrix_value(count, color, stimulate, user_choice) {
+    var key = [count, color];
+    var pair = [stimulate, user_choice];
+    return user_matrix[key][pair];
+}
+
+function visualize_session(result, count, color) {
+    var transformed_result = [];
+    var session_result = result[count][color];
+    var keys = Object.keys(session_result);
+    var clone_keys = [""];
+    for(var i = 0; i < keys.length;i ++) {
+	clone_keys.push(keys[i]);
+    }
+    keys.sort();
+    transformed_result.push(clone_keys); // title row
+    for(var i = 0; i < keys.length; i ++) {
+	var column_result = [];
+	column_result.push(keys[i]);
+	var key2 = Object.keys(session_result[keys[i]]);
+	for(var ii = 0; ii < keys.length; ii ++) {
+	    for(var j = 0;j < key2.length; j ++) {
+		if (key2[j] === keys[i]) {
+		    column_result.push(session_result[keys[ii]][key2[j]]);
+		}
+	    }
+	}
+	transformed_result.push(column_result);
+    }
+    var svg = d3.select("#result-matrix").append("svg").attr("width", 400).attr("height", 400);
+    svg.append("g")
+        .selectAll("g")                 
+        .data(transformed_result)
+        .enter()
+        .append("g") //removing
+        .selectAll("text") // these
+        .data( function(d,i,j) { return d; } ) //lines
+        .enter() //text displays normally
+        .append("text")
+        .text( function(d,i,j) { return d; } ) // columns
+        .attr("x", function(d,i,j) { return (i * 40) + 40; })
+        .attr("y", function(d,i,j) { return (j * 40) + 40; })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "20px");
+}
+
+function gen_control_btn(count, color) {
+    var btn_slice = '<button style="color:' + color + '">';
+    var btn_end = '</button>';
+    return (btn_slice + count + btn_end);
+}
+
+function gen_control_btns() {
+    for(var i = 2; i < 10; i += 2) {
+	var btn_red = gen_control_btn(i, "red");
+	var btn_blue = gen_control_btn(i, "blue");
+	$('#control-btns').append(btn_red);
+	$('#control-btns').append(btn_blue);
+    }
+}
+
+function show_result(result) {
+    $('#first-page').hide();
+    $('#input-page').hide();
+    $('#introduction-page').hide();
+    $('#interval-page').hide();
+    $('#svg-circle').hide();
+    $('#exp-subtitle2').text("Result Matrix");
+    // draw matrix in div result-matrix
+    // transform reslt
+    gen_control_btns();
+    visualize_session(result, 8, "red");
 }
