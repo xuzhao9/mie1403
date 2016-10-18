@@ -393,7 +393,8 @@ function show_result(result) {
     $('#introduction-page').hide();
     $('#interval-page').hide();
     $('#svg-circle').hide();
-    $('#exp-subtitle2').text("Result Matrix");
+	$('#headcenter h1').css('color', 'white');  
+    $('#exp-subtitle2').text("Result");
     // draw matrix in div result-matrix
     // transform reslt
     // gen_control_btns();
@@ -475,26 +476,52 @@ function show_charts(result) {
     var red_result = cal_hs(result, "red");
     var blue_result = cal_hs(result, "blue");
     var myChart = Highcharts.chart('result-charts',  {
+	marker: {
+            radius: 5
+        },
+	chart: {
+	    type: 'scatter',
+	    marginRight: 80,
+	},
+	 legend: {
+             layout: 'vertical',
+             backgroundColor: '#FFFFFF',
+             align: 'left',
+             verticalAlign: 'top',
+             floating: true,
+	         x: 70,
+             y: 50,
+        },
 	title: {
-            text: 'Power law'
+            text: 'Information Transmission'
         },
 	xAxis: {
 	    title: {
 		enabled: true,
-		text: 'Stimulus intensity (s)'
+		text: '<b>H(S)</b>'
 	    }
         },
         yAxis: {
             title: {
-                text: 'Sensation magnitude (s)'
+                text: '<b>H(T)</b>'
             }
         },
+	tooltip: {
+            headerFormat: '<b>H(S) : H(T)</b><br>',
+            pointFormat: '({point.x},{point.y})'
+        },  
 	series: [
 	    {
-		data: red_result
+			name: 'Red',
+			showInLegend: false,
+			color: 'rgba(223, 83, 83, .5)',
+			data: red_result
 	    },
 	    {
-		data: blue_result
+			name: 'Blue',
+			showInLegend: false, 
+			color: 'rgba(83, 83, 223, .5)',
+			data: blue_result
 	    },
 	    {
 		regression: true,
@@ -509,7 +536,7 @@ function show_charts(result) {
 		marker: {
 		    enabled: false
 		},	
-		data:[[0,0], [3.5,3.5]]
+		data:[[0,0], [4,4]]
 	    }
 	]
     });
