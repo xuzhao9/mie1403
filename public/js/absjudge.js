@@ -24,7 +24,7 @@ var section_array = [];
 function gen_random_section() {
     // 2,4,6,8 sections, each has two instances
     for(var i = 0; i < 2; i ++) {
-	for(var j = 2; j < 10; j += 2) {
+	for(var j = 2; j < 10; j += 2) { // test: 4 sessions
 	    if(i === 0) {
 		section_array.push([j, "red"]);
 	    } else if (i === 1) {
@@ -75,7 +75,6 @@ function genProm(interval) {
     })
 }
 
-var sessionResult = [];
 var timeIntervalArray = [60, 120, 180, 240, 300, 360, 420, 480];
 var time_array = [];
 
@@ -119,6 +118,12 @@ function first(index) {
     });
 }
 
+var sessionResult = {};
+var real_user_data = {};
+
+function gen_real_data() {
+}
+
 function gen_replay_next(element, num_option, time_index, color, session_index) {
     var fir = '<button id="button-REPLAY" style="display: none; padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-top:70px; margin-right:10px" type="button">REPLAY </button>';
     var sec = '<button id="button-NEXT" style="display: none; padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-top:70px; margin-left:10px" type="button">NEXT </button>';
@@ -132,22 +137,25 @@ function gen_replay_next(element, num_option, time_index, color, session_index) 
     $('#button-NEXT').click(() => {
 	var val = $("#input-submit-container form input[type='radio']:checked").val();
 	var sessionId = session_index;
-	if(color == "red") {
-	    if(sessionResult[sessionId] === undefined) {
-		sessionResult[sessionId] = [];
-	    }
-	    sessionResult[sessionId].push([time_array[time_index], val]);
-	} else if (color == "blue") {
-	    if(sessionResult[sessionId] === undefined) {
-		sessionResult[sessionId] = [];
-	    }
-	    sessionResult[sessionId].push([time_array[time_index], val]);
+	if(sessionResult[num_option] === undefined) {
+	    sessionResult[num_option] = {};
 	}
+	if(sessionResult[num_option][color] === undefined) {
+	    sessionResult[num_option][color] = {};
+	}
+	var time1 = time_array[time_index] / 100;
+	var time2 = val;
+	if(sessionResult[num_option][color][time1] === undefined) {
+	    sessionResult[num_option][color][time1] = {};
+	}
+	if(sessionResult[num_option][color][time1][time2] === undefined) {
+	    sessionResult[num_option][color][time1][time2] = 0;
+	}
+	sessionResult[num_option][color][time1][time2] += 1;
 	if(time_index == time_array.length - 1) {
-	    alert(sessionResult[sessionId]);
 	    if(session_index === (section_array.length - 1)) {
 		alert("congrats! you have finished the experiment");
-		show_result();
+		show_result(sessionResult);
 	    } else {
 		// Show interval		 
 		$('#input-page').hide();
@@ -393,7 +401,8 @@ function show_result(result) {
     $('#introduction-page').hide();
     $('#interval-page').hide();
     $('#svg-circle').hide();
-	$('#headcenter h1').css('color', 'white');  
+    $('#result-display-page').show();
+    $('#headcenter h1').css('color', 'white');  
     $('#exp-subtitle2').text("Result");
     // draw matrix in div result-matrix
     // transform reslt
@@ -471,10 +480,12 @@ function cal_hs(result, color) {
     }
     return r;
 }
+var red_result;
+var blue_result;
 
 function show_charts(result) {
-    var red_result = cal_hs(result, "red");
-    var blue_result = cal_hs(result, "blue");
+    red_result = cal_hs(result, "red");
+    blue_result = cal_hs(result, "blue");
     var myChart = Highcharts.chart('result-charts',  {
 	marker: {
             radius: 5
@@ -489,7 +500,7 @@ function show_charts(result) {
              align: 'left',
              verticalAlign: 'top',
              floating: true,
-	         x: 70,
+	     x: 70,
              y: 50,
         },
 	title: {
