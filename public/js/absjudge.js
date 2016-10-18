@@ -357,21 +357,6 @@ function visualize_session(result, count, color) {
 	}
 	transformed_result.push(column_result);
     }
-    var svg = d3.select("#result-matrix").append("svg").attr("width", 400).attr("height", 400);
-    svg.append("g")
-        .selectAll("g")                 
-        .data(transformed_result)
-        .enter()
-        .append("g") //removing
-        .selectAll("text") // these
-        .data( function(d,i,j) { return d; } ) //lines
-        .enter() //text displays normally
-        .append("text")
-        .text( function(d,i,j) { return d; } ) // columns
-        .attr("x", function(d,i,j) { return (i * 40) + 40; })
-        .attr("y", function(d,i,j) { return (j * 40) + 40; })
-        .attr("font-family", "sans-serif")
-        .attr("font-size", "20px");
 }
 
 function gen_control_btn(count, color) {
@@ -398,6 +383,121 @@ function show_result(result) {
     $('#exp-subtitle2').text("Result Matrix");
     // draw matrix in div result-matrix
     // transform reslt
-    gen_control_btns();
-    visualize_session(result, 8, "red");
+    // gen_control_btns();
+    // visualize_session(result, 8, "red");
+    show_charts(result);
+}
+
+function log2(val) {
+    return Math.log2(val);
+}
+
+var timeIntervalArraySec = [0.6, 1.2, 1.8, 2.4, 3, 3.6, 4.2, 4.8];
+
+// j is number of time 
+function cal_n_i_j(result, L, color, i, j) {
+    var time1 = timeIntervalArraySec[i];
+    var time2 = timeIntervalArraySec[j];
+    var r = result[L][color][time1][time2];
+    if(r === NaN || r === undefined)  {
+	return 0;
+    }
+    return r;
+}
+
+function cal_nj(result, L, color, j) {
+    var timej = timeIntervalArraySec[j];
+    var r = 0;
+    var key1 = Object.keys(result[L][color]);
+    for(var i = 0; i < key1.length; i ++) {
+	var k1 = key1[i];
+	var key2 = Object.keys(result[L][color][k1]);
+	for(var p = 0; p < key2.length; p ++) {
+	    if(key2[p] == timej) {
+		if (result[L][color][k1][key2[p]] === NaN || result[L][color][k1][key2[p]] === undefined) {
+		    r += 0;
+		} else {
+		    r += result[L][color][k1][key2[p]];
+		}
+	    }
+	}
+    }
+    return r;
+}
+
+function cal_ys(result, L, color) {
+    // cal H_R
+    var hr = 0;
+    for(var j = 0; j < L; j ++) {
+	var t = cal_nj(result, L, color, j) / (5.0 * L);
+	var p = t * log2(t);
+	hr = hr + p;
+    }
+    hr = hr * (-1);
+    // cal H_SR
+    var h_sr = 0;
+    for(var i = 0; i < L; i ++) {
+	for(var j = 0; j < L; j ++) {
+	    var t = cal_n_i_j(result, L, color, i, j) / (5.0 * L);
+	    if(t > 0) {
+		var p = t * log2(t);
+		h_sr = h_sr + p;
+	    }
+	}
+    }
+    h_sr = h_sr * (-1);
+    return (log2(L) - hr + h_sr);
+}
+
+function cal_hs(result, color) {
+    var r = [];
+    for(var i = 2; i < 10; i += 2) {
+	var answer = cal_ys(result, i, color);
+	r.push([log2(i), answer]);
+    }
+    return r;
+}
+
+function show_charts(result) {
+    var red_result = cal_hs(result, "red");
+    var blue_result = cal_hs(result, "blue");
+    var myChart = Highcharts.chart('result-charts',  {
+	title: {
+            text: 'Power law'
+        },
+	xAxis: {
+	    title: {
+		enabled: true,
+		text: 'Stimulus intensity (s)'
+	    }
+        },
+        yAxis: {
+            title: {
+                text: 'Sensation magnitude (s)'
+            }
+        },
+	series: [
+	    {
+		data: red_result
+	    },
+	    {
+		data: blue_result
+	    },
+	    {
+		regression: true,
+		showInLegend: false,
+		regressionSettings: {
+		    type: 'linear', 
+		    color: '#888888',
+		    dashStyle: 'ShortDash',
+		    showInLegend: false	
+		},			  
+		name: 'x=y',	  
+		marker: {
+		    enabled: false
+		},	
+		data:[[0,0], [5,5]]
+	    }
+	]
+    });
 }
