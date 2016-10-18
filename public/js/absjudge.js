@@ -332,6 +332,10 @@ function mock_result() {
 	gen_mock_session_data(i, "red");
 	gen_mock_session_data(i, "blue");
     }
+    mock_user_data[2]["red"][0.6][0.6] = 3;
+    mock_user_data[2]["red"][0.6][1.2] = 2;
+    mock_user_data[2]["red"][1.2][0.6] = 2;
+    mock_user_data[2]["red"][1.2][1.2] = 3;
     show_result(mock_user_data);
 }
 
@@ -455,7 +459,7 @@ function cal_ys(result, L, color) {
 	}
     }
     h_sr = h_sr * (-1);
-    return (log2(L) - hr + h_sr);
+    return (log2(L) + hr - h_sr);
 }
 
 function cal_hs(result, color) {
@@ -505,7 +509,7 @@ function show_charts(result) {
 		marker: {
 		    enabled: false
 		},	
-		data:[[0,0], [5,5]]
+		data:[[0,0], [3.5,3.5]]
 	    }
 	]
     });
