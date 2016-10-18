@@ -158,15 +158,14 @@ function gen_replay_next(element, num_option, time_index, color, session_index) 
 		show_result(sessionResult);
 	    } else {
 		// Show interval		 
-		$('#input-page').hide();
-		$('#illuHeader').hide();
-		$('#first-page').hide();       
-		$('#estimate-page').hide();
-		$('#interval-page').show();
-		$('#image3').click(() => {
-		    $('#interval-page').hide();
-		    first(session_index + 1);
-		});
+		//$('#input-page').hide();
+		//$('#illuHeader').hide();
+		//$('#first-page').hide();       
+		//$('#estimate-page').hide();
+		//$('#interval-page').show();
+		//$('#image3').click(() => {
+		  //  $('#interval-page').hide();});
+		first(session_index + 1);
 	    }	 
 	} else {
 	    // session index is the same
