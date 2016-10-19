@@ -78,22 +78,24 @@ function first(color) {
     standard = 0;
     if(color === "red") {
 	$('#exp-colortitle').text("1-");
+	$('#sec-indicator').text("one second.");
 	standard = red_standard * 1000;
     }else if(color === "blue") {
 	$('#exp-colortitle').text("2-");
+	$('#sec-indicator').text("three seconds.");
 	standard = blue_standard * 1000;
     }
     gen_time_array(color);
     $('#exp-subtitle').text("1");
     $('#illuHeader').show();
     $('#first-page').show();
+    $('#input-submit-container').hide();
     show_circle_audio(standard, undefined, second, color, 0);
 }
 
 var session_result = [];
 
 function second(color, seqno) {
-    $('#first-page').hide();
     $("#input-submit-container form input[type='radio']").each(function() {
 	$(this).prop("checked", false);
     });
@@ -104,7 +106,7 @@ function second(color, seqno) {
     } else if (color === "blue") {
 	set_red_circle();
     }
-    show_circle_audio((time_array[seqno] * 1000),[$('#input-button-container')], undefined, color, seqno);
+    show_circle_audio((time_array[seqno] * 1000),[$('#input-submit-container')], undefined, color, seqno);
     // set replay and next
     $('#button-REPLAY').off('click');
     $('#button-REPLAY').click(() => {
@@ -112,12 +114,12 @@ function second(color, seqno) {
 	    set_red_circle();
 	    hide_buttons();
 	    show_circle_audio(standard, undefined, show_circle_audio,
-			      time_array[seqno] * 1000, [color, $('#input-button-container')]);
+			      time_array[seqno] * 1000, [color, $('#input-submit-container')]);
 	} else if(color === "blue") {
 	    set_blue_circle();
 	    hide_buttons();
 	    show_circle_audio(standard, undefined, show_circle_audio,
-			      time_array[seqno] * 1000, [color, $('#input-button-container')]);
+			      time_array[seqno] * 1000, [color, $('#input-submit-container')]);
 	}
     });
     $('#button-NEXT').off('click');
