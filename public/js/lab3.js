@@ -242,7 +242,8 @@ function mock() {
 function show_result(result) {
     $('#first-page').hide();
     $('#illuHeader').show();
-    $('#exp-title').text("Show Result");
+	$('#headcenter h1').css('color', 'white');
+    $('#exp-title').text("Result");
     gen_results(result);
     show_red_chart();
     show_blue_chart();
