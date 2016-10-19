@@ -124,29 +124,29 @@ function second(color, seqno) {
     });
     $('#button-NEXT').off('click');
     $('#button-NEXT').click(() => {
-	if(seqno === time_array.length - 1) {
+	var val = $("#input-submit-container form input[type='radio']:checked").val();
+	if(val === undefined || val === NaN) {
+	    alert("Please select one answer!");
+	    return;
+	}
+	if(seqno === time_array.length - 1 && color === "red") {
 	    first("blue");
+	} else if (seqno === time_array.length - 1 && color === "blue") {
+	    show_result();
 	} else {
-	    // check if valid
 	    $('#exp-subtitle').text(seqno+2);
-	    var val = $("#input-submit-container form input[type='radio']:checked").val();
-	    if(val === undefined || val === NaN) {
-		alert("Please select one answer!");
-		return;
-	    } else {
-		var new_data =[(standard / 1000.0), time_array[seqno], val];
-		session_result.push(new_data);
-		$("#input-submit-container form input[type='radio']").each(function() {
-		    $(this).prop("checked", false);
-		});
-		hide_buttons();
-		if(color === "red") {
-		    set_red_circle();
-		} else if (color === "blue") {
-		    set_blue_circle();
-		}
-		show_circle_audio(standard, undefined, second, color, (seqno + 1));
+	    var new_data =[(standard / 1000.0), time_array[seqno], val];
+	    session_result.push(new_data);
+	    $("#input-submit-container form input[type='radio']").each(function() {
+		$(this).prop("checked", false);
+	    });
+	    hide_buttons();
+	    if(color === "red") {
+		set_red_circle();
+	    } else if (color === "blue") {
+		set_blue_circle();
 	    }
+	    show_circle_audio(standard, undefined, second, color, (seqno + 1));
 	}
     });
 }
@@ -402,4 +402,8 @@ function show_charts(result) {
 		
 	]
     });
+}
+
+function show_result() {
+    alert("congrats! you have finished all exps");
 }
