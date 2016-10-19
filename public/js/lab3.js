@@ -7,6 +7,11 @@ $(document).ready(function() {
     $('#image2').click(() => {
 	first("red");
     });
+    if (window.location.hash === "#result") {
+	$('#introduction-page').hide();
+	mock();
+	return;
+    }
 });
 
 var red_standard = 1.0;
@@ -58,8 +63,8 @@ var time_array;
 
 function gen_time_array(color) {
     time_array = [];
-    for(var i = 0; i < 1; i ++) {
-	for(var j = 0; j < 1; j ++) {
+    for(var i = 0; i < 10; i ++) {
+	for(var j = 0; j < blue_arr.length; j ++) {
 	    if(color === "red") {
 		time_array.push(blue_arr[j]);
 	    } else if (color === "blue") {
@@ -129,14 +134,14 @@ function second(color, seqno) {
 	    alert("Please select one answer!");
 	    return;
 	}
+	var new_data =[(standard / 1000.0), time_array[seqno], val];
+	session_result.push(new_data);
 	if(seqno === time_array.length - 1 && color === "red") {
 	    first("blue");
 	} else if (seqno === time_array.length - 1 && color === "blue") {
-	    show_result();
+	    show_result(session_result);
 	} else {
 	    $('#exp-subtitle').text(seqno+2);
-	    var new_data =[(standard / 1000.0), time_array[seqno], val];
-	    session_result.push(new_data);
 	    $("#input-submit-container form input[type='radio']").each(function() {
 		$(this).prop("checked", false);
 	    });
@@ -203,12 +208,85 @@ function set_red_circle() {
     $('#svg-circle svg circle').attr('stroke', 'red');
 }
 
+var red_freq = [];
+var red_result = [];
+var blue_freq = [];
+var blue_result = [];
+
+var mock_result = [];
+
+function mock() {
+    for(var i = 0; i < 10; i ++) {
+	for(var j = 0; j < blue_arr.length; j ++) {
+	    var ran = Math.floor(Math.random() * 10 + 1) % 2;
+	    if(ran === 0) {
+		mock_result.push([red_standard, blue_arr[j], "yes"]);
+	    } else if (ran === 1) {
+		mock_result.push([red_standard, blue_arr[j], "no"]);
+	    }
+	}
+    }
+    for(var i = 0; i < 10; i ++) {
+	for(var j = 0; j < red_arr.length; j ++) {
+	    var ran = Math.floor(Math.random() * 10 + 1) % 2;
+	    if(ran === 0) {
+		mock_result.push([blue_standard, red_arr[j], "yes"]);
+	    } else if (ran === 1) {
+		mock_result.push([blue_standard, red_arr[j], "no"]);
+	    }
+	}
+    }
+    show_result(mock_result);
+}
+
+function show_result(result) {
+    $('#first-page').hide();
+    $('#illuHeader').show();
+    $('#exp-title').text("Show Result");
+    gen_results(result);
+    show_red_chart();
+    show_blue_chart();
+}
+
+function gen_results(result) {
+    red_freq = [];
+    blue_freq = [];
+    red_result = [];
+    blue_result = [];
+    for(var i = 0; i < result.length; i ++) {
+	var one = result[i][0];
+	var two = result[i][1];
+	var three = result[i][2];
+	if (one === red_standard) {
+	    if(red_freq[two] === undefined) {
+		red_freq[two] = 0;
+	    }
+	    if(three === "yes") {
+		red_freq[two] += 1;
+	    }
+	} else if (one === blue_standard) {
+	    if(blue_freq[two] === undefined) {
+		blue_freq[two] = 0;
+	    }
+	    if(three === "yes") {
+		blue_freq[two] += 1;
+	    }
+	}
+    }
+    var red_keys = Object.keys(red_freq);
+    for(var i = 0; i < red_keys.length; i ++) {
+	red_result.push([parseFloat(red_keys[i]), (red_freq[red_keys[i]] / 10.0)]);
+    }
+    var blue_keys = Object.keys(blue_freq);
+    for(var i = 0; i < blue_keys.length; i ++) {
+	blue_result.push([parseFloat(blue_keys[i]), (blue_freq[blue_keys[i]] / 10.0)]);
+    }
+}
+
 //Psychometric Function Charts
 // Chart 1
-function show_charts(result) {
-    red_result = cal_hs(result, "red");
-    blue_result = cal_hs(result, "blue");
-    var myChart = Highcharts.chart('result-charts',  {
+function show_red_chart() {
+    var myChart = Highcharts.chart('red-table',  {
 	marker: {
             radius: 5
         },
@@ -226,7 +304,7 @@ function show_charts(result) {
              y: 50,
         },
 	title: {
-            text: '<b>Psychometric 	Function</b></br>Standard: RED(1s); Comparison: BLUE (0.5~1.5s)'
+            text: '<b>Psychometric 	Function</b><br>Standard: RED(1s); Comparison: BLUE (0.5~1.5s)'
         },
 	xAxis: {
 	    title: {
@@ -244,12 +322,11 @@ function show_charts(result) {
             pointFormat: '({point.x},{point.y})'
         },  
 	series: [
-	    
 	    {
-			name: '1s',
-			showInLegend: false, 
-			color: 'rgba(83, 83, 223, .5)',
-			data: blue_result
+		name: '1s',
+		showInLegend: false, 
+		color: 'rgba(83, 83, 223, .5)',
+		data: red_result
 	    },
 		//y=0.25
 	    {
@@ -305,10 +382,8 @@ function show_charts(result) {
 }
 
 // Chart 2
-function show_charts(result) {
-    red_result = cal_hs(result, "red");
-    blue_result = cal_hs(result, "blue");
-    var myChart = Highcharts.chart('result-charts',  {
+function show_blue_chart() {
+    var myChart = Highcharts.chart('blue-table',  {
 	marker: {
             radius: 5
         },
@@ -326,7 +401,7 @@ function show_charts(result) {
              y: 50,
         },
 	title: {
-            text: '<b>Psychometric 	Function</b></br>Standard: BLUE(3s); Comparison: RED (2.0~4.0s)'
+            text: '<b>Psychometric 	Function</b><br>Standard: BLUE(3s); Comparison: RED (2.0~4.0s)'
         },
 	xAxis: {
 	    title: {
@@ -346,10 +421,10 @@ function show_charts(result) {
 	series: [
 	    
 	    {
-			name: '3s',
-			showInLegend: false, 
-			color: 'rgba(223, 83, 83, .5)',
-			data: red_result
+		name: '3s',
+		showInLegend: false, 
+		color: 'rgba(223, 83, 83, .5)',
+		data: blue_result
 	    },
 		//y=0.25
 	    {
@@ -402,8 +477,4 @@ function show_charts(result) {
 		
 	]
     });
-}
-
-function show_result() {
-    alert("congrats! you have finished all exps");
 }
