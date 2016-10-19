@@ -78,11 +78,11 @@ function first(color) {
     standard = 0;
     if(color === "red") {
 	$('#exp-colortitle').text("1-");
-	$('#sec-indicator').text("one second.");
+	$('#sec-indicator').text("1 second.");
 	standard = red_standard * 1000;
     }else if(color === "blue") {
 	$('#exp-colortitle').text("2-");
-	$('#sec-indicator').text("three seconds.");
+	$('#sec-indicator').text("3 seconds.");
 	standard = blue_standard * 1000;
     }
     gen_time_array(color);
