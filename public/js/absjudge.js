@@ -148,7 +148,7 @@ function gen_replay_next(element, num_option, time_index, color, session_index) 
 	    sessionResult[num_option][color] = {};
 	}
 	var time1 = time_array[time_index] / 100;
-	var time2 = val;
+	var time2 = parseFloat(val);
 	if(sessionResult[num_option][color][time1] === undefined) {
 	    sessionResult[num_option][color][time1] = {};
 	}
@@ -335,10 +335,92 @@ function mock_result() {
 	gen_mock_session_data(i, "red");
 	gen_mock_session_data(i, "blue");
     }
-    mock_user_data[2]["red"][0.6][0.6] = 3;
-    mock_user_data[2]["red"][0.6][1.2] = 2;
-    mock_user_data[2]["red"][1.2][0.6] = 2;
-    mock_user_data[2]["red"][1.2][1.2] = 3;
+    mock_user_data[6]["red"][0.6][0.6] = 5;
+    mock_user_data[6]["red"][0.6][1.2] = 0;
+    mock_user_data[6]["red"][0.6][1.8] = 0;
+    mock_user_data[6]["red"][0.6][2.4] = 0;
+    mock_user_data[6]["red"][0.6][3] = 0;
+    mock_user_data[6]["red"][0.6][3.6] = 0;
+    //
+    mock_user_data[6]["red"][1.2][0.6] = 0;
+    mock_user_data[6]["red"][1.2][1.2] = 5;
+    mock_user_data[6]["red"][1.2][1.8] = 0;
+    mock_user_data[6]["red"][1.2][2.4] = 0;
+    mock_user_data[6]["red"][1.2][3] = 0;
+    mock_user_data[6]["red"][1.2][3.6] = 0;
+    //
+    mock_user_data[6]["red"][1.8][0.6] = 0;
+    mock_user_data[6]["red"][1.8][1.2] = 0;
+    mock_user_data[6]["red"][1.8][1.8] = 5;
+    mock_user_data[6]["red"][1.8][2.4] = 0;
+    mock_user_data[6]["red"][1.8][3] = 0;
+    mock_user_data[6]["red"][1.8][3.6] = 0; 
+    //
+    mock_user_data[6]["red"][2.4][0.6] = 0;
+    mock_user_data[6]["red"][2.4][1.2] = 0;
+    mock_user_data[6]["red"][2.4][1.8] = 0;
+    mock_user_data[6]["red"][2.4][2.4] = 4;
+    mock_user_data[6]["red"][2.4][3] = 1;
+    mock_user_data[6]["red"][2.4][3.6] = 0;
+    //
+    mock_user_data[6]["red"][3][0.6] = 0;
+    mock_user_data[6]["red"][3][1.2] = 0;
+    mock_user_data[6]["red"][3][1.8] = 0;
+    mock_user_data[6]["red"][3][2.4] = 0;
+    mock_user_data[6]["red"][3][3] = 5;
+    mock_user_data[6]["red"][3][3.6] = 0;
+    //
+    mock_user_data[6]["red"][3.6][0.6] = 0;
+    mock_user_data[6]["red"][3.6][1.2] = 0;
+    mock_user_data[6]["red"][3.6][1.8] = 0;
+    mock_user_data[6]["red"][3.6][2.4] = 0;
+    mock_user_data[6]["red"][3.6][3] = 1;
+    mock_user_data[6]["red"][3.6][3.6] = 4;
+    //blue
+    mock_user_data[6]["blue"][0.6][0.6] = 5;
+    mock_user_data[6]["blue"][0.6][1.2] = 0;
+    mock_user_data[6]["blue"][0.6][1.8] = 0;
+    mock_user_data[6]["blue"][0.6][2.4] = 0;
+    mock_user_data[6]["blue"][0.6][3] = 0;
+    mock_user_data[6]["blue"][0.6][3.6] = 0;
+    //
+    mock_user_data[6]["blue"][1.2][0.6] = 0;
+    mock_user_data[6]["blue"][1.2][1.2] = 5;
+    mock_user_data[6]["blue"][1.2][1.8] = 0;
+    mock_user_data[6]["blue"][1.2][2.4] = 0;
+    mock_user_data[6]["blue"][1.2][3] = 0;
+    mock_user_data[6]["blue"][1.2][3.6] = 0;
+    //
+    mock_user_data[6]["blue"][1.8][0.6] = 0;
+    mock_user_data[6]["blue"][1.8][1.2] = 1;
+    mock_user_data[6]["blue"][1.8][1.8] = 2;
+    mock_user_data[6]["blue"][1.8][2.4] = 2;
+    mock_user_data[6]["blue"][1.8][3] = 0;
+    mock_user_data[6]["blue"][1.8][3.6] = 0; 
+    //
+    mock_user_data[6]["blue"][2.4][0.6] = 0;
+    mock_user_data[6]["blue"][2.4][1.2] = 0;
+    mock_user_data[6]["blue"][2.4][1.8] = 0;
+    mock_user_data[6]["blue"][2.4][2.4] = 5;
+    mock_user_data[6]["blue"][2.4][3] = 0;
+    mock_user_data[6]["blue"][2.4][3.6] = 0;
+    //
+    mock_user_data[6]["blue"][3][0.6] = 0;
+    mock_user_data[6]["blue"][3][1.2] = 0;
+    mock_user_data[6]["blue"][3][1.8] = 0;
+    mock_user_data[6]["blue"][3][2.4] = 0;
+    mock_user_data[6]["blue"][3][3] = 5;
+    mock_user_data[6]["blue"][3][3.6] = 0;
+    //
+    mock_user_data[6]["blue"][3.6][0.6] = 0;
+    mock_user_data[6]["blue"][3.6][1.2] = 0;
+    mock_user_data[6]["blue"][3.6][1.8] = 0;
+    mock_user_data[6]["blue"][3.6][2.4] = 0;
+    mock_user_data[6]["blue"][3.6][3] = 0;
+    mock_user_data[6]["blue"][3.6][3.6] = 5;
+
+
+
     show_result(mock_user_data);
 }
 
@@ -431,9 +513,9 @@ function cal_nj(result, L, color, j) {
 	var k1 = key1[i];
 	var key2 = Object.keys(result[L][color][k1]);
 	for(var p = 0; p < key2.length; p ++) {
-	    if(key2[p] == timej) {
+	    if(key2[p] === timej) {
 		if (result[L][color][k1][key2[p]] === NaN || result[L][color][k1][key2[p]] === undefined) {
-		    r += 0;
+		    // do nothing
 		} else {
 		    r += result[L][color][k1][key2[p]];
 		}
@@ -475,6 +557,7 @@ function cal_hs(result, color) {
     }
     return r;
 }
+
 var red_result;
 var blue_result;
 
