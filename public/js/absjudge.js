@@ -24,7 +24,7 @@ var section_array = [];
 function gen_random_section() {
     // 2,4,6,8 sections, each has two instances
     for(var i = 0; i < 2; i ++) {
-	for(var j = 2; j < 10; j += 2) { // test: 4 sessions
+	for(var j = 2; j < 4; j += 2) { // test: 4 sessions
 	    if(i === 0) {
 		section_array.push([j, "red"]);
 	    } else if (i === 1) {
@@ -82,7 +82,7 @@ var time_array = [];
 function gen_time_array(num_option) {
     time_array = [];
     for(var i = 0; i < num_option; i ++) {
-	for(var j = 0; j < 5; j ++) {
+	for(var j = 0; j < 1; j ++) {
 	    time_array.push(timeIntervalArray[i]);
 	}
     }
@@ -513,7 +513,7 @@ function cal_nj(result, L, color, j) {
 	var k1 = key1[i];
 	var key2 = Object.keys(result[L][color][k1]);
 	for(var p = 0; p < key2.length; p ++) {
-	    if(key2[p] === timej) {
+	    if(parseFloat(key2[p]) === parseFloat(timej)) {
 		if (result[L][color][k1][key2[p]] === NaN || result[L][color][k1][key2[p]] === undefined) {
 		    // do nothing
 		} else {
@@ -551,7 +551,7 @@ function cal_ys(result, L, color) {
 
 function cal_hs(result, color) {
     var r = [];
-    for(var i = 2; i < 10; i += 2) {
+    for(var i = 2; i < 4; i += 2) {
 	var answer = cal_ys(result, i, color);
 	r.push([log2(i), answer]);
     }
