@@ -304,21 +304,33 @@ function show_red_chart() {
              y: 50,
         },
 	title: {
-            text: '<b>Psychometric 	Function</b><br>Standard: RED(1s); Comparison: BLUE (0.5~1.5s)'
+            text: '<b>Psychometric 	Function</b>'
         },
+	subtitle: {
+            text: '<b>Standard:</b> RED (1.0s) ; <b>Comparison:</b> BLUE (0.5~1.5s)'
+	    },
+        
 	xAxis: {
+		floor: 0.4,
+        ceiling: 1.6,
+		tickInterval: 0.2,
+		
 	    title: {
-		enabled: true,
+		enabled: true,		
 		text: '<b>Stimulus Intensity</b>'
 	    }
         },
         yAxis: {
+		floor: 0,
+        ceiling: 1.1,
+		tickInterval: 0.1,
+       
             title: {
                 text: '<b>Percentage</b>'
             }
         },
 	tooltip: {
-            headerFormat: '<b>H(S) : H(T)</b><br>',
+            
             pointFormat: '({point.x},{point.y})'
         },  
 	series: [
@@ -342,7 +354,7 @@ function show_red_chart() {
 		marker: {
 		    enabled: false
 		},	
-		data:[[0,0.25], [1.4,0.25]]
+		data:[[0,0.25], [1.6,0.25]]
 	    },
 		//y=0.5
 		{
@@ -358,7 +370,7 @@ function show_red_chart() {
 		marker: {
 		    enabled: false
 		},	
-		data:[[0,0.5], [1.4,0.5]]
+		data:[[0,0.5], [1.6,0.5]]
 	    },
 		//y=0.75
 		{
@@ -374,7 +386,7 @@ function show_red_chart() {
 		marker: {
 		    enabled: false
 		},	
-		data:[[0,0.75], [1.4,0.75]]
+		data:[[0,0.75], [1.6,0.75]]
 	    }
 		
 	]
@@ -401,21 +413,32 @@ function show_blue_chart() {
              y: 50,
         },
 	title: {
-            text: '<b>Psychometric 	Function</b><br>Standard: BLUE(3s); Comparison: RED (2.0~4.0s)'
+            text: '<b>Psychometric 	Function</b>'
         },
+	subtitle: {
+            text: '<b>Standard:</b> BLUE (3.0s) ; <b>Comparison:</b> RED (2.0~4.0s)'
+	    },
 	xAxis: {
+		floor: 1.8,
+        ceiling: 4.2,
+		tickInterval: 0.4,
+		
 	    title: {
 		enabled: true,
 		text: '<b>Stimulus Intensity</b>'
 	    }
         },
         yAxis: {
+			floor: 0,
+			ceiling: 1.1,
+			tickInterval: 0.1,
+			
             title: {
                 text: '<b>Percentage</b>'
             }
         },
 	tooltip: {
-            headerFormat: '<b>H(S) : H(T)</b><br>',
+            
             pointFormat: '({point.x},{point.y})'
         },  
 	series: [
@@ -440,7 +463,7 @@ function show_blue_chart() {
 		marker: {
 		    enabled: false
 		},	
-		data:[[0,0.25], [3.8,0.25]]
+		data:[[0,0.25], [4.2,0.25]]
 	    },
 		//y=0.5
 		{
@@ -456,7 +479,7 @@ function show_blue_chart() {
 		marker: {
 		    enabled: false
 		},	
-		data:[[0,0.5], [3.8,0.5]]
+		data:[[0,0.5], [4.2,0.5]]
 	    },
 		//y=0.75
 		{
@@ -472,7 +495,7 @@ function show_blue_chart() {
 		marker: {
 		    enabled: false
 		},	
-		data:[[0,0.75], [3.8,0.75]]
+		data:[[0,0.75], [4.2,0.75]]
 	    }
 		
 	]
