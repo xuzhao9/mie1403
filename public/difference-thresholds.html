@@ -9,7 +9,7 @@
    <script type="text/javascript" src="js/highcharts.js"></script>
    <script type="text/javascript" src="js/highcharts-regression.js"></script>
    <script type="text/javascript" src="https://code.highcharts.com/modules/exporting.js"></script>
-   <script type="text/javascript" src="js/absjudge.js"> </script>
+   <script type="text/javascript" src="js/lab3.js"> </script>
    <link rel="stylesheet" type="text/css" href="css/style.css">
    
     <title>Human Factors Research</title>
@@ -28,33 +28,39 @@
 <body class="hyphenate" text="black" bgcolor="white" align="center">
   <div id="illuHeader" style="margin-bottom: 0px;">
     <div id="headcenter" align="center">
-       <h1 style="padding-top:20px; margin-top:0px; padding:30px;line-height:100%;font-size:240%; background:#e3e3e3;width:100%;color:Red">
-	 <span id="exp-subtitle2"><span id="exp-title"></span><span id="exp-colortitle"></span><span id="exp-subtitle"></span> </span>
+       <h1 style="padding-top:20px; margin-top:0px; padding:30px;line-height:100%;font-size:240%; background:#e3e3e3;width:100%;color:Black">
+	 <span id="exp-subtitle2">
+	   <span id="exp-title"></span><span id="exp-colortitle"></span>
+	   <span id="exp-subtitle"></span>
+	 </span>
         </h1>
     </div>
   </div>
   <!-- First Slide -->
   <div id="first-page" style="margin-top: 30px;" align="center">
-    <h2 style="font-size:180%;">
-      <b>Please try each option</b> 	   
-      <br />
-      The circle can be displayed for the <b>number of seconds</b> in the following trials：
+    <h2 style="font-size:180%;"> 	   
+      The standard is displayed for <b id="sec-indicator">number of seconds</b> 
     </h2>
-    <div id="button-container" style="font-size:180%; margin-top: 50px;" align="center"></div>
-	<div> 
-	<button id="start-btn" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-top:60px; font-size:180%"> 
-	START 
-	</button>
-	</div>
   </div>
   <!-- Second slide -->
   <div id="input-page" style="margin-top: 30px;" align="center">
     <h2 style="font-size:180%;">
-      <b> Estimate how many seconds the circle displayed</b>
+      <b> The comparision is displayed longer?</b>
     </h2>
     <div id="input-submit-container" style="font-size: 180%; margin-top: 10px;">
       <form id="submit-form" style="font-size: 180%; margin-top: 10px;" align="center">
+	<div class="radio-box"> <label>YES</label>
+	  <input id="yes" type="radio" aligh="right" value="radio-yes">
+	</div>
+	<div class="radio-box"> <label>NO</label>
+	  <input id="no" type="radio" aligh="right" value="radio-no">
+	</div>
       </form>
+      <!-- buttons for replay and next -->
+      <div id="input-button-container" style="display:none;">
+	<button id="button-REPLAY" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-top:70px; margin-right:10px" type="button">REPLAY </button>
+	<button id="button-NEXT" style="padding-left: 20px; padding-right: 20px; padding-top:10px; padding-bottom:10px; margin-top:70px; margin-left:10px" type="button">NEXT </button>
+      </div>
     </div>
   </div>
   <!-- SVG circles slide -->
@@ -82,12 +88,11 @@
     </tr>
     </table>
   </div>
-  
 
   <!-- Introduction page here -->
   <div id="introduction-page" style="background:#e3e3e3; text-align: center;">
     <h1 style="font-size:360%; color:White; margin-top: 90px;">
-      Absolute Judgement<br/>  
+      Difference Thresholds<br/>  
     </h1>
 	<h2 style="font-size:180%; color:Black; margin-top:50px; line-height: 200%">
       This experiment is to investigate your <b>time perception</b> and the effect of <b>color</b> on it.<br/> 
