@@ -79,8 +79,8 @@ function first(color) {
     if(color === "red") {
 	$('#exp-colortitle').text("1-");
 	standard = red_standard * 1000;
-    }else {
-	$('#exp-colortitle').text("1-");
+    }else if(color === "blue") {
+	$('#exp-colortitle').text("2-");
 	standard = blue_standard * 1000;
     }
     gen_time_array(color);
@@ -126,6 +126,7 @@ function second(color, seqno) {
 	    first("blue");
 	} else {
 	    // check if valid
+	    $('#exp-subtitle').text(seqno+2);
 	    var val = $("#input-submit-container form input[type='radio']:checked").val();
 	    if(val === undefined || val === NaN) {
 		alert("Please select at least one answer!");
@@ -137,7 +138,12 @@ function second(color, seqno) {
 		    $(this).prop("checked", false);
 		});
 		hide_buttons();
-		second(color, seqno + 1);
+		if(color === "red") {
+		    set_red_circle();
+		} else if (color === "blue") {
+		    set_blue_circle();
+		}
+		show_circle_audio(standard, undefined, second, color, (seqno + 1));
 	    }
 	}
     });
