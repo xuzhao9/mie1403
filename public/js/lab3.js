@@ -157,11 +157,11 @@ function second(color, seqno) {
 }
 
 function hide_buttons() {
-    $('#input-button-container').hide();
+    $('#input-submit-container').hide();
 }
 
 function show_buttons() {
-    $('#input-button-container').show();
+    $('#input-submit-container').show();
 }
 
 // option: if element is not undefined, hide it when show and show it when hide
