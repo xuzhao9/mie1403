@@ -264,8 +264,9 @@ function show_charts(result) {
 		    enabled: false
 		},	
 		data:[[0,0.25], [1.4,0.25]]
-	    }
+	    },
 		//y=0.5
+		{
 		regression: true,
 		showInLegend: false,
 		regressionSettings: {
@@ -279,7 +280,7 @@ function show_charts(result) {
 		    enabled: false
 		},	
 		data:[[0,0.5], [1.4,0.5]]
-	    }
+	    },
 		//y=0.75
 		{
 		regression: true,
@@ -363,8 +364,9 @@ function show_charts(result) {
 		    enabled: false
 		},	
 		data:[[0,0.25], [3.8,0.25]]
-	    }
+	    },
 		//y=0.5
+		{
 		regression: true,
 		showInLegend: false,
 		regressionSettings: {
@@ -378,7 +380,7 @@ function show_charts(result) {
 		    enabled: false
 		},	
 		data:[[0,0.5], [3.8,0.5]]
-	    }
+	    },
 		//y=0.75
 		{
 		regression: true,
