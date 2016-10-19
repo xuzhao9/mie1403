@@ -58,8 +58,8 @@ var time_array;
 
 function gen_time_array(color) {
     time_array = [];
-    for(var i = 0; i < 10; i ++) {
-	for(var j = 0; j < blue_arr.length; j ++) {
+    for(var i = 0; i < 1; i ++) {
+	for(var j = 0; j < 1; j ++) {
 	    if(color === "red") {
 		time_array.push(blue_arr[j]);
 	    } else if (color === "blue") {
@@ -131,7 +131,7 @@ function second(color, seqno) {
 	    $('#exp-subtitle').text(seqno+2);
 	    var val = $("#input-submit-container form input[type='radio']:checked").val();
 	    if(val === undefined || val === NaN) {
-		alert("Please select at least one answer!");
+		alert("Please select one answer!");
 		return;
 	    } else {
 		var new_data =[(standard / 1000.0), time_array[seqno], val];
@@ -203,3 +203,203 @@ function set_red_circle() {
     $('#svg-circle svg circle').attr('stroke', 'red');
 }
 
+//Psychometric Function Charts
+// Chart 1
+function show_charts(result) {
+    red_result = cal_hs(result, "red");
+    blue_result = cal_hs(result, "blue");
+    var myChart = Highcharts.chart('result-charts',  {
+	marker: {
+            radius: 5
+        },
+	chart: {
+	    type: 'scatter',
+	    marginRight: 80,
+	},
+	 legend: {
+             layout: 'vertical',
+             backgroundColor: '#FFFFFF',
+             align: 'left',
+             verticalAlign: 'top',
+             floating: true,
+	     x: 70,
+             y: 50,
+        },
+	title: {
+            text: '<b>Psychometric 	Function</b></br>Standard: RED(1s); Comparison: BLUE (0.5~1.5s)'
+        },
+	xAxis: {
+	    title: {
+		enabled: true,
+		text: '<b>Stimulus Intensity</b>'
+	    }
+        },
+        yAxis: {
+            title: {
+                text: '<b>Percentage</b>'
+            }
+        },
+	tooltip: {
+            headerFormat: '<b>H(S) : H(T)</b><br>',
+            pointFormat: '({point.x},{point.y})'
+        },  
+	series: [
+	    
+	    {
+			name: '1s',
+			showInLegend: false, 
+			color: 'rgba(83, 83, 223, .5)',
+			data: blue_result
+	    },
+		//y=0.25
+	    {
+		regression: true,
+		showInLegend: false,
+		regressionSettings: {
+		    type: 'linear', 
+		    color: '#888888',
+		    dashStyle: 'ShortDash',
+		    showInLegend: false	
+		},			  
+		name: 'y=0.25',	  
+		marker: {
+		    enabled: false
+		},	
+		data:[[0,0.25], [1.4,0.25]]
+	    },
+		//y=0.5
+		{
+		regression: true,
+		showInLegend: false,
+		regressionSettings: {
+		    type: 'linear', 
+		    color: '#33FF99',
+		    dashStyle: 'ShortDash',
+		    showInLegend: false	
+		},			  
+		name: 'y=0.5',	  
+		marker: {
+		    enabled: false
+		},	
+		data:[[0,0.5], [1.4,0.5]]
+	    },
+		//y=0.75
+		{
+		regression: true,
+		showInLegend: false,
+		regressionSettings: {
+		    type: 'linear', 
+		    color: '#888888',
+		    dashStyle: 'ShortDash',
+		    showInLegend: false	
+		},			  
+		name: 'y=0.75',	  
+		marker: {
+		    enabled: false
+		},	
+		data:[[0,0.75], [1.4,0.75]]
+	    }
+		
+	]
+    });
+}
+
+// Chart 2
+function show_charts(result) {
+    red_result = cal_hs(result, "red");
+    blue_result = cal_hs(result, "blue");
+    var myChart = Highcharts.chart('result-charts',  {
+	marker: {
+            radius: 5
+        },
+	chart: {
+	    type: 'scatter',
+	    marginRight: 80,
+	},
+	 legend: {
+             layout: 'vertical',
+             backgroundColor: '#FFFFFF',
+             align: 'left',
+             verticalAlign: 'top',
+             floating: true,
+	     x: 70,
+             y: 50,
+        },
+	title: {
+            text: '<b>Psychometric 	Function</b></br>Standard: BLUE(3s); Comparison: RED (2.0~4.0s)'
+        },
+	xAxis: {
+	    title: {
+		enabled: true,
+		text: '<b>Stimulus Intensity</b>'
+	    }
+        },
+        yAxis: {
+            title: {
+                text: '<b>Percentage</b>'
+            }
+        },
+	tooltip: {
+            headerFormat: '<b>H(S) : H(T)</b><br>',
+            pointFormat: '({point.x},{point.y})'
+        },  
+	series: [
+	    
+	    {
+			name: '3s',
+			showInLegend: false, 
+			color: 'rgba(223, 83, 83, .5)',
+			data: red_result
+	    },
+		//y=0.25
+	    {
+		regression: true,
+		showInLegend: false,
+		regressionSettings: {
+		    type: 'linear', 
+		    color: '#888888',
+		    dashStyle: 'ShortDash',
+		    showInLegend: false	
+		},			  
+		name: 'y=0.25',	  
+		marker: {
+		    enabled: false
+		},	
+		data:[[0,0.25], [3.8,0.25]]
+	    },
+		//y=0.5
+		{
+		regression: true,
+		showInLegend: false,
+		regressionSettings: {
+		    type: 'linear', 
+		    color: '#33FF99',
+		    dashStyle: 'ShortDash',
+		    showInLegend: false	
+		},			  
+		name: 'y=0.5',	  
+		marker: {
+		    enabled: false
+		},	
+		data:[[0,0.5], [3.8,0.5]]
+	    },
+		//y=0.75
+		{
+		regression: true,
+		showInLegend: false,
+		regressionSettings: {
+		    type: 'linear', 
+		    color: '#888888',
+		    dashStyle: 'ShortDash',
+		    showInLegend: false	
+		},			  
+		name: 'y=0.75',	  
+		marker: {
+		    enabled: false
+		},	
+		data:[[0,0.75], [3.8,0.75]]
+	    }
+		
+	]
+    });
+}
