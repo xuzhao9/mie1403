@@ -532,9 +532,9 @@ function cal_ys(result, L, color) {
 	var t = cal_nj(result, L, color, j) / (5.0 * L);
 	if(t > 0) {
 	    var p = t * log2(t);
+	    hr = hr + p;
 	}
 	//alert("p: " + p);
-	hr = hr + p;
     }
     hr = hr * (-1);
     // cal H_SR
@@ -554,7 +554,7 @@ function cal_ys(result, L, color) {
 
 function cal_hs(result, color) {
     var r = [];
-    for(var i = 6; i < 8; i += 2) {
+    for(var i = 2; i < 10; i += 2) { // i = 2, 4, 6, 8
 	var answer = cal_ys(result, i, color);
 	r.push([log2(i), answer]);
     }
@@ -566,7 +566,7 @@ var blue_result;
 
 function show_charts(result) {
     red_result = cal_hs(result, "red");
-    ///blue_result = cal_hs(result, "blue");
+    blue_result = cal_hs(result, "blue");
     var myChart = Highcharts.chart('result-charts',  {
 	marker: {
             radius: 5
