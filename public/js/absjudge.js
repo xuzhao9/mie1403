@@ -350,17 +350,17 @@ function mock_result() {
     mock_user_data[6]["red"][1.2][3.6] = 0;
     //
     mock_user_data[6]["red"][1.8][0.6] = 0;
-    mock_user_data[6]["red"][1.8][1.2] = 0;
-    mock_user_data[6]["red"][1.8][1.8] = 5;
-    mock_user_data[6]["red"][1.8][2.4] = 0;
+    mock_user_data[6]["red"][1.8][1.2] = 1;
+    mock_user_data[6]["red"][1.8][1.8] = 2;
+    mock_user_data[6]["red"][1.8][2.4] = 2;
     mock_user_data[6]["red"][1.8][3] = 0;
     mock_user_data[6]["red"][1.8][3.6] = 0; 
     //
     mock_user_data[6]["red"][2.4][0.6] = 0;
     mock_user_data[6]["red"][2.4][1.2] = 0;
     mock_user_data[6]["red"][2.4][1.8] = 0;
-    mock_user_data[6]["red"][2.4][2.4] = 4;
-    mock_user_data[6]["red"][2.4][3] = 1;
+    mock_user_data[6]["red"][2.4][2.4] = 5;
+    mock_user_data[6]["red"][2.4][3] = 0;
     mock_user_data[6]["red"][2.4][3.6] = 0;
     //
     mock_user_data[6]["red"][3][0.6] = 0;
@@ -374,8 +374,8 @@ function mock_result() {
     mock_user_data[6]["red"][3.6][1.2] = 0;
     mock_user_data[6]["red"][3.6][1.8] = 0;
     mock_user_data[6]["red"][3.6][2.4] = 0;
-    mock_user_data[6]["red"][3.6][3] = 1;
-    mock_user_data[6]["red"][3.6][3.6] = 4;
+    mock_user_data[6]["red"][3.6][3] = 0;
+    mock_user_data[6]["red"][3.6][3.6] = 5;
     //blue
     mock_user_data[6]["blue"][0.6][0.6] = 5;
     mock_user_data[6]["blue"][0.6][1.2] = 0;
@@ -392,17 +392,17 @@ function mock_result() {
     mock_user_data[6]["blue"][1.2][3.6] = 0;
     //
     mock_user_data[6]["blue"][1.8][0.6] = 0;
-    mock_user_data[6]["blue"][1.8][1.2] = 1;
-    mock_user_data[6]["blue"][1.8][1.8] = 2;
-    mock_user_data[6]["blue"][1.8][2.4] = 2;
+    mock_user_data[6]["blue"][1.8][1.2] = 0;
+    mock_user_data[6]["blue"][1.8][1.8] = 0;
+    mock_user_data[6]["blue"][1.8][2.4] = 5;
     mock_user_data[6]["blue"][1.8][3] = 0;
     mock_user_data[6]["blue"][1.8][3.6] = 0; 
     //
     mock_user_data[6]["blue"][2.4][0.6] = 0;
     mock_user_data[6]["blue"][2.4][1.2] = 0;
     mock_user_data[6]["blue"][2.4][1.8] = 0;
-    mock_user_data[6]["blue"][2.4][2.4] = 5;
-    mock_user_data[6]["blue"][2.4][3] = 0;
+    mock_user_data[6]["blue"][2.4][2.4] = 4;
+    mock_user_data[6]["blue"][2.4][3] = 1;
     mock_user_data[6]["blue"][2.4][3.6] = 0;
     //
     mock_user_data[6]["blue"][3][0.6] = 0;
@@ -416,8 +416,8 @@ function mock_result() {
     mock_user_data[6]["blue"][3.6][1.2] = 0;
     mock_user_data[6]["blue"][3.6][1.8] = 0;
     mock_user_data[6]["blue"][3.6][2.4] = 0;
-    mock_user_data[6]["blue"][3.6][3] = 0;
-    mock_user_data[6]["blue"][3.6][3.6] = 5;
+    mock_user_data[6]["blue"][3.6][3] = 1;
+    mock_user_data[6]["blue"][3.6][3.6] = 4;
 
 
 
@@ -513,7 +513,7 @@ function cal_nj(result, L, color, j) {
 	var k1 = key1[i];
 	var key2 = Object.keys(result[L][color][k1]);
 	for(var p = 0; p < key2.length; p ++) {
-	    if(parseFloat(key2[p]) === parseFloat(timej)) {
+	    if(parseFloat(key2[p]) === parseFloat(timej)) {	
 		if (result[L][color][k1][key2[p]] === NaN || result[L][color][k1][key2[p]] === undefined) {
 		    // do nothing
 		} else {
@@ -530,7 +530,10 @@ function cal_ys(result, L, color) {
     var hr = 0;
     for(var j = 0; j < L; j ++) {
 	var t = cal_nj(result, L, color, j) / (5.0 * L);
-	var p = t * log2(t);
+	if(t > 0) {
+	    var p = t * log2(t);
+	}
+	//alert("p: " + p);
 	hr = hr + p;
     }
     hr = hr * (-1);
@@ -551,7 +554,7 @@ function cal_ys(result, L, color) {
 
 function cal_hs(result, color) {
     var r = [];
-    for(var i = 2; i < 10; i += 2) {
+    for(var i = 6; i < 8; i += 2) {
 	var answer = cal_ys(result, i, color);
 	r.push([log2(i), answer]);
     }
@@ -563,7 +566,7 @@ var blue_result;
 
 function show_charts(result) {
     red_result = cal_hs(result, "red");
-    blue_result = cal_hs(result, "blue");
+    ///blue_result = cal_hs(result, "blue");
     var myChart = Highcharts.chart('result-charts',  {
 	marker: {
             radius: 5
