@@ -72,7 +72,7 @@ function gen_time_array(color) {
     // blue: 5 * 5 + 1 * 25 = 50, 3.18
     for(var i = 0; i < blue_arr.length; i ++) {
 	var t = 0;
-	if (i != (blue_arr.length - 1)) {
+	if (i !== (blue_arr.length - 1)) {
 	    t = 5; // 5 times if it is not the last one
 	} else {
 	    t = 25; // 25 times if the last one
