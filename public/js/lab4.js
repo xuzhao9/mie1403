@@ -221,82 +221,58 @@ var red_result = [];
 var blue_freq = [];
 var blue_result = [];
 
-var mock_result = [];
+var mock_signal_result = [];
+var mock_noise_result = [];
 
 function mock() {
-    for(var i = 0; i < 10; i ++) {
-	for(var j = 0; j < blue_arr.length; j ++) {
-	    var ran = Math.floor(Math.random() * 10 + 1) % 2;
-	    if(ran === 0) {
-		mock_result.push([red_standard, blue_arr[j], "yes"]);
-	    } else if (ran === 1) {
-		mock_result.push([red_standard, blue_arr[j], "no"]);
-	    }
-	}
-    }
-    for(var i = 0; i < 10; i ++) {
-	for(var j = 0; j < red_arr.length; j ++) {
-	    var ran = Math.floor(Math.random() * 10 + 1) % 2;
-	    if(ran === 0) {
-		mock_result.push([blue_standard, red_arr[j], "yes"]);
-	    } else if (ran === 1) {
-		mock_result.push([blue_standard, red_arr[j], "no"]);
-	    }
-	}
-    }
-    show_result(mock_result);
+    mock_signal_result = [4, 6, 3, 5, 7];
+    mock_noise_result = [7, 6, 5, 3, 4];
+    show_result(mock_signal_result, mock_noise_result);
 }
 
-function show_result(result) {
+var p_h = [];
+var p_fa = [];
+
+var z_pairs = [];
+
+function cal_p(array, result_array) {
+    var sum_arr = 0;
+    for(var i = 0; i < array.length; i ++) {
+	sum_arr += array[i];
+    }
+    for(var i = 1; i < array.length; i ++) {
+	var subsum = 0;
+	for(var j = i; j < array.length;  j ++) {
+	    subsum += array[j];
+	}
+	result_array.push(subsum / sum_arr);
+    }
+}
+
+function get_z_pairs(ph_val, pfa_val) {
+    var r = [];
+    var vm = new SDTViewModel(redraw, ph_val, pfa_val);
+    r.push(vm.z.hit());
+    r.push(vm.z.fa());
+    return r;
+}
+
+
+function show_result(signal_result, noise_result) {
     $('#first-page').hide();
     $('#illuHeader').show();
     $('#exp-title').text("Show Result");
     $('#exp-colortitle').text("");
     $('#exp-subtitle').text("");
-    // gen_results(result);
-    show_roc();
-    // show_red_chart();
-    // show_blue_chart();
-}
-
-function show_roc() {
-    roc.init("roc", 400, 300, 70);
-    normal.init("normal", [-5, 5], 400, 300, 70);
-}
-
-function gen_results(result) {
-    red_freq = [];
-    blue_freq = [];
-    red_result = [];
-    blue_result = [];
-    for(var i = 0; i < result.length; i ++) {
-	var one = result[i][0];
-	var two = result[i][1];
-	var three = result[i][2];
-	if (one === red_standard) {
-	    if(red_freq[two] === undefined) {
-		red_freq[two] = 0;
-	    }
-	    if(three === "yes") {
-		red_freq[two] += 1;
-	    }
-	} else if (one === blue_standard) {
-	    if(blue_freq[two] === undefined) {
-		blue_freq[two] = 0;
-	    }
-	    if(three === "yes") {
-		blue_freq[two] += 1;
-	    }
-	}
+    cal_p(signal_result, p_h);
+    cal_p(noise_result, p_fa);
+    for(var i = 0; i < p_h.length; i ++) {
+	var phval = p_h[i];
+	var pfaval = p_fa[i];
+	var zp = get_z_pairs(phval, pfaval);
+	z_pairs.push(zp);
     }
-    var red_keys = Object.keys(red_freq);
-    for(var i = 0; i < red_keys.length; i ++) {
-	red_result.push([parseFloat(red_keys[i]), (red_freq[red_keys[i]] / 10.0)]);
-    }
-    var blue_keys = Object.keys(blue_freq);
-    for(var i = 0; i < blue_keys.length; i ++) {
-	blue_result.push([parseFloat(blue_keys[i]), (blue_freq[blue_keys[i]] / 10.0)]);
-    }
+    show_red_chart();
 }
 
 //Psychometric Function Charts
@@ -327,19 +303,12 @@ function show_red_chart() {
 	    },
         
 	xAxis: {
-		floor: 0.4,
-        ceiling: 1.6,
-		tickInterval: 0.2,
-		
 	    title: {
 		enabled: true,		
 		text: '<b>Stimulus Intensity</b>'
 	    }
         },
         yAxis: {
-		floor: 0,
-        ceiling: 1.1,
-		tickInterval: 0.1,
        
             title: {
                 text: '<b>Percentage</b>'
@@ -351,60 +320,20 @@ function show_red_chart() {
         },  
 	series: [
 	    {
+		 
+		     regression: true,
+		     regressionSettings: {
+			 type: 'linear',
+			 color: 'rgba(83, 83, 223, .9)',
+			 marker: {
+			     enabled: false
+			 }
+		     },
 		name: '1s',
 		showInLegend: false, 
 		color: 'rgba(83, 83, 223, .5)',
-		data: red_result
+		data: z_pairs
 	    },
-		//y=0.25
-	    {
-		regression: true,
-		showInLegend: false,
-		regressionSettings: {
-		    type: 'linear', 
-		    color: '#888888',
-		    dashStyle: 'ShortDash',
-		    showInLegend: false	
-		},			  
-		name: 'y=0.25',	  
-		marker: {
-		    enabled: false
-		},	
-		data:[[0,0.25], [1.6,0.25]]
-	    },
-		//y=0.5
-		{
-		regression: true,
-		showInLegend: false,
-		regressionSettings: {
-		    type: 'linear', 
-		    color: '#33FF99',
-		    dashStyle: 'ShortDash',
-		    showInLegend: false	
-		},			  
-		name: 'y=0.5',	  
-		marker: {
-		    enabled: false
-		},	
-		data:[[0,0.5], [1.6,0.5]]
-	    },
-		//y=0.75
-		{
-		regression: true,
-		showInLegend: false,
-		regressionSettings: {
-		    type: 'linear', 
-		    color: '#888888',
-		    dashStyle: 'ShortDash',
-		    showInLegend: false	
-		},			  
-		name: 'y=0.75',	  
-		marker: {
-		    enabled: false
-		},	
-		data:[[0,0.75], [1.6,0.75]]
-	    }
-		
 	]
     });
 }
@@ -517,3 +446,5 @@ function show_blue_chart() {
 	]
     });
 }
+
+
