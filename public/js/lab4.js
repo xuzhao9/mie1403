@@ -15,10 +15,10 @@ $(document).ready(function() {
 });
 
 var red_standard = 1.0;
-var blue_arr = [0.5, 0.7, 0.9, 1.1, 1.3, 1.5];
+var blue_arr = [0.76, 0.80, 0.84, 0.88, 0.92, 1.04];
 
 var blue_standard = 3.0;
-var red_arr = [2.0, 2.4, 2.8, 3.2, 3.6, 4.0];
+var red_arr = [2.62, 2.70, 2.78, 2.86, 2.94, 3.18];
 
 function genProm(interval) {
     return new Promise(function(resolve, reject) {
@@ -63,12 +63,20 @@ var time_array;
 
 function gen_time_array(color) {
     time_array = [];
-    for(var i = 0; i < 10; i ++) {
-	for(var j = 0; j < blue_arr.length; j ++) {
+    // red: 5 * 5 + 1 * 25 = 50, 1.04
+    // blue: 5 * 5 + 1 * 25 = 50, 3.18
+    for(var i = 0; i < blue_arr.length; i ++) {
+	var t = 0;
+	if (i != (blue_arr.length - 1)) {
+	    t = 5; // 5 times if it is not the last one
+	} else {
+	    t = 25; // 25 times if the last one
+	}
+	for(var j = 0; j < t; j ++) {
 	    if(color === "red") {
-		time_array.push(blue_arr[j]);
+		time_array.push(blue_arr[i]);
 	    } else if (color === "blue") {
-		time_array.push(red_arr[j]);
+		time_array.push(red_arr[i]);
 	    }
 	}
     }
@@ -245,9 +253,15 @@ function show_result(result) {
     $('#exp-title').text("Show Result");
     $('#exp-colortitle').text("");
     $('#exp-subtitle').text("");
-    gen_results(result);
-    show_red_chart();
-    show_blue_chart();
+    // gen_results(result);
+    show_roc();
+    // show_red_chart();
+    // show_blue_chart();
+}
+
+function show_roc() {
+    roc.init("roc", 400, 300, 70);
+    normal.init("normal", [-5, 5], 400, 300, 70);
 }
 
 function gen_results(result) {

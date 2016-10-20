@@ -1,0 +1,168 @@
+svg text {
+    fill: #333;
+    font: 12px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+#sick {
+    fill: rgba(244, 143,177, .6);
+    stroke: rgba(244, 143,177, .8);
+}
+
+#healthy {
+    fill: rgba(128, 203, 196, .6);
+    stroke: rgba(128, 203, 196, .8);
+}
+
+#container {
+    display: inline-block;
+}
+
+#container > div {
+    display: block;
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.sick,
+div.healthy {
+    padding: 10px;
+    width: 240px;
+    position: relative;
+    float: left;
+    font: 13px sans-serif;
+    color: #555;
+}
+
+div.sick .title {
+    color: #EC407A;
+    font-weight: bold;
+    padding: 0px;
+    padding-bottom: 10px;
+    display: block;
+}
+
+div.healthy .title {
+    color: #26A69A;
+    font-weight: bold;
+    padding: 0px;
+    padding-bottom: 10px;
+    display: block;
+}
+
+div.sick *,
+div.healthy * {
+    float: left;
+}
+
+div.sick div,
+div.healthy div {
+    clear: both;
+    width: 40px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+#roc .diagonal {
+    stroke: #888;
+    stroke-width: 1.2;
+    stroke-dasharray: 3,3;
+}
+#roc .x-label,
+#roc .y-label {
+    text-anchor: middle;
+    font-size: 14px;
+}
+
+#roc .roc-path {
+    stroke: #09f;
+    stroke-width: 2;
+    fill: none;
+}
+
+#roc .roc-point-coord {
+    fill: #09f;
+    font-size: 13px;
+}
+
+#roc .roc-point {
+    stroke: #09f;
+    stroke-width: 2;
+    fill: #fff;
+}
+
+#normal .normal-threshold {
+    stroke: #fa0;
+    shape-rendering: crispEdges;
+    stroke-width: 1.2;
+}
+
+#normal .normal-threshold-prob {
+    fill: #f60;
+    text-anchor: middle;
+    font-size: 13px;
+}
+
+#normal .normal-threshold-label {
+    text-anchor: middle;
+    font-size: 14px;
+    font-variant: small-caps;
+    letter-spacing: 1px;
+    fill: #f60;
+}
+
+#roc,
+#normal {
+    display: inline-block;
+    float: left;
+    clear: both;
+}
+
+#roc svg,
+#normal svg {
+    display: inline-block;
+    float: left;
+    clear: both;
+}
+
+#roc::before {
+    content: "Receiver Operating Characteristic (ROC) Curve";
+    position: relative;
+    float: left;
+    width: 100%;
+    text-align: center;
+    font-family: sans-serif;
+    font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: -30px
+}
+
+#normal::before {
+    content: "Normal Distribution of Groups";
+    position: relative;
+    float: left;
+    width: 100%;
+    text-align: center;
+    font-family: sans-serif;
+    font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: -30px
+}
+
+#normal > div {
+    margin-top: -30px;
+    position: relative;
+}

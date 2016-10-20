@@ -4,6 +4,23 @@ div.radio-box {
     margin: 5px;
     background-color: white;
 }
+div.radio-box-board {
+    width: 100px;
+    display: inline-block;
+    margin: 5px;
+    background-color: white;
+}
+.radio-box-board label {
+    display:block;
+    width: 100px;
+    text-align: center;
+}
+.radio-box-board input {
+    width: 50px;
+    display: block;
+    margin: 0 auto;
+}
+
 .radio-box label {
     display:block;
     width: 100px;
@@ -12,5 +29,5 @@ div.radio-box {
 .radio-box input {
     width: 50px;
     display: block;
-    margin: 5px;
+    margin: 0 auto;
 }
