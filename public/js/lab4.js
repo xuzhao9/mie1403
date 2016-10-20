@@ -16,9 +16,14 @@ $(document).ready(function() {
 
 var red_standard = 1.0;
 var blue_arr = [0.76, 0.80, 0.84, 0.88, 0.92, 1.04];
+var red_signal_result = [0, 0, 0, 0, 0];
+var red_noise_result = [0, 0, 0, 0, 0];
 
 var blue_standard = 3.0;
 var red_arr = [2.62, 2.70, 2.78, 2.86, 2.94, 3.18];
+var blue_signal_result = [0, 0, 0, 0, 0];
+var blue_noise_result = [0, 0, 0, 0, 0];
+
 
 function genProm(interval) {
     return new Promise(function(resolve, reject) {
@@ -142,12 +147,32 @@ function second(color, seqno) {
 	    alert("Please select one answer!");
 	    return;
 	}
-	var new_data =[(standard / 1000.0), time_array[seqno], val];
-	session_result.push(new_data);
+	var index = parseInt(val);
+	var highest = 0;
+	if(color === "red") {
+	    highest = blue_arr[blue_arr.length - 1];
+	}
+	if(color === "blue") {
+	    highest = red_arr[red_arr.length - 1];
+	}
+	if(time_array[seqno] === highest) {
+	    if(color === "red") {
+		red_signal_result[val] += 1;
+	    } else if (color === "blue") {
+		blue_signal_result[val] += 1;
+	    }
+	} else {
+	    if(color === "red") {
+		red_noise_result[val] += 1;
+	    } else if (color === "blue") {
+		blue_noise_result[val] += 1;
+	    }
+	}
 	if(seqno === time_array.length - 1 && color === "red") {
 	    first("blue");
 	} else if (seqno === time_array.length - 1 && color === "blue") {
-	    show_result(session_result);
+	    show_result("red", red_signal_result, red_noise_result);
+	    show_result("blue", blue_signal_result, blue_noise_result);
 	} else {
 	    $('#exp-subtitle').text(seqno+2);
 	    $("#input-submit-container form input[type='radio']").each(function() {
@@ -293,6 +318,7 @@ function show_result(color, signal_result, noise_result) {
 	p_ffaa = p_fa_blue;
     }
     $('#first-page').hide();
+    $('#result-display-page').show();
     $('#illuHeader').show();
     $('#exp-title').text("Show Result");
     $('#exp-colortitle').text("");

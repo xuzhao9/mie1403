@@ -57,18 +57,28 @@
 	<table>
 	  <tr>
 	    <td>
-	<div class="radio-box"> <label>YES</label>
-	  <input id="radio-yes" type="radio" align="right" name="choose" value="yes">
+	<div class="radio-box"> <label>Shorter</label>
+	  <input id="radio-yes" type="radio" align="right" name="choose" value="1">
 	</div>
 	    </td>
 	    <td>
-	<div class="radio-box-board"> <label>?</label>
-	  <input id="radio-uncertain" type="radio" align="center" name="choose" value="uncertain">
+	<div class="radio-box"> <label>Maybe Shorter</label>
+	  <input id="radio-uncertain" type="radio" align="center" name="choose" value="2">
 	</div>
 	    </td>
 	    <td>
-	<div class="radio-box"> <label>NO</label>
-	  <input id="radio-no" type="radio" align="right" name="choose" value="no">
+	<div class="radio-box"> <label>UNCERTAIN</label>
+	  <input id="radio-uncertain" type="radio" align="center" name="choose" value="3">
+	</div>
+	    </td>
+	    <td>
+	<div class="radio-box"> <label>Maybe Longer</label>
+	  <input id="radio-uncertain" type="radio" align="center" name="choose" value="4">
+	</div>
+	    </td>
+	    <td>
+	<div class="radio-box"> <label>Longer</label>
+	  <input id="radio-uncertain" type="radio" align="center" name="choose" value="5">
 	</div>
 	    </td>
 	</tr>
@@ -89,8 +99,7 @@
   </div>
   
   <!-- Result display page here -->
-  <div id="result-display-page" style="margin-top: 30px; text-align: center;">
-
+  <div id="result-display-page" style="margin-top: 30px; text-align: center; display:none;">
     <div id="datas" align="center">
       <table>
 	<tr><th>Red</th><th>Blue</th></tr>
