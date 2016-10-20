@@ -420,7 +420,6 @@ function show_blue_chart() {
             text: '<b>Standard:</b> BLUE (3.0s) ; <b>Comparison:</b> RED (2.0~4.0s)'
 	    },
 	xAxis: {
-		tickInterval: 0.4,
 		
 	    title: {
 		enabled: true,
@@ -428,7 +427,6 @@ function show_blue_chart() {
 	    }
         },
         yAxis: {
-			tickInterval: 0.1,
 			
             title: {
                 text: '<b>Percentage</b>'
