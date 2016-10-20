@@ -223,17 +223,28 @@ var blue_result = [];
 
 var mock_signal_result = [];
 var mock_noise_result = [];
+var mock_blue_signal_result = [];
+var mock_blue_noise_result = [];
 
 function mock() {
     mock_signal_result = [4, 6, 3, 5, 7];
     mock_noise_result = [7, 6, 5, 3, 4];
-    show_result(mock_signal_result, mock_noise_result);
+    mock_blue_signal_result = [4, 6, 3, 5, 7];
+    mock_blue_noise_result = [7, 6, 5, 3, 4];
+    show_result("red", mock_signal_result, mock_noise_result);
+    show_result("blue", mock_blue_signal_result, mock_blue_noise_result);
 }
 
 var p_h = [];
 var p_fa = [];
 
 var z_pairs = [];
+var d_pairs = [];
+
+var p_h_blue = [];
+var p_fa_blue = [];
+var z_pairs_blue = [];
+var d_pairs_blue = [];
 
 function cal_p(array, result_array) {
     var sum_arr = 0;
@@ -254,25 +265,70 @@ function get_z_pairs(ph_val, pfa_val) {
     var vm = new SDTViewModel(redraw, ph_val, pfa_val);
     r.push(vm.z.hit());
     r.push(vm.z.fa());
+    r.push(vm.d_prime());
+    r.push(vm.c());
     return r;
 }
 
 
-function show_result(signal_result, noise_result) {
+function show_result(color, signal_result, noise_result) {
+    var e1;
+    if(color === "red") {
+	e1 = $('#data-red');
+    }
+    if(color === "blue") {
+	e1 = $('#data-blue');
+    }
+    var z_pp;
+    var p_hh;
+    var p_ffaa;
+    if(color === "red") {
+	z_pp = z_pairs;
+	p_hh = p_h;
+	p_ffaa = p_fa;
+    }
+    if(color === "blue") {
+	z_pp = z_pairs_blue;
+	p_hh = p_h_blue;
+	p_ffaa = p_fa_blue;
+    }
     $('#first-page').hide();
     $('#illuHeader').show();
     $('#exp-title').text("Show Result");
     $('#exp-colortitle').text("");
     $('#exp-subtitle').text("");
-    cal_p(signal_result, p_h);
-    cal_p(noise_result, p_fa);
-    for(var i = 0; i < p_h.length; i ++) {
-	var phval = p_h[i];
-	var pfaval = p_fa[i];
+    e1.text("");
+    e1.append("Signal:" + signal_result + "<br/>");
+    e1.append("Noise:" + noise_result + "<br/>");
+    cal_p(signal_result, p_hh);
+    cal_p(noise_result, p_ffaa);
+    e1.append("p_h:" + p_hh + "<br/>");
+    e1.append("p_fa:" + p_ffaa + "<br/>");
+    var z_h = [];
+    var z_fa = [];
+    var d_prime = [];
+    var c = [];
+    for(var i = 0; i < p_hh.length; i ++) {
+	var phval = p_hh[i];
+	var pfaval = p_ffaa[i];
 	var zp = get_z_pairs(phval, pfaval);
-	z_pairs.push(zp);
+	z_h.push(zp[0]);
+	z_fa.push(zp[1]);
+	d_prime.push(zp[2]);
+	c.push(zp[3]);
+	z_pp.push([zp[0], zp[1]]);
     }
-    show_red_chart();
+    e1.append("z_h:" + z_h + "<br/>");
+    e1.append("z_fa:" + z_fa + "<br/>");
+    e1.append("d_prime:" + d_prime + "<br/>");
+    e1.append("c:" + c + "<br/>");
+
+    if(color === "red") {
+	show_red_chart();
+    }
+    if (color === "blue") {
+	show_blue_chart();
+    }
 }
 
 //Psychometric Function Charts
@@ -364,8 +420,6 @@ function show_blue_chart() {
             text: '<b>Standard:</b> BLUE (3.0s) ; <b>Comparison:</b> RED (2.0~4.0s)'
 	    },
 	xAxis: {
-		floor: 1.8,
-        ceiling: 4.2,
 		tickInterval: 0.4,
 		
 	    title: {
@@ -374,8 +428,6 @@ function show_blue_chart() {
 	    }
         },
         yAxis: {
-			floor: 0,
-			ceiling: 1.1,
 			tickInterval: 0.1,
 			
             title: {
@@ -389,60 +441,19 @@ function show_blue_chart() {
 	series: [
 	    
 	    {
+		regression: true,
+		regressionSettings: {
+		    type: 'linear',
+		    color: 'rgba(83, 83, 223, .9)',
+		    marker: {
+			enabled: false
+		    }
+		},
 		name: '3s',
 		showInLegend: false, 
 		color: 'rgba(223, 83, 83, .5)',
-		data: blue_result
-	    },
-		//y=0.25
-	    {
-		regression: true,
-		showInLegend: false,
-		regressionSettings: {
-		    type: 'linear', 
-		    color: '#888888',
-		    dashStyle: 'ShortDash',
-		    showInLegend: false	
-		},			  
-		name: 'y=0.25',	  
-		marker: {
-		    enabled: false
-		},	
-		data:[[0,0.25], [4.2,0.25]]
-	    },
-		//y=0.5
-		{
-		regression: true,
-		showInLegend: false,
-		regressionSettings: {
-		    type: 'linear', 
-		    color: '#33FF99',
-		    dashStyle: 'ShortDash',
-		    showInLegend: false	
-		},			  
-		name: 'y=0.5',	  
-		marker: {
-		    enabled: false
-		},	
-		data:[[0,0.5], [4.2,0.5]]
-	    },
-		//y=0.75
-		{
-		regression: true,
-		showInLegend: false,
-		regressionSettings: {
-		    type: 'linear', 
-		    color: '#888888',
-		    dashStyle: 'ShortDash',
-		    showInLegend: false	
-		},			  
-		name: 'y=0.75',	  
-		marker: {
-		    enabled: false
-		},	
-		data:[[0,0.75], [4.2,0.75]]
-	    }
-		
+		data: z_pairs_blue
+	    }	
 	]
     });
 }
