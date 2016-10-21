@@ -15,12 +15,12 @@ $(document).ready(function() {
 });
 
 var red_standard = 1.0;
-var blue_arr = [0.76, 0.80, 0.84, 0.88, 0.92, 1.04];
+var blue_arr = [0.72,  0.78,  0.84,  0.90,  0.96, 1.04];
 var red_signal_result = [0, 0, 0, 0, 0];
 var red_noise_result = [0, 0, 0, 0, 0];
 
 var blue_standard = 3.0;
-var red_arr = [2.62, 2.70, 2.78, 2.86, 2.94, 3.18];
+var red_arr = [2.54,  2.66,  2.78,  2.90,  3.02, 3.18];
 var blue_signal_result = [0, 0, 0, 0, 0];
 var blue_noise_result = [0, 0, 0, 0, 0];
 
@@ -320,34 +320,37 @@ function show_result(color, signal_result, noise_result) {
     $('#first-page').hide();
     $('#result-display-page').show();
     $('#illuHeader').show();
-    $('#exp-title').text("Show Result");
+	$('#headcenter h1').css('color', 'white');
+    $('#exp-title').text("Result");
     $('#exp-colortitle').text("");
     $('#exp-subtitle').text("");
     e1.text("");
-    e1.append("Signal:" + signal_result + "<br/>");
+    e1.append("Signal:" + signal_result + "------------------");
     e1.append("Noise:" + noise_result + "<br/>");
     cal_p(signal_result, p_hh);
     cal_p(noise_result, p_ffaa);
-    e1.append("p_h:" + p_hh + "<br/>");
-    e1.append("p_fa:" + p_ffaa + "<br/>");
+    e1.append("P(H):   " + p_hh + "-------");
+    e1.append("P(FA):   " + p_ffaa + "<br/>");
     var z_h = [];
     var z_fa = [];
     var d_prime = [];
     var c = [];
+	var beta = [];
     for(var i = 0; i < p_hh.length; i ++) {
 	var phval = p_hh[i];
 	var pfaval = p_ffaa[i];
 	var zp = get_z_pairs(phval, pfaval);
-	z_h.push(zp[0]);
-	z_fa.push(zp[1]);
-	d_prime.push(zp[2]);
+	z_h.push(zp[0].toFixed(2));
+	z_fa.push(zp[1].toFixed(2));
+	d_prime.push(zp[2].toFixed(2));
 	c.push(zp[3]);
+	beta.push(Math.exp(zp[2]*zp[3]).toFixed(2));
 	z_pp.push([zp[0], zp[1]]);
     }
-    e1.append("z_h:" + z_h + "<br/>");
-    e1.append("z_fa:" + z_fa + "<br/>");
-    e1.append("d_prime:" + d_prime + "<br/>");
-    e1.append("c:" + c + "<br/>");
+    e1.append("Z(H):   " + z_h + "----");
+    e1.append("Z(FA):   " + z_fa + "<br/>");
+    e1.append("d':   " + d_prime + "----------");
+    e1.append("beta:   " + beta + "<br/>");
 
     if(color === "red") {
 	show_red_chart();
@@ -374,11 +377,11 @@ function show_red_chart() {
              align: 'left',
              verticalAlign: 'top',
              floating: true,
-	     x: 70,
-             y: 50,
+	         x: 80,
+             y: 100,
         },
 	title: {
-            text: '<b>Psychometric 	Function</b>'
+            text: '<b>Tesing SDT Assumptions in Z-score</b>'
         },
 	subtitle: {
             text: '<b>Standard:</b> RED (1.0s) ; <b>Comparison:</b> BLUE (0.5~1.5s)'
@@ -387,17 +390,17 @@ function show_red_chart() {
 	xAxis: {
 	    title: {
 		enabled: true,		
-		text: '<b>Stimulus Intensity</b>'
+		text: '<b>Z(FA)</b>'
 	    }
         },
         yAxis: {
        
             title: {
-                text: '<b>Percentage</b>'
+                text: '<b>Z(H)</b>'
             }
         },
 	tooltip: {
-            
+            headerFormat: '</b>Z(FA) : Z(H)</b><br>',
             pointFormat: '({point.x},{point.y})'
         },  
 	series: [
@@ -406,14 +409,14 @@ function show_red_chart() {
 		     regression: true,
 		     regressionSettings: {
 			 type: 'linear',
-			 color: 'rgba(83, 83, 223, .9)',
+			 color: 'rgba(83, 83, 223, .5)',
 			 marker: {
 			     enabled: false
 			 }
 		     },
 		name: '1s',
 		showInLegend: false, 
-		color: 'rgba(83, 83, 223, .5)',
+		color: 'rgba(83, 83, 223, .9)',
 		data: z_pairs
 	    },
 	]
@@ -436,30 +439,31 @@ function show_blue_chart() {
              align: 'left',
              verticalAlign: 'top',
              floating: true,
-	     x: 70,
-             y: 50,
+	         x: 80,
+             y: 100,
         },
 	title: {
-            text: '<b>Psychometric 	Function</b>'
+            text: '<b>Tesing SDT Assumptions in Z-score</b>'
         },
 	subtitle: {
-            text: '<b>Standard:</b> BLUE (3.0s) ; <b>Comparison:</b> RED (2.0~4.0s)'
+            text: '<b>Standard:</b> RED (1.0s) ; <b>Comparison:</b> BLUE (0.5~1.5s)'
 	    },
 	xAxis: {
 		
 	    title: {
 		enabled: true,
-		text: '<b>Stimulus Intensity</b>'
+		text: '<b>Z(FA)</b>'
 	    }
         },
         yAxis: {
 			
             title: {
-                text: '<b>Percentage</b>'
+                text: '<b>Z(H)</b>'
             }
         },
 	tooltip: {
             
+            headerFormat: '</b>Z(FA) : Z(H)</b><br>',
             pointFormat: '({point.x},{point.y})'
         },  
 	series: [
@@ -468,14 +472,14 @@ function show_blue_chart() {
 		regression: true,
 		regressionSettings: {
 		    type: 'linear',
-		    color: 'rgba(83, 83, 223, .9)',
+		    color: 'rgba(223, 83, 83, .5)',
 		    marker: {
 			enabled: false
 		    }
 		},
 		name: '3s',
 		showInLegend: false, 
-		color: 'rgba(223, 83, 83, .5)',
+		color: 'rgba(223, 83, 83, .9)',
 		data: z_pairs_blue
 	    }	
 	]
