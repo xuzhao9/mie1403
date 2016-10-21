@@ -15,12 +15,12 @@ $(document).ready(function() {
 });
 
 var red_standard = 1.0;
-var blue_arr = [0.72,  0.78,  0.84,  0.90,  0.96, 1.04];
+var blue_arr = [0.74,  0.79,  0.84,  0.89,  0.94, 1.04];
 var red_signal_result = [0, 0, 0, 0, 0];
 var red_noise_result = [0, 0, 0, 0, 0];
 
 var blue_standard = 3.0;
-var red_arr = [2.54,  2.66,  2.78,  2.90,  3.02, 3.18];
+var red_arr = [2.58,  2.68,  2.78,  2.88,  2.98, 3.18];
 var blue_signal_result = [0, 0, 0, 0, 0];
 var blue_noise_result = [0, 0, 0, 0, 0];
 
@@ -142,7 +142,8 @@ function second(color, seqno) {
     });
     $('#button-NEXT').off('click');
     $('#button-NEXT').click(() => {
-	var val = $("#input-submit-container form input[type='radio']:checked").val();
+	// Check if val= 1~5
+	var val = $("#input-submit-container form input[type='radio']:checked").val()-1;
 	if(val === undefined || val === NaN) {
 	    alert("Please select one answer!");
 	    return;
@@ -252,10 +253,10 @@ var mock_blue_signal_result = [];
 var mock_blue_noise_result = [];
 
 function mock() {
-    mock_signal_result = [4, 6, 3, 5, 7];
-    mock_noise_result = [7, 6, 5, 3, 4];
-    mock_blue_signal_result = [4, 6, 3, 5, 7];
-    mock_blue_noise_result = [7, 6, 5, 3, 4];
+    mock_signal_result = [3, 3, 4, 9, 6]; //[4, 6, 3, 5, 7];
+    mock_noise_result = [8, 9, 3, 5, 0]; //[7, 6, 5, 3, 4];
+    mock_blue_signal_result = [0, 2, 1, 10, 12]; //[4, 6, 3, 5, 7];
+    mock_blue_noise_result = [8, 5, 6, 4, 2]; //[7, 6, 5, 3, 4];
     show_result("red", mock_signal_result, mock_noise_result);
     show_result("blue", mock_blue_signal_result, mock_blue_noise_result);
 }
