@@ -282,6 +282,12 @@ function cal_p(array, result_array) {
 	for(var j = i; j < array.length;  j ++) {
 	    subsum += array[j];
 	}
+	if (subsum === 0) {
+	    subsum = 0.01;
+	}
+	if (subsum === sum_arr) {
+	    subsum = 0.99 * sum_arr;
+	}
 	result_array.push(subsum / sum_arr);
     }
 }
@@ -402,7 +408,7 @@ function show_red_chart() {
         },
 	tooltip: {
             headerFormat: '</b>Z(FA) : Z(H)</b><br>',
-            pointFormat: '({point.x},{point.y})'
+            pointFormat: '({point.x:.2f},{point.y:.2f})'
         },  
 	series: [
 	    {
@@ -465,7 +471,7 @@ function show_blue_chart() {
 	tooltip: {
             
             headerFormat: '</b>Z(FA) : Z(H)</b><br>',
-            pointFormat: '({point.x},{point.y})'
+            pointFormat: '({point.x:.2f},{point.y:.2f})'
         },  
 	series: [
 	    
