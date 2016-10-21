@@ -15,12 +15,12 @@ $(document).ready(function() {
 });
 
 var red_standard = 1.0;
-var blue_arr = [0.74,  0.79,  0.84,  0.89,  0.94, 1.04];
+var blue_arr = [0.84,  0.87,  0.90,  0.93,  0.96, 1.04];
 var red_signal_result = [0, 0, 0, 0, 0];
 var red_noise_result = [0, 0, 0, 0, 0];
 
 var blue_standard = 3.0;
-var red_arr = [2.58,  2.68,  2.78,  2.88,  2.98, 3.18];
+var red_arr = [2.78,  2.83,  2.88,  2.93,  2.98, 3.18];
 var blue_signal_result = [0, 0, 0, 0, 0];
 var blue_noise_result = [0, 0, 0, 0, 0];
 
