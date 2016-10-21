@@ -92,6 +92,7 @@ var standard = 0;
 
 function first(color) {
     $('#introduction-page').hide();
+    $('#interval-page').hide();
     $('#exp-title').text("Difference Thresholds ");
     standard = 0;
     if(color === "red") {
@@ -170,7 +171,13 @@ function second(color, seqno) {
 	    }
 	}
 	if(seqno === time_array.length - 1 && color === "red") {
-	    first("blue");
+	    $('#interval-page').show();
+	    $('#image3').off('click');
+	    $('#input-page').hide();
+	    $('#illuheader').hide();
+	    $('#image3').click(function() {
+		first("blue");
+	    });
 	} else if (seqno === time_array.length - 1 && color === "blue") {
 	    show_result("red", red_signal_result, red_noise_result);
 	    show_result("blue", blue_signal_result, blue_noise_result);
