@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    $('#input-page').hide();
     $('#svg-circle').hide();
     $('#first-page').hide();
     $('#illuHeader').hide();
@@ -119,7 +118,6 @@ function second(color, seqno) {
 	$(this).prop("checked", false);
     });
     $('#exp-subtitle').text(seqno+1);
-    $('#input-page').show();
     if(color === "red") {
 	set_blue_circle();
     } else if (color === "blue") {
@@ -173,7 +171,7 @@ function second(color, seqno) {
 	if(seqno === time_array.length - 1 && color === "red") {
 	    $('#interval-page').show();
 	    $('#image3').off('click');
-	    $('#input-page').hide();
+	    $('#first-page').hide();
 	    $('#illuheader').hide();
 	    $('#image3').click(function() {
 		first("blue");
