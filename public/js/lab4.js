@@ -15,10 +15,15 @@ $(document).ready(function() {
 });
 
 var red_standard = 1.0;
-var blue_arr = [0.5, 0.7, 0.9, 1.1, 1.3, 1.5];
+var blue_arr = [0.76, 0.80, 0.84, 0.88, 0.92, 1.04];
+var red_signal_result = [0, 0, 0, 0, 0];
+var red_noise_result = [0, 0, 0, 0, 0];
 
 var blue_standard = 3.0;
-var red_arr = [2.0, 2.4, 2.8, 3.2, 3.6, 4.0];
+var red_arr = [2.62, 2.70, 2.78, 2.86, 2.94, 3.18];
+var blue_signal_result = [0, 0, 0, 0, 0];
+var blue_noise_result = [0, 0, 0, 0, 0];
+
 
 function genProm(interval) {
     return new Promise(function(resolve, reject) {
@@ -63,12 +68,20 @@ var time_array;
 
 function gen_time_array(color) {
     time_array = [];
-    for(var i = 0; i < 10; i ++) {
-	for(var j = 0; j < blue_arr.length; j ++) {
+    // red: 5 * 5 + 1 * 25 = 50, 1.04
+    // blue: 5 * 5 + 1 * 25 = 50, 3.18
+    for(var i = 0; i < blue_arr.length; i ++) {
+	var t = 0;
+	if (i !== (blue_arr.length - 1)) {
+	    t = 5; // 5 times if it is not the last one
+	} else {
+	    t = 25; // 25 times if the last one
+	}
+	for(var j = 0; j < t; j ++) {
 	    if(color === "red") {
-		time_array.push(blue_arr[j]);
+		time_array.push(blue_arr[i]);
 	    } else if (color === "blue") {
-		time_array.push(red_arr[j]);
+		time_array.push(red_arr[i]);
 	    }
 	}
     }
@@ -134,12 +147,32 @@ function second(color, seqno) {
 	    alert("Please select one answer!");
 	    return;
 	}
-	var new_data =[(standard / 1000.0), time_array[seqno], val];
-	session_result.push(new_data);
+	var index = parseInt(val);
+	var highest = 0;
+	if(color === "red") {
+	    highest = blue_arr[blue_arr.length - 1];
+	}
+	if(color === "blue") {
+	    highest = red_arr[red_arr.length - 1];
+	}
+	if(time_array[seqno] === highest) {
+	    if(color === "red") {
+		red_signal_result[val] += 1;
+	    } else if (color === "blue") {
+		blue_signal_result[val] += 1;
+	    }
+	} else {
+	    if(color === "red") {
+		red_noise_result[val] += 1;
+	    } else if (color === "blue") {
+		blue_noise_result[val] += 1;
+	    }
+	}
 	if(seqno === time_array.length - 1 && color === "red") {
 	    first("blue");
 	} else if (seqno === time_array.length - 1 && color === "blue") {
-	    show_result(session_result);
+	    show_result("red", red_signal_result, red_noise_result);
+	    show_result("blue", blue_signal_result, blue_noise_result);
 	} else {
 	    $('#exp-subtitle').text(seqno+2);
 	    $("#input-submit-container form input[type='radio']").each(function() {
@@ -213,80 +246,114 @@ var red_result = [];
 var blue_freq = [];
 var blue_result = [];
 
-var mock_result = [];
+var mock_signal_result = [];
+var mock_noise_result = [];
+var mock_blue_signal_result = [];
+var mock_blue_noise_result = [];
 
 function mock() {
-    for(var i = 0; i < 10; i ++) {
-	for(var j = 0; j < blue_arr.length; j ++) {
-	    var ran = Math.floor(Math.random() * 10 + 1) % 2;
-	    if(ran === 0) {
-		mock_result.push([red_standard, blue_arr[j], "yes"]);
-	    } else if (ran === 1) {
-		mock_result.push([red_standard, blue_arr[j], "no"]);
-	    }
-	}
-    }
-    for(var i = 0; i < 10; i ++) {
-	for(var j = 0; j < red_arr.length; j ++) {
-	    var ran = Math.floor(Math.random() * 10 + 1) % 2;
-	    if(ran === 0) {
-		mock_result.push([blue_standard, red_arr[j], "yes"]);
-	    } else if (ran === 1) {
-		mock_result.push([blue_standard, red_arr[j], "no"]);
-	    }
-	}
-    }
-    show_result(mock_result);
+    mock_signal_result = [4, 6, 3, 5, 7];
+    mock_noise_result = [7, 6, 5, 3, 4];
+    mock_blue_signal_result = [4, 6, 3, 5, 7];
+    mock_blue_noise_result = [7, 6, 5, 3, 4];
+    show_result("red", mock_signal_result, mock_noise_result);
+    show_result("blue", mock_blue_signal_result, mock_blue_noise_result);
 }
 
-function show_result(result) {
+var p_h = [];
+var p_fa = [];
+
+var z_pairs = [];
+var d_pairs = [];
+
+var p_h_blue = [];
+var p_fa_blue = [];
+var z_pairs_blue = [];
+var d_pairs_blue = [];
+
+function cal_p(array, result_array) {
+    var sum_arr = 0;
+    for(var i = 0; i < array.length; i ++) {
+	sum_arr += array[i];
+    }
+    for(var i = 1; i < array.length; i ++) {
+	var subsum = 0;
+	for(var j = i; j < array.length;  j ++) {
+	    subsum += array[j];
+	}
+	result_array.push(subsum / sum_arr);
+    }
+}
+
+function get_z_pairs(ph_val, pfa_val) {
+    var r = [];
+    var vm = new SDTViewModel(redraw, ph_val, pfa_val);
+    r.push(vm.z.hit());
+    r.push(vm.z.fa());
+    r.push(vm.d_prime());
+    r.push(vm.c());
+    return r;
+}
+
+
+function show_result(color, signal_result, noise_result) {
+    var e1;
+    if(color === "red") {
+	e1 = $('#data-red');
+    }
+    if(color === "blue") {
+	e1 = $('#data-blue');
+    }
+    var z_pp;
+    var p_hh;
+    var p_ffaa;
+    if(color === "red") {
+	z_pp = z_pairs;
+	p_hh = p_h;
+	p_ffaa = p_fa;
+    }
+    if(color === "blue") {
+	z_pp = z_pairs_blue;
+	p_hh = p_h_blue;
+	p_ffaa = p_fa_blue;
+    }
     $('#first-page').hide();
+    $('#result-display-page').show();
     $('#illuHeader').show();
-<<<<<<< HEAD
-	$('#headcenter h1').css('color', 'white');
-    $('#exp-title').text("Result");
-=======
     $('#exp-title').text("Show Result");
     $('#exp-colortitle').text("");
     $('#exp-subtitle').text("");
->>>>>>> 7fd275efd0d6bd2b6a02c1bb76f3e0640b21afdb
-    gen_results(result);
-    show_red_chart();
-    show_blue_chart();
-}
+    e1.text("");
+    e1.append("Signal:" + signal_result + "<br/>");
+    e1.append("Noise:" + noise_result + "<br/>");
+    cal_p(signal_result, p_hh);
+    cal_p(noise_result, p_ffaa);
+    e1.append("p_h:" + p_hh + "<br/>");
+    e1.append("p_fa:" + p_ffaa + "<br/>");
+    var z_h = [];
+    var z_fa = [];
+    var d_prime = [];
+    var c = [];
+    for(var i = 0; i < p_hh.length; i ++) {
+	var phval = p_hh[i];
+	var pfaval = p_ffaa[i];
+	var zp = get_z_pairs(phval, pfaval);
+	z_h.push(zp[0]);
+	z_fa.push(zp[1]);
+	d_prime.push(zp[2]);
+	c.push(zp[3]);
+	z_pp.push([zp[0], zp[1]]);
+    }
+    e1.append("z_h:" + z_h + "<br/>");
+    e1.append("z_fa:" + z_fa + "<br/>");
+    e1.append("d_prime:" + d_prime + "<br/>");
+    e1.append("c:" + c + "<br/>");
 
-function gen_results(result) {
-    red_freq = [];
-    blue_freq = [];
-    red_result = [];
-    blue_result = [];
-    for(var i = 0; i < result.length; i ++) {
-	var one = result[i][0];
-	var two = result[i][1];
-	var three = result[i][2];
-	if (one === red_standard) {
-	    if(red_freq[two] === undefined) {
-		red_freq[two] = 0;
-	    }
-	    if(three === "yes") {
-		red_freq[two] += 1;
-	    }
-	} else if (one === blue_standard) {
-	    if(blue_freq[two] === undefined) {
-		blue_freq[two] = 0;
-	    }
-	    if(three === "yes") {
-		blue_freq[two] += 1;
-	    }
-	}
+    if(color === "red") {
+	show_red_chart();
     }
-    var red_keys = Object.keys(red_freq);
-    for(var i = 0; i < red_keys.length; i ++) {
-	red_result.push([parseFloat(red_keys[i]), (red_freq[red_keys[i]] / 10.0)]);
-    }
-    var blue_keys = Object.keys(blue_freq);
-    for(var i = 0; i < blue_keys.length; i ++) {
-	blue_result.push([parseFloat(blue_keys[i]), (blue_freq[blue_keys[i]] / 10.0)]);
+    if (color === "blue") {
+	show_blue_chart();
     }
 }
 
@@ -318,19 +385,12 @@ function show_red_chart() {
 	    },
         
 	xAxis: {
-		floor: 0.4,
-        ceiling: 1.6,
-		tickInterval: 0.2,
-		
 	    title: {
 		enabled: true,		
 		text: '<b>Stimulus Intensity</b>'
 	    }
         },
         yAxis: {
-		floor: 0,
-        ceiling: 1.1,
-		tickInterval: 0.1,
        
             title: {
                 text: '<b>Percentage</b>'
@@ -342,60 +402,20 @@ function show_red_chart() {
         },  
 	series: [
 	    {
+		 
+		     regression: true,
+		     regressionSettings: {
+			 type: 'linear',
+			 color: 'rgba(83, 83, 223, .9)',
+			 marker: {
+			     enabled: false
+			 }
+		     },
 		name: '1s',
 		showInLegend: false, 
 		color: 'rgba(83, 83, 223, .5)',
-		data: red_result
+		data: z_pairs
 	    },
-		//y=0.25
-	    {
-		regression: true,
-		showInLegend: false,
-		regressionSettings: {
-		    type: 'linear', 
-		    color: '#888888',
-		    dashStyle: 'ShortDash',
-		    showInLegend: false	
-		},			  
-		name: 'y=0.25',	  
-		marker: {
-		    enabled: false
-		},	
-		data:[[0,0.25], [1.6,0.25]]
-	    },
-		//y=0.5
-		{
-		regression: true,
-		showInLegend: false,
-		regressionSettings: {
-		    type: 'linear', 
-		    color: '#33FF99',
-		    dashStyle: 'ShortDash',
-		    showInLegend: false	
-		},			  
-		name: 'y=0.5',	  
-		marker: {
-		    enabled: false
-		},	
-		data:[[0,0.5], [1.6,0.5]]
-	    },
-		//y=0.75
-		{
-		regression: true,
-		showInLegend: false,
-		regressionSettings: {
-		    type: 'linear', 
-		    color: '#888888',
-		    dashStyle: 'ShortDash',
-		    showInLegend: false	
-		},			  
-		name: 'y=0.75',	  
-		marker: {
-		    enabled: false
-		},	
-		data:[[0,0.75], [1.6,0.75]]
-	    }
-		
 	]
     });
 }
@@ -426,9 +446,6 @@ function show_blue_chart() {
             text: '<b>Standard:</b> BLUE (3.0s) ; <b>Comparison:</b> RED (2.0~4.0s)'
 	    },
 	xAxis: {
-		floor: 1.8,
-        ceiling: 4.2,
-		tickInterval: 0.4,
 		
 	    title: {
 		enabled: true,
@@ -436,9 +453,6 @@ function show_blue_chart() {
 	    }
         },
         yAxis: {
-			floor: 0,
-			ceiling: 1.1,
-			tickInterval: 0.1,
 			
             title: {
                 text: '<b>Percentage</b>'
@@ -451,60 +465,21 @@ function show_blue_chart() {
 	series: [
 	    
 	    {
+		regression: true,
+		regressionSettings: {
+		    type: 'linear',
+		    color: 'rgba(83, 83, 223, .9)',
+		    marker: {
+			enabled: false
+		    }
+		},
 		name: '3s',
 		showInLegend: false, 
 		color: 'rgba(223, 83, 83, .5)',
-		data: blue_result
-	    },
-		//y=0.25
-	    {
-		regression: true,
-		showInLegend: false,
-		regressionSettings: {
-		    type: 'linear', 
-		    color: '#888888',
-		    dashStyle: 'ShortDash',
-		    showInLegend: false	
-		},			  
-		name: 'y=0.25',	  
-		marker: {
-		    enabled: false
-		},	
-		data:[[0,0.25], [4.2,0.25]]
-	    },
-		//y=0.5
-		{
-		regression: true,
-		showInLegend: false,
-		regressionSettings: {
-		    type: 'linear', 
-		    color: '#33FF99',
-		    dashStyle: 'ShortDash',
-		    showInLegend: false	
-		},			  
-		name: 'y=0.5',	  
-		marker: {
-		    enabled: false
-		},	
-		data:[[0,0.5], [4.2,0.5]]
-	    },
-		//y=0.75
-		{
-		regression: true,
-		showInLegend: false,
-		regressionSettings: {
-		    type: 'linear', 
-		    color: '#888888',
-		    dashStyle: 'ShortDash',
-		    showInLegend: false	
-		},			  
-		name: 'y=0.75',	  
-		marker: {
-		    enabled: false
-		},	
-		data:[[0,0.75], [4.2,0.75]]
-	    }
-		
+		data: z_pairs_blue
+	    }	
 	]
     });
 }
+
+

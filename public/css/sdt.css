@@ -1,0 +1,49 @@
+#graph {
+    width: 800px;
+    height: 400px;
+    position: relative;
+    background-color: #f5f5f5;
+    outline: solid 1px #ccc;
+}
+#graph > canvas {
+    position: absolute;
+}
+#graph > canvas.highlightable {
+    opacity: 0.25;
+    transition: all 0.2s;
+}
+#graph > canvas.highlightable.highlight {
+    opacity: 0.75;
+}
+#graph > canvas.highlightable.dark {
+    opacity: 0.5;
+}
+#graph > canvas.highlightable.dark.highlight {
+    opacity: 1;
+}
+fieldset {
+    margin: 1ex 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    border: none;
+    outline: solid 1px #ccc;
+}
+label {
+    display: inline-block;
+    padding: 0.5ex 1ex;
+    cursor: ns-resize;
+}
+label.highlight {
+    background-color: #e8e8e8;
+}
+label abbr {
+    width: 3em;
+    text-align: right;
+    display: inline-block;
+}
+label input {
+    font-family: "helvetica neue", helveca, sans-serif;
+    font-weight: 400;
+    font-size: 12pt;
+    width: 5em;
+}
