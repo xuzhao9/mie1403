@@ -258,10 +258,10 @@ var mock_blue_signal_result = [];
 var mock_blue_noise_result = [];
 
 function mock() {
-    mock_signal_result = [3, 3, 4, 9, 6]; //[4, 6, 3, 5, 7];
-    mock_noise_result = [8, 9, 3, 5, 0]; //[7, 6, 5, 3, 4];
-    mock_blue_signal_result = [0, 2, 1, 10, 12]; //[4, 6, 3, 5, 7];
-    mock_blue_noise_result = [8, 5, 6, 4, 2]; //[7, 6, 5, 3, 4];
+    mock_signal_result = [3, 4, 2, 7, 8]; //[4, 6, 3, 5, 7];
+    mock_noise_result = [9, 7, 5, 3, 1]; //[7, 6, 5, 3, 4];
+    mock_blue_signal_result = [3, 3, 1, 9, 8]; //[4, 6, 3, 5, 7];
+    mock_blue_noise_result = [5, 5, 4, 8, 3]; //[7, 6, 5, 3, 4];
     show_result("red", mock_signal_result, mock_noise_result);
     show_result("blue", mock_blue_signal_result, mock_blue_noise_result);
 }
@@ -349,7 +349,7 @@ function show_result(color, signal_result, noise_result) {
     cal_p(signal_result, p_hh);
     cal_p(noise_result, p_ffaa);
     e1.append("P(H):   " + convert_array(p_hh) + "-------");
-    e1.append("P(FA):   " + conver_array(p_ffaa) + "<br/>");
+    e1.append("P(FA):   " + convert_array(p_ffaa) + "<br/>");
     var z_h = [];
     var z_fa = [];
     var d_prime = [];
