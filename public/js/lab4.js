@@ -258,9 +258,9 @@ var mock_blue_signal_result = [];
 var mock_blue_noise_result = [];
 
 function mock() {
-    mock_signal_result = [3, 4, 2, 7, 8]; //[4, 6, 3, 5, 7];
+    mock_signal_result = [3, 4, 3, 7, 8]; //[4, 6, 3, 5, 7];
     mock_noise_result = [9, 7, 5, 3, 1]; //[7, 6, 5, 3, 4];
-    mock_blue_signal_result = [3, 3, 1, 9, 8]; //[4, 6, 3, 5, 7];
+    mock_blue_signal_result = [3, 3, 2, 9, 8]; //[4, 6, 3, 5, 7];
     mock_blue_noise_result = [5, 5, 4, 8, 3]; //[7, 6, 5, 3, 4];
     show_result("red", mock_signal_result, mock_noise_result);
     show_result("blue", mock_blue_signal_result, mock_blue_noise_result);
