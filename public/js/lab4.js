@@ -307,6 +307,13 @@ function get_z_pairs(ph_val, pfa_val) {
     return r;
 }
 
+function convert_array(arr) {
+    var r = [];
+    for(auto i = 0; i < arr.length; i ++) {
+	r.push(arr[i].toFixed(2));
+    }
+    return r;
+}
 
 function show_result(color, signal_result, noise_result) {
     var e1;
@@ -341,8 +348,8 @@ function show_result(color, signal_result, noise_result) {
     e1.append("Noise:" + noise_result + "<br/>");
     cal_p(signal_result, p_hh);
     cal_p(noise_result, p_ffaa);
-    e1.append("P(H):   " + p_hh + "-------");
-    e1.append("P(FA):   " + p_ffaa + "<br/>");
+    e1.append("P(H):   " + convert_array(p_hh) + "-------");
+    e1.append("P(FA):   " + conver_array(p_ffaa) + "<br/>");
     var z_h = [];
     var z_fa = [];
     var d_prime = [];
