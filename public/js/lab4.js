@@ -168,7 +168,8 @@ function second(color, seqno) {
 		blue_noise_result[val] += 1;
 	    }
 	}
-	if(seqno === time_array.length - 1 && color === "red") {
+	if((seqno === (time_array.length - 1)) && color === "red") {
+	    // jump to blue
 	    $('#interval-page').show();
 	    $('#image3').off('click');
 	    $('#first-page').hide();
@@ -176,7 +177,7 @@ function second(color, seqno) {
 	    $('#image3').click(function() {
 		first("blue");
 	    });
-	} else if (seqno === time_array.length - 1 && color === "blue") {
+	} else if ((seqno === (time_array.length - 1)) && color === "blue") {
 	    show_result("red", red_signal_result, red_noise_result);
 	    show_result("blue", blue_signal_result, blue_noise_result);
 	} else {
