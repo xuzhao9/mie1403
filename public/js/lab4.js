@@ -365,7 +365,7 @@ function show_result(color, signal_result, noise_result) {
 	d_prime.push(zp[2].toFixed(2));
 	c.push(zp[3]);
 	beta.push(Math.exp(zp[2]*zp[3]).toFixed(2));
-	z_pp.push([zp[0], zp[1]]);
+	z_pp.push([zp[1], zp[0]]);
     }
     e1.append("Z(H):   " + z_h + "----");
     e1.append("Z(FA):   " + z_fa + "<br/>");
