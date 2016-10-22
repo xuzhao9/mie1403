@@ -309,7 +309,7 @@ function get_z_pairs(ph_val, pfa_val) {
 
 function convert_array(arr) {
     var r = [];
-    for(auto i = 0; i < arr.length; i ++) {
+    for(var i = 0; i < arr.length; i ++) {
 	r.push(arr[i].toFixed(2));
     }
     return r;
