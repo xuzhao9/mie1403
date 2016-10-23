@@ -289,7 +289,7 @@ function cal_p(array, result_array) {
 	    subsum += array[j];
 	}
 	if (subsum === 0) {
-	    subsum = 0.01;
+	    subsum = 0.01 * sum_arr;
 	}
 	if (subsum === sum_arr) {
 	    subsum = 0.99 * sum_arr;
@@ -397,7 +397,7 @@ function show_red_chart() {
              align: 'left',
              verticalAlign: 'top',
              floating: true,
-	         x: 80,
+	     x: 80,
              y: 100,
         },
 	title: {
